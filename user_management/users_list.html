@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>User Management - StockMaster</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols Outlined -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#bc4800",
+                    "surface-container-highest": "#e1e2ed",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "primary-container": "#2563eb",
+                    "on-secondary-fixed-variant": "#3c475a",
+                    "outline": "#737686",
+                    "tertiary-fixed": "#ffdbcd",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#586377",
+                    "secondary": "#545f73",
+                    "on-tertiary-container": "#ffede6",
+                    "on-surface": "#191b23",
+                    "on-primary-container": "#eeefff",
+                    "surface-bright": "#faf8ff",
+                    "outline-variant": "#c3c6d7",
+                    "secondary-fixed-dim": "#bcc7de",
+                    "on-background": "#191b23",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "surface-container": "#ededf9",
+                    "on-tertiary-fixed": "#360f00",
+                    "secondary-fixed": "#d8e3fb",
+                    "surface-dim": "#d9d9e5",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#0053db",
+                    "inverse-primary": "#b4c5ff",
+                    "tertiary": "#943700",
+                    "primary-fixed": "#dbe1ff",
+                    "primary": "#004ac6",
+                    "surface-container-low": "#f3f3fe",
+                    "on-primary": "#ffffff",
+                    "surface-container-high": "#e7e7f3",
+                    "inverse-on-surface": "#f0f0fb",
+                    "background": "#faf8ff",
+                    "on-surface-variant": "#434655",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#d5e0f8",
+                    "surface-variant": "#e1e2ed",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2e3039",
+                    "on-secondary-fixed": "#111c2d",
+                    "error": "#ba1a1a",
+                    "surface": "#faf8ff",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#00174b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "32px",
+                    "sidebar-width": "280px",
+                    "base": "8px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "gutter": "24px",
+                    "header-height": "64px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "data-table": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "data-table": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background dark:bg-inverse-surface text-on-background dark:text-inverse-on-surface min-h-screen overflow-x-hidden transition-colors duration-200">
+
+<!-- SIDEBAR -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm flex flex-col py-lg px-md z-50">
+    <div class="flex items-center gap-3 px-sm mb-xl">
+        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+            <span class="material-symbols-outlined">inventory_2</span>
+        </div>
+        <div>
+            <h1 class="font-headline-md text-headline-md font-bold text-primary">StockMaster</h1>
+            <p class="text-[10px] text-secondary-fixed-dim uppercase tracking-widest font-bold">Enterprise</p>
+        </div>
+    </div>
+    
+    <nav class="flex-1 space-y-1 overflow-y-auto custom-scrollbar">
+        <a href="../dashboard_themed_alerts/code.html" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-body-md text-body-md">Dashboard</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-md py-3 bg-primary text-on-primary rounded-lg transition-all duration-200 active:scale-95">
+            <span class="material-symbols-outlined">group</span>
+            <span class="font-body-md text-body-md">Users</span>
+        </a>
+        <a href="../products_management/code.html" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span class="font-body-md text-body-md">Products</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">category</span>
+            <span class="font-body-md text-body-md">Categories</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">domain</span>
+            <span class="font-body-md text-body-md">Suppliers</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">person</span>
+            <span class="font-body-md text-body-md">Customers</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">inventory</span>
+            <span class="font-body-md text-body-md">Inventory</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span class="font-body-md text-body-md">Purchasing</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">sell</span>
+            <span class="font-body-md text-body-md">Sales</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">assessment</span>
+            <span class="font-body-md text-body-md">Reports</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">history</span>
+            <span class="font-body-md text-body-md">Activity Logs</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all duration-200">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="font-body-md text-body-md">Settings</span>
+        </a>
+    </nav>
+    
+    <div class="mt-auto pt-lg border-t border-outline-variant dark:border-outline">
+        <a href="#" class="flex items-center gap-3 px-md py-3 text-secondary dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant rounded-lg transition-all">
+            <span class="material-symbols-outlined">account_circle</span>
+            <span class="font-body-md text-body-md">Profile</span>
+        </a>
+        <button class="mt-md w-full flex items-center justify-center gap-2 py-2 px-4 bg-error-container text-on-error-container font-label-md rounded-lg hover:opacity-90 transition-all active:scale-95">
+            <span class="material-symbols-outlined text-sm">logout</span>
+            Logout
+        </button>
+    </div>
+</aside>
+
+<!-- HEADER -->
+<header class="fixed top-0 right-0 h-header-height z-40 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm flex items-center justify-between px-xl w-[calc(100%-280px)] ml-[280px]">
+    <div class="flex items-center gap-4 flex-1">
+        <div class="relative w-full max-w-md">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+            <input class="w-full bg-surface-container-low dark:bg-surface-variant border-none rounded-full pl-10 pr-4 py-2 text-body-md dark:text-inverse-on-surface focus:ring-2 focus:ring-primary/20" placeholder="Search users or activity..." type="text"/>
+        </div>
+    </div>
+    <div class="flex items-center gap-md">
+        <button class="p-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-surface-variant rounded-full transition-colors" id="themeToggle">
+            <span class="material-symbols-outlined" id="themeIcon">light_mode</span>
+        </button>
+        <button class="p-2 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-surface-variant rounded-full transition-colors relative">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="absolute top-1.5 right-1.5 w-4 h-4 bg-error text-[10px] text-white flex items-center justify-center rounded-full font-bold">2</span>
+        </button>
+        <div class="h-8 w-[1px] bg-outline-variant dark:bg-outline mx-sm"></div>
+        <a href="add_user.html" class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md hover:bg-primary-container transition-all active:scale-95 shadow-sm">
+            <span class="material-symbols-outlined">add</span>
+            Add User
+        </a>
+        <div class="flex items-center gap-3 ml-md cursor-pointer">
+            <div class="text-right">
+                <p class="font-label-md text-on-surface dark:text-inverse-on-surface leading-tight">Alex Rivera</p>
+                <p class="text-[10px] text-secondary dark:text-outline-variant leading-tight">Super Admin</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">AR</div>
+        </div>
+    </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="pt-[64px] ml-[280px] min-h-screen p-xl transition-colors duration-200">
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-gutter mb-xl">
+        <div>
+            <h2 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">User Management</h2>
+            <p class="font-body-md text-body-md text-secondary dark:text-outline-variant">Manage system users, roles, and permissions.</p>
+        </div>
+        <div class="flex items-center gap-sm">
+            <input type="text" placeholder="Search users..." class="px-md py-2 bg-surface-container-lowest dark:bg-inverse-surface border border-outline-variant dark:border-outline rounded-lg text-body-md"/>
+            <button class="px-4 py-2 border border-outline-variant dark:border-outline rounded-lg text-body-md hover:bg-surface-container-low dark:hover:bg-surface-variant transition-all">
+                <span class="material-symbols-outlined">filter_list</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-xl">
+        <div class="bg-surface-container-lowest dark:bg-inverse-surface p-lg rounded-xl shadow-sm border border-outline-variant dark:border-outline flex items-start justify-between">
+            <div>
+                <p class="font-label-md text-secondary-fixed-dim uppercase tracking-wider mb-1">Total Users</p>
+                <h3 class="font-display-lg text-display-lg text-on-surface dark:text-inverse-on-surface">47</h3>
+                <p class="text-[12px] text-primary font-semibold mt-2">+3 this month</p>
+            </div>
+            <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-3xl">group</span>
+            </div>
+        </div>
+
+        <div class="bg-surface-container-lowest dark:bg-inverse-surface p-lg rounded-xl shadow-sm border border-outline-variant dark:border-outline flex items-start justify-between">
+            <div>
+                <p class="font-label-md text-secondary-fixed-dim uppercase tracking-wider mb-1">Active Users</p>
+                <h3 class="font-display-lg text-display-lg text-on-surface dark:text-inverse-on-surface">42</h3>
+                <p class="text-[12px] text-green-600 font-semibold mt-2">89% active</p>
+            </div>
+            <div class="w-12 h-12 bg-green-50 dark:bg-green-900/30 rounded-xl flex items-center justify-center text-green-600">
+                <span class="material-symbols-outlined text-3xl">verified_user</span>
+            </div>
+        </div>
+
+        <div class="bg-surface-container-lowest dark:bg-inverse-surface p-lg rounded-xl shadow-sm border border-outline-variant dark:border-outline flex items-start justify-between">
+            <div>
+                <p class="font-label-md text-secondary-fixed-dim uppercase tracking-wider mb-1">Super Admins</p>
+                <h3 class="font-display-lg text-display-lg text-on-surface dark:text-inverse-on-surface">2</h3>
+                <p class="text-[12px] text-secondary font-semibold mt-2">Highest role</p>
+            </div>
+            <div class="w-12 h-12 bg-primary-container/20 rounded-xl flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-3xl">admin_panel_settings</span>
+            </div>
+        </div>
+
+        <div class="bg-surface-container-lowest dark:bg-inverse-surface p-lg rounded-xl shadow-sm border border-outline-variant dark:border-outline flex items-start justify-between">
+            <div>
+                <p class="font-label-md text-secondary-fixed-dim uppercase tracking-wider mb-1">Disabled Users</p>
+                <h3 class="font-display-lg text-display-lg text-on-surface dark:text-inverse-on-surface">3</h3>
+                <p class="text-[12px] text-orange-500 font-semibold mt-2">Inactive</p>
+            </div>
+            <div class="w-12 h-12 bg-orange-50 dark:bg-orange-900/30 rounded-xl flex items-center justify-center text-orange-500">
+                <span class="material-symbols-outlined text-3xl">person_off</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="bg-surface-container-lowest dark:bg-inverse-surface rounded-xl shadow-sm border border-outline-variant dark:border-outline overflow-hidden">
+        <div class="p-lg border-b border-outline-variant dark:border-outline flex items-center justify-between">
+            <h4 class="font-headline-sm text-headline-sm text-on-surface dark:text-inverse-on-surface">All Users</h4>
+            <div class="flex gap-2">
+                <button class="px-3 py-1 text-body-sm hover:bg-surface-container-low dark:hover:bg-surface-variant rounded">Export CSV</button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-surface-container-low dark:bg-surface-variant">
+                    <tr>
+                        <th class="px-lg py-4 font-label-md text-secondary dark:text-outline-variant uppercase tracking-wider">User</th>
+                        <th class="px-lg py-4 font-label-md text-secondary dark:text-outline-variant uppercase tracking-wider">Email</th>
+                        <th class="px-lg py-4 font-label-md text-secondary dark:text-outline-variant uppercase tracking-wider">Role</th>
+                        <th class="px-lg py-4 font-label-md text-secondary dark:text-outline-variant uppercase tracking-wider">Status</th>
+                        <th class="px-lg py-4 font-label-md text-secondary dark:text-outline-variant uppercase tracking-wider">Last Login</th>
+                        <th class="px-lg py-4 font-label-md text-secondary dark:text-outline-variant uppercase tracking-wider">Created</th>
+                        <th class="px-lg py-4 font-label-md text-secondary dark:text-outline-variant uppercase tracking-wider text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant dark:divide-outline">
+                    <!-- User Row 1 -->
+                    <tr class="hover:bg-surface-container-low dark:hover:bg-surface-variant/50 transition-colors">
+                        <td class="px-lg py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">AR</div>
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface dark:text-inverse-on-surface">Alex Rivera</p>
+                                    <p class="text-[11px] text-secondary dark:text-outline-variant">alex.rivera@stockmaster.com</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-lg py-4 font-body-md text-secondary dark:text-outline-variant">alex.rivera@stockmaster.com</td>
+                        <td class="px-lg py-4">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-label-sm font-semibold">Super Admin</span>
+                        </td>
+                        <td class="px-lg py-4">
+                            <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-label-sm font-semibold">Active</span>
+                        </td>
+                        <td class="px-lg py-4 font-body-md text-on-surface dark:text-inverse-on-surface">Today, 2:45 PM</td>
+                        <td class="px-lg py-4 font-body-md text-secondary dark:text-outline-variant">Oct 1, 2023</td>
+                        <td class="px-lg py-4 text-right">
+                            <div class="flex items-center justify-end gap-1">
+                                <button class="p-2 text-primary hover:bg-primary/10 rounded transition-all" title="View">
+                                    <span class="material-symbols-outlined text-lg">visibility</span>
+                                </button>
+                                <button class="p-2 text-primary hover:bg-primary/10 rounded transition-all" title="Edit">
+                                    <span class="material-symbols-outlined text-lg">edit</span>
+                                </button>
+                                <button class="p-2 text-error hover:bg-error/10 rounded transition-all" title="Delete">
+                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- User Row 2 -->
+                    <tr class="hover:bg-surface-container-low dark:hover:bg-surface-variant/50 transition-colors">
+                        <td class="px-lg py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold">SM</div>
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface dark:text-inverse-on-surface">Sarah Miller</p>
+                                    <p class="text-[11px] text-secondary dark:text-outline-variant">sarah.miller@stockmaster.com</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-lg py-4 font-body-md text-secondary dark:text-outline-variant">sarah.miller@stockmaster.com</td>
+                        <td class="px-lg py-4">
+                            <span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-label-sm font-semibold">Admin</span>
+                        </td>
+                        <td class="px-lg py-4">
+                            <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-label-sm font-semibold">Active</span>
+                        </td>
+                        <td class="px-lg py-4 font-body-md text-on-surface dark:text-inverse-on-surface">Yesterday, 5:20 PM</td>
+                        <td class="px-lg py-4 font-body-md text-secondary dark:text-outline-variant">Oct 5, 2023</td>
+                        <td class="px-lg py-4 text-right">
+                            <div class="flex items-center justify-end gap-1">
+                                <button class="p-2 text-primary hover:bg-primary/10 rounded transition-all" title="View">
+                                    <span class="material-symbols-outlined text-lg">visibility</span>
+                                </button>
+                                <button class="p-2 text-primary hover:bg-primary/10 rounded transition-all" title="Edit">
+                                    <span class="material-symbols-outlined text-lg">edit</span>
+                                </button>
+                                <button class="p-2 text-error hover:bg-error/10 rounded transition-all" title="Delete">
+                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- User Row 3 -->
+                    <tr class="hover:bg-surface-container-low dark:hover:bg-surface-variant/50 transition-colors">
+                        <td class="px-lg py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center font-bold">JW</div>
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface dark:text-inverse-on-surface">James Wilson</p>
+                                    <p class="text-[11px] text-secondary dark:text-outline-variant">james.wilson@stockmaster.com</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-lg py-4 font-body-md text-secondary dark:text-outline-variant">james.wilson@stockmaster.com</td>
+                        <td class="px-lg py-4">
+                            <span class="px-3 py-1 bg-tertiary-fixed/40 text-on-tertiary-container rounded-full text-label-sm font-semibold">Manager</span>
+                        </td>
+                        <td class="px-lg py-4">
+                            <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-label-sm font-semibold">Active</span>
+                        </td>
+                        <td class="px-lg py-4 font-body-md text-on-surface dark:text-inverse-on-surface">2 hours ago</td>
+                        <td class="px-lg py-4 font-body-md text-secondary dark:text-outline-variant">Sep 15, 2023</td>
+                        <td class="px-lg py-4 text-right">
+                            <div class="flex items-center justify-end gap-1">
+                                <button class="p-2 text-primary hover:bg-primary/10 rounded transition-all" title="View">
+                                    <span class="material-symbols-outlined text-lg">visibility</span>
+                                </button>
+                                <button class="p-2 text-primary hover:bg-primary/10 rounded transition-all" title="Edit">
+                                    <span class="material-symbols-outlined text-lg">edit</span>
+                                </button>
+                                <button class="p-2 text-error hover:bg-error/10 rounded transition-all" title="Delete">
+                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- User Row 4 -->
+                    <tr class="hover:bg-surface-container-low dark:hover:bg-surface-variant/50 transition-colors">
+                        <td class="px-lg py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-outline text-on-surface flex items-center justify-center font-bold">MJ</div>
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface dark:text-inverse-on-surface">Maria Johnson</p>
+                                    <p class="text-[11px] text-secondary dark:text-outline-variant">maria.johnson@stockmaster.com</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-lg py-4 font-body-md text-secondary dark:text-outline-variant">maria.johnson@stockmaster.com</td>
+                        <td class="px-lg py-4">
+                            <span class="px-3 py-1 bg-outline-variant/30 text-outline-variant rounded-full text-label-sm font-semibold">Staff</span>
+                        </td>
+                        <td class="px-lg py-4">
+                            <span class="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 rounded-full text-label-sm font-semibold">Disabled</span>
+                        </td>
+                        <td class="px-lg py-4 font-body-md text-on-surface dark:text-inverse-on-surface">3 days ago</td>
+                        <td class="px-lg py-4 font-body-md text-secondary dark:text-outline-variant">Aug 20, 2023</td>
+                        <td class="px-lg py-4 text-right">
+                            <div class="flex items-center justify-end gap-1">
+                                <button class="p-2 text-primary hover:bg-primary/10 rounded transition-all" title="View">
+                                    <span class="material-symbols-outlined text-lg">visibility</span>
+                                </button>
+                                <button class="p-2 text-primary hover:bg-primary/10 rounded transition-all" title="Edit">
+                                    <span class="material-symbols-outlined text-lg">edit</span>
+                                </button>
+                                <button class="p-2 text-error hover:bg-error/10 rounded transition-all" title="Delete">
+                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- User Row 5 -->
+                    <tr class="hover:bg-surface-container-low dark:hover:bg-surface-variant/50 transition-colors">
+                        <td class="px-lg py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-error/20 text-error flex items-center justify-center font-bold">RB</div>
+                                <div>
+                                    <p class="font-body-md font-semibold text-on-surface dark:text-inverse-on-surface">Robert Brown</p>
+                                    <p class="text-[11px] text-secondary dark:text-outline-variant">robert.brown@stockmaster.com</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-lg py-4 font-body-md text-secondary dark:text-outline-variant">robert.brown@stockmaster.com</td>
+                        <td class="px-lg py-4">
+                            <span class="px-3 py-1 bg-outline-variant/30 text-outline-variant rounded-full text-label-sm font-semibold">Staff</span>
+                        </td>
+                        <td class="px-lg py-4">
+                            <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-label-sm font-semibold">Active</span>
+                        </td>
+                        <td class="px-lg py-4 font-body-md text-on-surface dark:text-inverse-on-surface">Today, 9:15 AM</td>
+                        <td class="px-lg py-4 font-body-md text-secondary dark:text-outline-variant">Jul 12, 2023</td>
+                        <td class="px-lg py-4 text-right">
+                            <div class="flex items-center justify-end gap-1">
+                                <button class="p-2 text-primary hover:bg-primary/10 rounded transition-all" title="View">
+                                    <span class="material-symbols-outlined text-lg">visibility</span>
+                                </button>
+                                <button class="p-2 text-primary hover:bg-primary/10 rounded transition-all" title="Edit">
+                                    <span class="material-symbols-outlined text-lg">edit</span>
+                                </button>
+                                <button class="p-2 text-error hover:bg-error/10 rounded transition-all" title="Delete">
+                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="p-lg border-t border-outline-variant dark:border-outline flex items-center justify-between">
+            <p class="text-body-sm text-secondary dark:text-outline-variant">Showing 1-5 of 47 users</p>
+            <div class="flex gap-2">
+                <button class="px-3 py-1 border border-outline-variant dark:border-outline rounded hover:bg-surface-container-low dark:hover:bg-surface-variant">Previous</button>
+                <button class="px-3 py-1 bg-primary text-on-primary rounded font-semibold">1</button>
+                <button class="px-3 py-1 border border-outline-variant dark:border-outline rounded hover:bg-surface-container-low dark:hover:bg-surface-variant">2</button>
+                <button class="px-3 py-1 border border-outline-variant dark:border-outline rounded hover:bg-surface-container-low dark:hover:bg-surface-variant">Next</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Theme Management
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const themeIcon = document.getElementById('themeIcon');
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+        html.classList.add('dark');
+        themeIcon.textContent = 'dark_mode';
+    }
+
+    themeToggle.addEventListener('click', () => {
+        html.classList.toggle('dark');
+        const isDark = html.classList.contains('dark');
+        themeIcon.textContent = isDark ? 'dark_mode' : 'light_mode';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+</script>
+
+</body>
+</html>

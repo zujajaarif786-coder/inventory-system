@@ -1,0 +1,3473 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Purchase - StockMaster</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet"
+    >
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#004ac6",
+                        primaryContainer: "#2563eb",
+                        background: "#faf8ff",
+                        surface: "#faf8ff",
+                        surfaceLow: "#f3f3fe",
+                        surfaceHigh: "#e7e7f3",
+                        surfaceHighest: "#e1e2ed",
+                        borderColor: "#c3c6d7",
+                        textMain: "#191b23",
+                        textSecondary: "#434655",
+                        error: "#ba1a1a"
+                    },
+
+                    fontFamily: {
+                        inter: ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings:
+                "FILL" 0,
+                "wght" 400,
+                "GRAD" 0,
+                "opsz" 24;
+            vertical-align: middle;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .product-row {
+            transition: background-color 0.15s ease;
+        }
+
+        .product-row:hover {
+            background: rgba(37, 99, 235, 0.025);
+        }
+
+        .input-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 1px #ef4444;
+        }
+    </style>
+</head>
+
+
+<body
+    class="
+        min-h-screen
+        bg-background
+        text-textMain
+        dark:bg-slate-950
+        dark:text-white
+    "
+>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="
+        fixed
+        left-0
+        top-0
+        z-50
+        flex
+        h-screen
+        w-[280px]
+        flex-col
+        border-r
+        border-slate-200
+        bg-white
+        shadow-sm
+        dark:border-slate-800
+        dark:bg-slate-900
+    "
+>
+
+    <div class="flex items-center gap-3 px-6 py-6">
+
+        <div
+            class="
+                flex
+                h-10
+                w-10
+                items-center
+                justify-center
+                rounded-lg
+                bg-primary
+                text-white
+            "
+        >
+            <span class="material-symbols-outlined">
+                inventory_2
+            </span>
+        </div>
+
+        <div>
+
+            <h1 class="text-xl font-bold text-primary">
+                StockMaster
+            </h1>
+
+            <p
+                class="
+                    text-[10px]
+                    font-bold
+                    uppercase
+                    tracking-widest
+                    text-slate-400
+                "
+            >
+                Enterprise
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <nav
+        class="
+            custom-scrollbar
+            flex-1
+            space-y-1
+            overflow-y-auto
+            px-4
+        "
+    >
+
+        <a
+            href="../dashboard_themed_alerts/code.html"
+            class="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                px-4
+                py-3
+                text-slate-600
+                hover:bg-slate-100
+                dark:text-slate-300
+                dark:hover:bg-slate-800
+            "
+        >
+            <span class="material-symbols-outlined">
+                dashboard
+            </span>
+            <span>Dashboard</span>
+        </a>
+
+
+        <a
+            href="../user_management/users_list.html"
+            class="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                px-4
+                py-3
+                text-slate-600
+                hover:bg-slate-100
+                dark:text-slate-300
+                dark:hover:bg-slate-800
+            "
+        >
+            <span class="material-symbols-outlined">
+                group
+            </span>
+            <span>Users</span>
+        </a>
+
+
+        <a
+            href="../products_management/code.html"
+            class="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                px-4
+                py-3
+                text-slate-600
+                hover:bg-slate-100
+                dark:text-slate-300
+                dark:hover:bg-slate-800
+            "
+        >
+            <span class="material-symbols-outlined">
+                inventory_2
+            </span>
+            <span>Products</span>
+        </a>
+
+
+        <a
+            href="../categories_management/code.html"
+            class="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                px-4
+                py-3
+                text-slate-600
+                hover:bg-slate-100
+                dark:text-slate-300
+                dark:hover:bg-slate-800
+            "
+        >
+            <span class="material-symbols-outlined">
+                category
+            </span>
+            <span>Categories</span>
+        </a>
+
+
+        <a
+            href="../suppliers_management/suppliers_list.html"
+            class="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                px-4
+                py-3
+                text-slate-600
+                hover:bg-slate-100
+                dark:text-slate-300
+                dark:hover:bg-slate-800
+            "
+        >
+            <span class="material-symbols-outlined">
+                domain
+            </span>
+            <span>Suppliers</span>
+        </a>
+
+
+        <a
+            href="../customers_management/customers.html"
+            class="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                px-4
+                py-3
+                text-slate-600
+                hover:bg-slate-100
+                dark:text-slate-300
+                dark:hover:bg-slate-800
+            "
+        >
+            <span class="material-symbols-outlined">
+                person
+            </span>
+            <span>Customers</span>
+        </a>
+
+
+        <a
+            href="../stockmaster_enterprise_inventory_management/code.html"
+            class="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                px-4
+                py-3
+                text-slate-600
+                hover:bg-slate-100
+                dark:text-slate-300
+                dark:hover:bg-slate-800
+            "
+        >
+            <span class="material-symbols-outlined">
+                inventory
+            </span>
+            <span>Inventory</span>
+        </a>
+
+
+        <a
+            href="purchasing.html"
+            class="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                bg-primary
+                px-4
+                py-3
+                text-white
+            "
+        >
+            <span class="material-symbols-outlined">
+                shopping_cart
+            </span>
+            <span>Purchasing</span>
+        </a>
+
+
+        <a
+            href="../sales_management/sales.html"
+            class="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                px-4
+                py-3
+                text-slate-600
+                hover:bg-slate-100
+                dark:text-slate-300
+                dark:hover:bg-slate-800
+            "
+        >
+            <span class="material-symbols-outlined">
+                sell
+            </span>
+            <span>Sales</span>
+        </a>
+
+
+        <a
+            href="../reports_dashboard/code.html"
+            class="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                px-4
+                py-3
+                text-slate-600
+                hover:bg-slate-100
+                dark:text-slate-300
+                dark:hover:bg-slate-800
+            "
+        >
+            <span class="material-symbols-outlined">
+                assessment
+            </span>
+            <span>Reports</span>
+        </a>
+
+    </nav>
+
+
+    <div class="border-t border-slate-200 p-4 dark:border-slate-800">
+
+        <button
+            type="button"
+            class="
+                flex
+                w-full
+                items-center
+                justify-center
+                gap-2
+                rounded-lg
+                bg-red-100
+                px-4
+                py-2.5
+                font-semibold
+                text-red-700
+                hover:bg-red-200
+                dark:bg-red-950
+                dark:text-red-400
+            "
+        >
+
+            <span class="material-symbols-outlined text-sm">
+                logout
+            </span>
+
+            Logout
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header
+    class="
+        fixed
+        left-[280px]
+        right-0
+        top-0
+        z-40
+        flex
+        h-16
+        items-center
+        justify-between
+        border-b
+        border-slate-200
+        bg-white
+        px-8
+        shadow-sm
+        dark:border-slate-800
+        dark:bg-slate-900
+    "
+>
+
+    <div>
+
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+            Purchasing
+        </p>
+
+        <h2 class="font-semibold">
+            New Purchase
+        </h2>
+
+    </div>
+
+
+    <div class="flex items-center gap-4">
+
+        <button
+            type="button"
+            id="themeToggle"
+            class="
+                flex
+                h-10
+                w-10
+                items-center
+                justify-center
+                rounded-full
+                text-slate-600
+                hover:bg-slate-100
+                dark:text-slate-300
+                dark:hover:bg-slate-800
+            "
+            title="Toggle theme"
+        >
+
+            <span
+                id="themeIcon"
+                class="material-symbols-outlined"
+            >
+                light_mode
+            </span>
+
+        </button>
+
+
+        <div class="h-8 w-px bg-slate-200 dark:bg-slate-700"></div>
+
+
+        <div class="flex items-center gap-3">
+
+            <div class="text-right">
+
+                <p class="text-sm font-semibold">
+                    Alex Rivera
+                </p>
+
+                <p class="text-[10px] text-slate-500 dark:text-slate-400">
+                    Super Admin
+                </p>
+
+            </div>
+
+            <div
+                class="
+                    flex
+                    h-10
+                    w-10
+                    items-center
+                    justify-center
+                    rounded-full
+                    bg-primary
+                    font-bold
+                    text-white
+                "
+            >
+                AR
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main
+    class="
+        ml-[280px]
+        min-h-screen
+        px-8
+        pb-10
+        pt-24
+    "
+>
+
+    <div
+        class="
+            mb-6
+            flex
+            flex-col
+            gap-4
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+        "
+    >
+
+        <div>
+
+            <h1 class="text-2xl font-bold">
+                Create Purchase
+            </h1>
+
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Add supplier, products and payment information.
+            </p>
+
+        </div>
+
+
+        <a
+            href="purchasing.html"
+            class="
+                inline-flex
+                items-center
+                justify-center
+                gap-2
+                rounded-lg
+                border
+                border-slate-300
+                bg-white
+                px-4
+                py-2.5
+                text-sm
+                font-semibold
+                text-slate-700
+                hover:bg-slate-50
+                dark:border-slate-700
+                dark:bg-slate-900
+                dark:text-slate-200
+            "
+        >
+
+            <span class="material-symbols-outlined text-[20px]">
+                arrow_back
+            </span>
+
+            Back to Purchases
+
+        </a>
+
+    </div>
+
+
+
+    <div
+        id="formFeedback"
+        class="
+            mb-5
+            hidden
+            rounded-lg
+            px-4
+            py-3
+            text-sm
+            font-medium
+        "
+    ></div>
+
+
+
+    <!-- =====================================================
+         PURCHASE FORM
+    ====================================================== -->
+
+    <form
+        id="purchaseForm"
+        class="space-y-6"
+        novalidate
+    >
+
+
+        <!-- =================================================
+             PURCHASE INFORMATION
+        ================================================== -->
+
+        <section
+            class="
+                rounded-xl
+                border
+                border-slate-200
+                bg-white
+                shadow-sm
+                dark:border-slate-800
+                dark:bg-slate-900
+            "
+        >
+
+            <div
+                class="
+                    border-b
+                    border-slate-200
+                    px-6
+                    py-5
+                    dark:border-slate-800
+                "
+            >
+
+                <h2 class="text-lg font-semibold">
+                    Purchase Information
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                    Basic details for this purchase order.
+                </p>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 gap-5 p-6 md:grid-cols-2">
+
+
+                <!-- Supplier -->
+
+                <div>
+
+                    <label
+                        for="supplier"
+                        class="mb-2 block text-sm font-semibold"
+                    >
+                        Supplier
+                        <span class="text-red-500">*</span>
+                    </label>
+
+                    <select
+                        id="supplier"
+                        name="supplier"
+                        required
+                        class="
+                            block
+                            w-full
+                            rounded-lg
+                            border
+                            border-slate-300
+                            bg-white
+                            px-3
+                            py-2.5
+                            text-sm
+                            focus:border-primary
+                            focus:ring-primary
+                            dark:border-slate-700
+                            dark:bg-slate-800
+                            dark:text-white
+                        "
+                    >
+
+                        <option value="">
+                            Select supplier
+                        </option>
+
+                    </select>
+
+                    <p
+                        id="supplierLoadingMessage"
+                        class="mt-2 hidden text-xs text-slate-500 dark:text-slate-400"
+                    ></p>
+
+                </div>
+
+
+
+                <!-- Purchase Date -->
+
+                <div>
+
+                    <label
+                        for="purchaseDate"
+                        class="mb-2 block text-sm font-semibold"
+                    >
+                        Purchase Date
+                        <span class="text-red-500">*</span>
+                    </label>
+
+                    <input
+                        id="purchaseDate"
+                        name="purchaseDate"
+                        type="date"
+                        required
+                        class="
+                            block
+                            w-full
+                            rounded-lg
+                            border
+                            border-slate-300
+                            bg-white
+                            px-3
+                            py-2.5
+                            text-sm
+                            focus:border-primary
+                            focus:ring-primary
+                            dark:border-slate-700
+                            dark:bg-slate-800
+                            dark:text-white
+                        "
+                    >
+
+                </div>
+
+
+
+                <!-- Reference -->
+
+                <div>
+
+                    <label
+                        for="referenceNumber"
+                        class="mb-2 block text-sm font-semibold"
+                    >
+                        Reference / PO Number
+                        <span class="text-red-500">*</span>
+                    </label>
+
+                    <input
+                        id="referenceNumber"
+                        name="referenceNumber"
+                        type="text"
+                        placeholder="e.g. PO-2026-001"
+                        required
+                        class="
+                            block
+                            w-full
+                            rounded-lg
+                            border
+                            border-slate-300
+                            bg-white
+                            px-3
+                            py-2.5
+                            text-sm
+                            focus:border-primary
+                            focus:ring-primary
+                            dark:border-slate-700
+                            dark:bg-slate-800
+                            dark:text-white
+                        "
+                    >
+
+                </div>
+
+
+
+                <!-- Payment -->
+
+                <div>
+
+                    <label
+                        for="paymentStatus"
+                        class="mb-2 block text-sm font-semibold"
+                    >
+                        Payment Status
+                    </label>
+
+                    <select
+                        id="paymentStatus"
+                        name="paymentStatus"
+                        class="
+                            block
+                            w-full
+                            rounded-lg
+                            border
+                            border-slate-300
+                            bg-white
+                            px-3
+                            py-2.5
+                            text-sm
+                            focus:border-primary
+                            focus:ring-primary
+                            dark:border-slate-700
+                            dark:bg-slate-800
+                            dark:text-white
+                        "
+                    >
+
+                        <option value="pending">
+                            Pending
+                        </option>
+
+                        <option value="paid">
+                            Paid
+                        </option>
+
+                        <option value="partial">
+                            Partially Paid
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- Notes -->
+
+                <div class="md:col-span-2">
+
+                    <label
+                        for="notes"
+                        class="mb-2 block text-sm font-semibold"
+                    >
+                        Notes
+                    </label>
+
+                    <textarea
+                        id="notes"
+                        name="notes"
+                        rows="3"
+                        placeholder="Optional purchase notes..."
+                        class="
+                            block
+                            w-full
+                            resize-none
+                            rounded-lg
+                            border
+                            border-slate-300
+                            bg-white
+                            px-3
+                            py-2.5
+                            text-sm
+                            focus:border-primary
+                            focus:ring-primary
+                            dark:border-slate-700
+                            dark:bg-slate-800
+                            dark:text-white
+                        "
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PRODUCTS
+        ================================================== -->
+
+        <section
+            class="
+                rounded-xl
+                border
+                border-slate-200
+                bg-white
+                shadow-sm
+                dark:border-slate-800
+                dark:bg-slate-900
+            "
+        >
+
+            <div
+                class="
+                    flex
+                    flex-col
+                    gap-4
+                    border-b
+                    border-slate-200
+                    px-6
+                    py-5
+                    sm:flex-row
+                    sm:items-center
+                    sm:justify-between
+                    dark:border-slate-800
+                "
+            >
+
+                <div>
+
+                    <h2 class="text-lg font-semibold">
+                        Products
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                        Add the products included in this purchase.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="addProduct"
+                    class="
+                        inline-flex
+                        items-center
+                        justify-center
+                        gap-2
+                        rounded-lg
+                        bg-primary
+                        px-4
+                        py-2.5
+                        text-sm
+                        font-semibold
+                        text-white
+                        hover:bg-primaryContainer
+                    "
+                >
+
+                    <span class="material-symbols-outlined text-[20px]">
+                        add
+                    </span>
+
+                    Add Product
+
+                </button>
+
+            </div>
+
+
+
+            <div
+                id="purchaseProducts"
+                class="divide-y divide-slate-200 dark:divide-slate-800"
+            >
+
+                <div
+                    class="
+                        purchase-product-row
+                        product-row
+                        grid
+                        grid-cols-1
+                        gap-4
+                        p-6
+                        lg:grid-cols-[minmax(240px,2fr)_120px_150px_150px_50px]
+                        lg:items-end
+                    "
+                >
+
+                    <div>
+
+                        <label
+                            class="mb-2 block text-sm font-semibold"
+                        >
+                            Product
+                            <span class="text-red-500">*</span>
+                        </label>
+
+                        <select
+                            class="
+                                product-select
+                                block
+                                w-full
+                                rounded-lg
+                                border
+                                border-slate-300
+                                bg-white
+                                px-3
+                                py-2.5
+                                text-sm
+                                focus:border-primary
+                                focus:ring-primary
+                                dark:border-slate-700
+                                dark:bg-slate-800
+                                dark:text-white
+                            "
+                        >
+
+                            <option value="">
+                                Select product
+                            </option>
+
+                            <option
+                                value="1"
+                                data-sku="TP-1001"
+                                data-stock="25"
+                            >
+                                USB-C Cable
+                            </option>
+
+                            <option
+                                value="2"
+                                data-sku="TP-1002"
+                                data-stock="40"
+                            >
+                                Wireless Mouse
+                            </option>
+
+                            <option
+                                value="3"
+                                data-sku="TP-1003"
+                                data-stock="18"
+                            >
+                                Mechanical Keyboard
+                            </option>
+
+                            <option
+                                value="4"
+                                data-sku="TP-1004"
+                                data-stock="12"
+                            >
+                                24-inch Monitor
+                            </option>
+
+                            <option
+                                value="5"
+                                data-sku="TP-1005"
+                                data-stock="30"
+                            >
+                                HDMI Cable
+                            </option>
+
+                        </select>
+
+
+                        <div
+                            class="
+                                mt-2
+                                flex
+                                flex-wrap
+                                gap-x-4
+                                gap-y-1
+                                text-xs
+                                text-slate-500
+                                dark:text-slate-400
+                            "
+                        >
+
+                            <span>
+                                SKU:
+                                <strong class="product-sku">
+                                    —
+                                </strong>
+                            </span>
+
+                            <span class="product-current-stock">
+                                Current Stock: —
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <label
+                            class="mb-2 block text-sm font-semibold"
+                        >
+                            Quantity
+                            <span class="text-red-500">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            min="1"
+                            step="1"
+                            value="1"
+                            class="
+                                product-quantity
+                                block
+                                w-full
+                                rounded-lg
+                                border
+                                border-slate-300
+                                bg-white
+                                px-3
+                                py-2.5
+                                text-sm
+                                focus:border-primary
+                                focus:ring-primary
+                                dark:border-slate-700
+                                dark:bg-slate-800
+                                dark:text-white
+                            "
+                        >
+
+                    </div>
+
+
+
+                    <div>
+
+                        <label
+                            class="mb-2 block text-sm font-semibold"
+                        >
+                            Unit Price
+                        </label>
+
+                        <div class="relative">
+
+                            <span
+                                class="
+                                    pointer-events-none
+                                    absolute
+                                    left-3
+                                    top-1/2
+                                    -translate-y-1/2
+                                    text-sm
+                                    text-slate-400
+                                "
+                            >
+                                $
+                            </span>
+
+                            <input
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                class="
+                                    product-unit-price
+                                    block
+                                    w-full
+                                    rounded-lg
+                                    border
+                                    border-slate-300
+                                    bg-white
+                                    py-2.5
+                                    pl-7
+                                    pr-3
+                                    text-sm
+                                    focus:border-primary
+                                    focus:ring-primary
+                                    dark:border-slate-700
+                                    dark:bg-slate-800
+                                    dark:text-white
+                                "
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <label
+                            class="mb-2 block text-sm font-semibold"
+                        >
+                            Total
+                        </label>
+
+                        <div
+                            class="
+                                flex
+                                h-[42px]
+                                items-center
+                                rounded-lg
+                                bg-slate-100
+                                px-3
+                                text-sm
+                                font-semibold
+                                dark:bg-slate-800
+                            "
+                        >
+
+                            <span class="product-line-total">
+                                $0.00
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="flex lg:justify-center">
+
+                        <button
+                            type="button"
+                            class="
+                                remove-product
+                                flex
+                                h-[42px]
+                                w-[42px]
+                                items-center
+                                justify-center
+                                rounded-lg
+                                text-red-600
+                                hover:bg-red-50
+                                dark:hover:bg-red-950
+                            "
+                            title="Remove product"
+                            aria-label="Remove product"
+                        >
+
+                            <span class="material-symbols-outlined">
+                                delete
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             TOTALS
+        ================================================== -->
+
+        <section
+            class="
+                rounded-xl
+                border
+                border-slate-200
+                bg-white
+                shadow-sm
+                dark:border-slate-800
+                dark:bg-slate-900
+            "
+        >
+
+            <div class="p-6">
+
+                <div
+                    class="
+                        ml-auto
+                        w-full
+                        max-w-md
+                        space-y-4
+                    "
+                >
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            text-sm
+                        "
+                    >
+
+                        <span class="text-slate-500 dark:text-slate-400">
+                            Subtotal
+                        </span>
+
+                        <strong id="subtotal">
+                            $0.00
+                        </strong>
+
+                    </div>
+
+
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            gap-4
+                        "
+                    >
+
+                        <label
+                            for="discount"
+                            class="text-sm text-slate-500 dark:text-slate-400"
+                        >
+                            Discount
+                        </label>
+
+                        <div class="relative w-40">
+
+                            <span
+                                class="
+                                    pointer-events-none
+                                    absolute
+                                    left-3
+                                    top-1/2
+                                    -translate-y-1/2
+                                    text-sm
+                                    text-slate-400
+                                "
+                            >
+                                $
+                            </span>
+
+                            <input
+                                id="discount"
+                                name="discount"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                class="
+                                    w-full
+                                    rounded-lg
+                                    border
+                                    border-slate-300
+                                    bg-white
+                                    py-2
+                                    pl-7
+                                    pr-3
+                                    text-right
+                                    text-sm
+                                    dark:border-slate-700
+                                    dark:bg-slate-800
+                                    dark:text-white
+                                "
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            gap-4
+                        "
+                    >
+
+                        <label
+                            for="taxRate"
+                            class="text-sm text-slate-500 dark:text-slate-400"
+                        >
+                            Tax Rate
+                        </label>
+
+                        <div class="relative w-40">
+
+                            <input
+                                id="taxRate"
+                                name="taxRate"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                class="
+                                    w-full
+                                    rounded-lg
+                                    border
+                                    border-slate-300
+                                    bg-white
+                                    py-2
+                                    pl-3
+                                    pr-8
+                                    text-right
+                                    text-sm
+                                    dark:border-slate-700
+                                    dark:bg-slate-800
+                                    dark:text-white
+                                "
+                            >
+
+                            <span
+                                class="
+                                    pointer-events-none
+                                    absolute
+                                    right-3
+                                    top-1/2
+                                    -translate-y-1/2
+                                    text-sm
+                                    text-slate-400
+                                "
+                            >
+                                %
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            text-sm
+                        "
+                    >
+
+                        <span class="text-slate-500 dark:text-slate-400">
+                            Tax
+                        </span>
+
+                        <input
+                            id="tax"
+                            name="tax"
+                            type="text"
+                            value="0.00"
+                            readonly
+                            class="
+                                w-40
+                                border-0
+                                bg-transparent
+                                p-0
+                                text-right
+                                text-sm
+                                font-semibold
+                                focus:ring-0
+                                dark:text-white
+                            "
+                        >
+
+                    </div>
+
+
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            border-t
+                            border-slate-200
+                            pt-4
+                            dark:border-slate-700
+                        "
+                    >
+
+                        <span class="text-base font-bold">
+                            Grand Total
+                        </span>
+
+                        <span
+                            id="grandTotal"
+                            class="
+                                text-2xl
+                                font-bold
+                                text-primary
+                            "
+                        >
+                            $0.00
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ACTIONS
+        ================================================== -->
+
+        <div
+            class="
+                flex
+                flex-col-reverse
+                gap-3
+                sm:flex-row
+                sm:justify-end
+            "
+        >
+
+            <button
+                type="button"
+                id="cancelPurchase"
+                class="
+                    inline-flex
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-lg
+                    border
+                    border-slate-300
+                    bg-white
+                    px-5
+                    py-3
+                    text-sm
+                    font-semibold
+                    text-slate-700
+                    hover:bg-slate-50
+                    dark:border-slate-700
+                    dark:bg-slate-900
+                    dark:text-slate-200
+                "
+            >
+
+                <span class="material-symbols-outlined text-[20px]">
+                    close
+                </span>
+
+                Cancel
+
+            </button>
+
+
+            <button
+                type="submit"
+                id="completePurchase"
+                class="
+                    inline-flex
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-lg
+                    bg-primary
+                    px-5
+                    py-3
+                    text-sm
+                    font-semibold
+                    text-white
+                    shadow-sm
+                    hover:bg-primaryContainer
+                "
+            >
+
+                <span class="material-symbols-outlined text-[20px]">
+                    check_circle
+                </span>
+
+                Complete Purchase
+
+            </button>
+
+        </div>
+
+    </form>
+
+</main>
+
+
+
+<!-- =========================================================
+     THEME
+========================================================= -->
+
+<script>
+
+(() => {
+
+    "use strict";
+
+    const html =
+        document.documentElement;
+
+    const themeToggle =
+        document.getElementById("themeToggle");
+
+    const themeIcon =
+        document.getElementById("themeIcon");
+
+
+    function updateThemeIcon() {
+
+        if (!themeIcon) {
+            return;
+        }
+
+        themeIcon.textContent =
+            html.classList.contains("dark")
+                ? "dark_mode"
+                : "light_mode";
+    }
+
+
+    const savedTheme =
+        localStorage.getItem("theme");
+
+
+    if (savedTheme === "dark") {
+
+        html.classList.add("dark");
+
+    } else {
+
+        html.classList.remove("dark");
+
+    }
+
+
+    updateThemeIcon();
+
+
+    themeToggle?.addEventListener(
+        "click",
+        () => {
+
+            html.classList.toggle("dark");
+
+            const isDark =
+                html.classList.contains("dark");
+
+            localStorage.setItem(
+                "theme",
+                isDark ? "dark" : "light"
+            );
+
+            updateThemeIcon();
+
+        }
+    );
+
+})();
+
+</script>
+
+
+
+<!-- =========================================================
+     SUPPLIER DATA STORE
+========================================================= -->
+
+<script src="../suppliers_management/shared/app-data.js"></script>
+
+
+
+<!-- =========================================================
+     PURCHASE JAVASCRIPT
+========================================================= -->
+
+<script>
+
+(() => {
+
+    "use strict";
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+
+            /* =================================================
+               ELEMENTS
+            ================================================= */
+
+            const form =
+                document.getElementById(
+                    "purchaseForm"
+                );
+
+            const supplierInput =
+                document.getElementById(
+                    "supplier"
+                );
+
+            const supplierLoadingMessage =
+                document.getElementById(
+                    "supplierLoadingMessage"
+                );
+
+            const purchaseDateInput =
+                document.getElementById(
+                    "purchaseDate"
+                );
+
+            const referenceInput =
+                document.getElementById(
+                    "referenceNumber"
+                );
+
+            const paymentStatusInput =
+                document.getElementById(
+                    "paymentStatus"
+                );
+
+            const notesInput =
+                document.getElementById(
+                    "notes"
+                );
+
+            const productsContainer =
+                document.getElementById(
+                    "purchaseProducts"
+                );
+
+            const addProductButton =
+                document.getElementById(
+                    "addProduct"
+                );
+
+            const subtotalElement =
+                document.getElementById(
+                    "subtotal"
+                );
+
+            const discountInput =
+                document.getElementById(
+                    "discount"
+                );
+
+            const taxRateInput =
+                document.getElementById(
+                    "taxRate"
+                );
+
+            const taxInput =
+                document.getElementById(
+                    "tax"
+                );
+
+            const grandTotalElement =
+                document.getElementById(
+                    "grandTotal"
+                );
+
+            const cancelButton =
+                document.getElementById(
+                    "cancelPurchase"
+                );
+
+            const formFeedback =
+                document.getElementById(
+                    "formFeedback"
+                );
+
+
+            /* =================================================
+               SAFETY CHECK
+            ================================================= */
+
+            if (
+                !form ||
+                !supplierInput ||
+                !productsContainer
+            ) {
+
+                console.error(
+                    "StockMaster: required purchase form elements are missing."
+                );
+
+                return;
+
+            }
+
+
+            /* =================================================
+               HELPERS
+            ================================================= */
+
+            function number(value) {
+
+                const parsed =
+                    Number.parseFloat(value);
+
+                return Number.isFinite(parsed)
+                    ? parsed
+                    : 0;
+
+            }
+
+
+            function money(value) {
+
+                return new Intl.NumberFormat(
+                    "en-US",
+                    {
+                        style: "currency",
+                        currency: "USD"
+                    }
+                ).format(
+                    number(value)
+                );
+
+            }
+
+
+            function showFeedback(
+                message,
+                type = "error"
+            ) {
+
+                if (!formFeedback) {
+
+                    window.alert(message);
+
+                    return;
+
+                }
+
+
+                formFeedback.textContent =
+                    message;
+
+
+                formFeedback.className =
+                    "mb-5 rounded-lg px-4 py-3 text-sm font-medium";
+
+
+                if (type === "success") {
+
+                    formFeedback.classList.add(
+                        "bg-green-50",
+                        "text-green-700",
+                        "dark:bg-green-950",
+                        "dark:text-green-400"
+                    );
+
+                } else if (type === "warning") {
+
+                    formFeedback.classList.add(
+                        "bg-amber-50",
+                        "text-amber-700",
+                        "dark:bg-amber-950",
+                        "dark:text-amber-400"
+                    );
+
+                } else {
+
+                    formFeedback.classList.add(
+                        "bg-red-50",
+                        "text-red-700",
+                        "dark:bg-red-950",
+                        "dark:text-red-400"
+                    );
+
+                }
+
+            }
+
+
+            function clearFeedback() {
+
+                if (!formFeedback) {
+                    return;
+                }
+
+                formFeedback.textContent = "";
+
+                formFeedback.className =
+                    "mb-5 hidden rounded-lg px-4 py-3 text-sm font-medium";
+
+            }
+
+
+            /* =================================================
+               SUPPLIER LOADING
+               
+               IMPORTANT:
+               Use the same SupplierStore used by the
+               Suppliers module.
+            ================================================= */
+
+            function loadSuppliers() {
+
+                supplierInput.innerHTML = "";
+
+                const defaultOption =
+                    document.createElement("option");
+
+                defaultOption.value = "";
+
+                defaultOption.textContent =
+                    "Select supplier";
+
+                supplierInput.appendChild(
+                    defaultOption
+                );
+
+
+                let suppliers = [];
+
+
+                try {
+
+                    const store =
+                        window.StockMaster?.SupplierStore;
+
+
+                    if (store) {
+
+                        suppliers =
+                            store.getAll();
+
+                    } else {
+
+                        /*
+                         * Fallback for development.
+                         * This keeps the page functional even if
+                         * app-data.js failed to load.
+                         */
+
+                        const raw =
+                            localStorage.getItem(
+                                "stockmaster_suppliers"
+                            );
+
+                        const parsed =
+                            raw
+                                ? JSON.parse(raw)
+                                : [];
+
+
+                        if (Array.isArray(parsed)) {
+
+                            suppliers =
+                                parsed.map(
+                                    supplier => {
+
+                                        if (!supplier) {
+                                            return null;
+                                        }
+
+                                        return {
+                                            id:
+                                                supplier.id,
+
+                                            companyName:
+                                                supplier.companyName ||
+                                                supplier.name ||
+                                                "",
+
+                                            name:
+                                                supplier.companyName ||
+                                                supplier.name ||
+                                                "",
+
+                                            status:
+                                                supplier.status ||
+                                                "Active"
+                                        };
+
+                                    }
+                                ).filter(Boolean);
+
+                        }
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "StockMaster: unable to load suppliers.",
+                        error
+                    );
+
+                    suppliers = [];
+
+                }
+
+
+                /*
+                 * Only active suppliers should normally be available
+                 * for a new purchase.
+                 *
+                 * If a supplier has no status, keep it available
+                 * for backwards compatibility with older frontend data.
+                 */
+
+                suppliers =
+                    suppliers.filter(
+                        supplier => {
+
+                            if (!supplier) {
+                                return false;
+                            }
+
+                            if (!supplier.id) {
+                                return false;
+                            }
+
+                            return (
+                                !supplier.status ||
+                                supplier.status === "Active"
+                            );
+
+                        }
+                    );
+
+
+                suppliers.sort(
+                    (a, b) => {
+
+                        const nameA =
+                            String(
+                                a.companyName ||
+                                a.name ||
+                                ""
+                            ).toLowerCase();
+
+                        const nameB =
+                            String(
+                                b.companyName ||
+                                b.name ||
+                                ""
+                            ).toLowerCase();
+
+                        return nameA.localeCompare(
+                            nameB
+                        );
+
+                    }
+                );
+
+
+                suppliers.forEach(
+                    supplier => {
+
+                        const supplierName =
+                            String(
+                                supplier.companyName ||
+                                supplier.name ||
+                                ""
+                            ).trim();
+
+
+                        if (!supplierName) {
+                            return;
+                        }
+
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+
+                        option.value =
+                            String(
+                                supplier.id
+                            );
+
+
+                        option.textContent =
+                            supplierName;
+
+
+                        option.dataset.supplierName =
+                            supplierName;
+
+
+                        supplierInput.appendChild(
+                            option
+                        );
+
+                    }
+                );
+
+
+                if (supplierLoadingMessage) {
+
+                    if (suppliers.length === 0) {
+
+                        supplierLoadingMessage.textContent =
+                            "No active suppliers found. Add a supplier from the Suppliers module first.";
+
+                        supplierLoadingMessage.classList.remove(
+                            "hidden"
+                        );
+
+                    } else {
+
+                        supplierLoadingMessage.textContent =
+                            `${suppliers.length} supplier${suppliers.length === 1 ? "" : "s"} available.`;
+
+                        supplierLoadingMessage.classList.remove(
+                            "hidden"
+                        );
+
+                    }
+
+                }
+
+
+                console.log(
+                    "StockMaster: suppliers loaded into purchase form:",
+                    suppliers
+                );
+
+            }
+
+
+            /* =================================================
+               PRODUCT ROWS
+            ================================================= */
+
+            function getProductRows() {
+
+                return Array.from(
+                    productsContainer.querySelectorAll(
+                        ".purchase-product-row"
+                    )
+                );
+
+            }
+
+
+            /* =================================================
+               UPDATE ROW TOTAL
+            ================================================= */
+
+            function updateRowTotal(row) {
+
+                const quantityInput =
+                    row.querySelector(
+                        ".product-quantity"
+                    );
+
+                const priceInput =
+                    row.querySelector(
+                        ".product-unit-price"
+                    );
+
+                const totalElement =
+                    row.querySelector(
+                        ".product-line-total"
+                    );
+
+
+                const quantity =
+                    number(
+                        quantityInput?.value
+                    );
+
+                const price =
+                    number(
+                        priceInput?.value
+                    );
+
+
+                const total =
+                    quantity * price;
+
+
+                if (totalElement) {
+
+                    totalElement.textContent =
+                        money(total);
+
+                }
+
+
+                return total;
+
+            }
+
+
+            /* =================================================
+               CALCULATE TOTALS
+            ================================================= */
+
+            function calculateTotals() {
+
+                let subtotal = 0;
+
+
+                getProductRows().forEach(
+                    row => {
+
+                        subtotal +=
+                            updateRowTotal(row);
+
+                    }
+                );
+
+
+                const discount =
+                    Math.max(
+                        0,
+                        number(
+                            discountInput?.value
+                        )
+                    );
+
+
+                const taxRate =
+                    Math.max(
+                        0,
+                        number(
+                            taxRateInput?.value
+                        )
+                    );
+
+
+                const taxableAmount =
+                    Math.max(
+                        0,
+                        subtotal - discount
+                    );
+
+
+                const tax =
+                    taxableAmount *
+                    (taxRate / 100);
+
+
+                const grandTotal =
+                    taxableAmount + tax;
+
+
+                if (subtotalElement) {
+
+                    subtotalElement.textContent =
+                        money(subtotal);
+
+                }
+
+
+                if (taxInput) {
+
+                    taxInput.value =
+                        tax.toFixed(2);
+
+                }
+
+
+                if (grandTotalElement) {
+
+                    grandTotalElement.textContent =
+                        money(grandTotal);
+
+                }
+
+
+                return {
+                    subtotal,
+                    discount,
+                    taxRate,
+                    tax,
+                    grandTotal
+                };
+
+            }
+
+
+            /* =================================================
+               PRODUCT INFORMATION
+            ================================================= */
+
+            function updateProductInformation(row) {
+
+                const select =
+                    row.querySelector(
+                        ".product-select"
+                    );
+
+
+                if (!select) {
+                    return;
+                }
+
+
+                const option =
+                    select.options[
+                        select.selectedIndex
+                    ];
+
+
+                if (!option) {
+                    return;
+                }
+
+
+                const sku =
+                    option.dataset.sku || "";
+
+
+                const stock =
+                    option.dataset.stock || "";
+
+
+                const skuElement =
+                    row.querySelector(
+                        ".product-sku"
+                    );
+
+
+                const stockElement =
+                    row.querySelector(
+                        ".product-current-stock"
+                    );
+
+
+                if (skuElement) {
+
+                    skuElement.textContent =
+                        sku || "—";
+
+                }
+
+
+                if (stockElement) {
+
+                    stockElement.textContent =
+                        stock !== ""
+                            ? `Current Stock: ${stock}`
+                            : "Current Stock: —";
+
+                }
+
+            }
+
+
+            /* =================================================
+               REMOVE PRODUCT
+            ================================================= */
+
+            function removeProductRow(row) {
+
+                const rows =
+                    getProductRows();
+
+
+                if (rows.length <= 1) {
+
+                    showFeedback(
+                        "At least one product is required.",
+                        "warning"
+                    );
+
+                    return;
+
+                }
+
+
+                row.remove();
+
+                clearFeedback();
+
+                calculateTotals();
+
+            }
+
+
+            /* =================================================
+               ROW EVENTS
+            ================================================= */
+
+            function attachRowEvents(row) {
+
+                const quantityInput =
+                    row.querySelector(
+                        ".product-quantity"
+                    );
+
+
+                const priceInput =
+                    row.querySelector(
+                        ".product-unit-price"
+                    );
+
+
+                const productSelect =
+                    row.querySelector(
+                        ".product-select"
+                    );
+
+
+                const removeButton =
+                    row.querySelector(
+                        ".remove-product"
+                    );
+
+
+                quantityInput?.addEventListener(
+                    "input",
+                    () => {
+
+                        quantityInput.classList.remove(
+                            "input-error"
+                        );
+
+                        calculateTotals();
+
+                    }
+                );
+
+
+                priceInput?.addEventListener(
+                    "input",
+                    () => {
+
+                        priceInput.classList.remove(
+                            "input-error"
+                        );
+
+                        calculateTotals();
+
+                    }
+                );
+
+
+                productSelect?.addEventListener(
+                    "change",
+                    () => {
+
+                        updateProductInformation(
+                            row
+                        );
+
+                        clearFeedback();
+
+                        calculateTotals();
+
+                    }
+                );
+
+
+                removeButton?.addEventListener(
+                    "click",
+                    () => {
+
+                        removeProductRow(
+                            row
+                        );
+
+                    }
+                );
+
+            }
+
+
+            /* =================================================
+               ADD PRODUCT
+            ================================================= */
+
+            function addProductRow() {
+
+                const rows =
+                    getProductRows();
+
+
+                if (!rows.length) {
+
+                    console.error(
+                        "StockMaster: no product row available."
+                    );
+
+                    return;
+
+                }
+
+
+                const newRow =
+                    rows[0].cloneNode(true);
+
+
+                const select =
+                    newRow.querySelector(
+                        ".product-select"
+                    );
+
+
+                if (select) {
+
+                    select.selectedIndex =
+                        0;
+
+                }
+
+
+                const quantity =
+                    newRow.querySelector(
+                        ".product-quantity"
+                    );
+
+
+                if (quantity) {
+
+                    quantity.value =
+                        "1";
+
+                    quantity.classList.remove(
+                        "input-error"
+                    );
+
+                }
+
+
+                const price =
+                    newRow.querySelector(
+                        ".product-unit-price"
+                    );
+
+
+                if (price) {
+
+                    price.value =
+                        "0";
+
+                    price.classList.remove(
+                        "input-error"
+                    );
+
+                }
+
+
+                const lineTotal =
+                    newRow.querySelector(
+                        ".product-line-total"
+                    );
+
+
+                if (lineTotal) {
+
+                    lineTotal.textContent =
+                        money(0);
+
+                }
+
+
+                const sku =
+                    newRow.querySelector(
+                        ".product-sku"
+                    );
+
+
+                if (sku) {
+
+                    sku.textContent =
+                        "—";
+
+                }
+
+
+                const stock =
+                    newRow.querySelector(
+                        ".product-current-stock"
+                    );
+
+
+                if (stock) {
+
+                    stock.textContent =
+                        "Current Stock: —";
+
+                }
+
+
+                productsContainer.appendChild(
+                    newRow
+                );
+
+
+                attachRowEvents(
+                    newRow
+                );
+
+
+                calculateTotals();
+
+
+                newRow.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
+
+
+            addProductButton?.addEventListener(
+                "click",
+                addProductRow
+            );
+
+
+            /* =================================================
+               VALIDATION
+            ================================================= */
+
+            function validateQuantity(input) {
+
+                const value =
+                    number(
+                        input.value
+                    );
+
+
+                const valid =
+                    value > 0 &&
+                    Number.isInteger(value);
+
+
+                input.classList.toggle(
+                    "input-error",
+                    !valid
+                );
+
+
+                return valid;
+
+            }
+
+
+            function validatePrice(input) {
+
+                const value =
+                    number(
+                        input.value
+                    );
+
+
+                const valid =
+                    value >= 0;
+
+
+                input.classList.toggle(
+                    "input-error",
+                    !valid
+                );
+
+
+                return valid;
+
+            }
+
+
+            function validateProducts() {
+
+                const rows =
+                    getProductRows();
+
+
+                if (!rows.length) {
+
+                    return {
+                        valid: false,
+                        message:
+                            "Add at least one product."
+                    };
+
+                }
+
+
+                const selectedProducts =
+                    new Set();
+
+
+                for (
+                    const row of rows
+                ) {
+
+                    const select =
+                        row.querySelector(
+                            ".product-select"
+                        );
+
+
+                    const quantity =
+                        row.querySelector(
+                            ".product-quantity"
+                        );
+
+
+                    const price =
+                        row.querySelector(
+                            ".product-unit-price"
+                        );
+
+
+                    if (!select?.value) {
+
+                        return {
+                            valid: false,
+                            message:
+                                "Please select a product for every row."
+                        };
+
+                    }
+
+
+                    if (
+                        selectedProducts.has(
+                            select.value
+                        )
+                    ) {
+
+                        return {
+                            valid: false,
+                            message:
+                                "The same product cannot be added twice."
+                        };
+
+                    }
+
+
+                    selectedProducts.add(
+                        select.value
+                    );
+
+
+                    if (
+                        !quantity ||
+                        !validateQuantity(
+                            quantity
+                        )
+                    ) {
+
+                        return {
+                            valid: false,
+                            message:
+                                "Quantity must be a positive whole number."
+                        };
+
+                    }
+
+
+                    if (
+                        !price ||
+                        !validatePrice(
+                            price
+                        )
+                    ) {
+
+                        return {
+                            valid: false,
+                            message:
+                                "Unit price must be zero or greater."
+                        };
+
+                    }
+
+                }
+
+
+                return {
+                    valid: true
+                };
+
+            }
+
+
+            function validatePurchase() {
+
+                clearFeedback();
+
+
+                if (!supplierInput.value) {
+
+                    return {
+                        valid: false,
+                        message:
+                            "Please select a supplier."
+                    };
+
+                }
+
+
+                if (!purchaseDateInput?.value) {
+
+                    return {
+                        valid: false,
+                        message:
+                            "Please select a purchase date."
+                    };
+
+                }
+
+
+                if (
+                    !referenceInput?.value.trim()
+                ) {
+
+                    return {
+                        valid: false,
+                        message:
+                            "Please enter a reference or purchase order number."
+                    };
+
+                }
+
+
+                const products =
+                    validateProducts();
+
+
+                if (!products.valid) {
+
+                    return products;
+
+                }
+
+
+                const totals =
+                    calculateTotals();
+
+
+                if (totals.subtotal <= 0) {
+
+                    return {
+                        valid: false,
+                        message:
+                            "Purchase subtotal must be greater than zero."
+                    };
+
+                }
+
+
+                if (
+                    totals.discount >
+                    totals.subtotal
+                ) {
+
+                    return {
+                        valid: false,
+                        message:
+                            "Discount cannot be greater than subtotal."
+                    };
+
+                }
+
+
+                return {
+                    valid: true
+                };
+
+            }
+
+
+            /* =================================================
+               DISCOUNT / TAX
+            ================================================= */
+
+            discountInput?.addEventListener(
+                "input",
+                calculateTotals
+            );
+
+
+            taxRateInput?.addEventListener(
+                "input",
+                calculateTotals
+            );
+
+
+            /* =================================================
+               CONFIRMATION MODAL
+            ================================================= */
+
+            function confirmPurchase(
+                onConfirm
+            ) {
+
+                document
+                    .getElementById(
+                        "purchase-confirm-modal"
+                    )
+                    ?.remove();
+
+
+                const modal =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                modal.id =
+                    "purchase-confirm-modal";
+
+
+                modal.className =
+                    "fixed inset-0 z-[200] flex items-center justify-center bg-black/50 p-4";
+
+
+                modal.innerHTML = `
+
+                    <div
+                        class="
+                            w-full
+                            max-w-md
+                            rounded-xl
+                            bg-white
+                            p-6
+                            shadow-2xl
+                            dark:bg-slate-900
+                        "
+                    >
+
+                        <div class="flex gap-4">
+
+                            <div
+                                class="
+                                    flex
+                                    h-11
+                                    w-11
+                                    shrink-0
+                                    items-center
+                                    justify-center
+                                    rounded-full
+                                    bg-primary/10
+                                    text-primary
+                                "
+                            >
+
+                                <span class="material-symbols-outlined">
+                                    shopping_cart
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <h2 class="text-lg font-semibold">
+                                    Complete Purchase?
+                                </h2>
+
+                                <p
+                                    class="
+                                        mt-2
+                                        text-sm
+                                        leading-6
+                                        text-slate-500
+                                        dark:text-slate-400
+                                    "
+                                >
+                                    Please confirm that the purchase
+                                    information and products are correct.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="
+                                mt-6
+                                flex
+                                justify-end
+                                gap-3
+                            "
+                        >
+
+                            <button
+                                type="button"
+                                data-confirm-cancel
+                                class="
+                                    rounded-lg
+                                    border
+                                    border-slate-300
+                                    px-4
+                                    py-2.5
+                                    text-sm
+                                    font-semibold
+                                    dark:border-slate-700
+                                "
+                            >
+                                Cancel
+                            </button>
+
+
+                            <button
+                                type="button"
+                                data-confirm-submit
+                                class="
+                                    rounded-lg
+                                    bg-primary
+                                    px-4
+                                    py-2.5
+                                    text-sm
+                                    font-semibold
+                                    text-white
+                                "
+                            >
+                                Continue
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                document.body.appendChild(
+                    modal
+                );
+
+
+                modal
+                    .querySelector(
+                        "[data-confirm-cancel]"
+                    )
+                    ?.addEventListener(
+                        "click",
+                        () => modal.remove()
+                    );
+
+
+                modal
+                    .querySelector(
+                        "[data-confirm-submit]"
+                    )
+                    ?.addEventListener(
+                        "click",
+                        () => {
+
+                            modal.remove();
+
+                            onConfirm();
+
+                        }
+                    );
+
+
+                modal.addEventListener(
+                    "click",
+                    event => {
+
+                        if (
+                            event.target === modal
+                        ) {
+
+                            modal.remove();
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            /* =================================================
+               SAVE PURCHASE - FRONTEND ONLY
+               
+               This is intentionally NOT Django yet.
+            ================================================= */
+
+            function savePurchase(
+                purchaseData
+            ) {
+
+                let existingPurchases =
+                    [];
+
+
+                try {
+
+                    const saved =
+                        localStorage.getItem(
+                            "stockmaster_purchases"
+                        );
+
+
+                    existingPurchases =
+                        saved
+                            ? JSON.parse(saved)
+                            : [];
+
+
+                    if (
+                        !Array.isArray(
+                            existingPurchases
+                        )
+                    ) {
+
+                        existingPurchases =
+                            [];
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "StockMaster: unable to read existing purchases.",
+                        error
+                    );
+
+                    existingPurchases =
+                        [];
+
+                }
+
+
+                existingPurchases.unshift(
+                    purchaseData
+                );
+
+
+                try {
+
+                    localStorage.setItem(
+                        "stockmaster_purchases",
+                        JSON.stringify(
+                            existingPurchases
+                        )
+                    );
+
+
+                    return true;
+
+                } catch (error) {
+
+                    console.error(
+                        "StockMaster: unable to save purchase.",
+                        error
+                    );
+
+                    return false;
+
+                }
+
+            }
+
+
+            /* =================================================
+               SUBMIT
+            ================================================= */
+
+            form.addEventListener(
+                "submit",
+                event => {
+
+                    event.preventDefault();
+
+
+                    const validation =
+                        validatePurchase();
+
+
+                    if (!validation.valid) {
+
+                        showFeedback(
+                            validation.message,
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    confirmPurchase(
+                        () => {
+
+                            const totals =
+                                calculateTotals();
+
+
+                            const selectedSupplier =
+                                supplierInput.options[
+                                    supplierInput.selectedIndex
+                                ];
+
+
+                            const purchaseData = {
+
+                                id:
+                                    `PUR-${Date.now()}`,
+
+                                supplier:
+                                    supplierInput.value,
+
+                                supplierName:
+                                    selectedSupplier
+                                        ?.dataset
+                                        ?.supplierName ||
+                                    selectedSupplier
+                                        ?.textContent
+                                        ?.trim() ||
+                                    "",
+
+                                purchaseDate:
+                                    purchaseDateInput.value,
+
+                                reference:
+                                    referenceInput.value.trim(),
+
+                                paymentStatus:
+                                    paymentStatusInput
+                                        ?.value ||
+                                    "pending",
+
+                                notes:
+                                    notesInput
+                                        ?.value
+                                        ?.trim() ||
+                                    "",
+
+                                products:
+                                    getProductRows().map(
+                                        row => {
+
+                                            const productSelect =
+                                                row.querySelector(
+                                                    ".product-select"
+                                                );
+
+
+                                            const selectedProduct =
+                                                productSelect
+                                                    ?.options[
+                                                        productSelect
+                                                            .selectedIndex
+                                                    ];
+
+
+                                            return {
+
+                                                product:
+                                                    productSelect
+                                                        ?.value ||
+                                                    "",
+
+                                                productName:
+                                                    selectedProduct
+                                                        ?.textContent
+                                                        ?.trim() ||
+                                                    "",
+
+                                                quantity:
+                                                    number(
+                                                        row.querySelector(
+                                                            ".product-quantity"
+                                                        )
+                                                            ?.value
+                                                    ),
+
+                                                unitPrice:
+                                                    number(
+                                                        row.querySelector(
+                                                            ".product-unit-price"
+                                                        )
+                                                            ?.value
+                                                    )
+
+                                            };
+
+                                        }
+                                    ),
+
+                                subtotal:
+                                    totals.subtotal,
+
+                                discount:
+                                    totals.discount,
+
+                                taxRate:
+                                    totals.taxRate,
+
+                                tax:
+                                    totals.tax,
+
+                                grandTotal:
+                                    totals.grandTotal,
+
+                                status:
+                                    "Pending",
+
+                                createdAt:
+                                    new Date().toISOString()
+
+                            };
+
+
+                            const saved =
+                                savePurchase(
+                                    purchaseData
+                                );
+
+
+                            if (!saved) {
+
+                                showFeedback(
+                                    "The purchase could not be saved in the browser.",
+                                    "error"
+                                );
+
+                                return;
+
+                            }
+
+
+                            console.log(
+                                "StockMaster: purchase saved:",
+                                purchaseData
+                            );
+
+
+                            showFeedback(
+                                "Purchase created successfully.",
+                                "success"
+                            );
+
+
+                            /*
+                             * Allow the success message to be
+                             * visible briefly before returning
+                             * to the purchasing list.
+                             */
+
+                            window.setTimeout(
+                                () => {
+
+                                    window.location.href =
+                                        "purchasing.html";
+
+                                },
+                                700
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+            /* =================================================
+               CANCEL
+            ================================================= */
+
+            cancelButton?.addEventListener(
+                "click",
+                () => {
+
+                    const confirmed =
+                        window.confirm(
+                            "Are you sure you want to cancel this purchase? Unsaved changes will be lost."
+                        );
+
+
+                    if (!confirmed) {
+                        return;
+                    }
+
+
+                    window.location.href =
+                        "purchasing.html";
+
+                }
+            );
+
+
+            /* =================================================
+               INITIALIZE PRODUCT ROWS
+            ================================================= */
+
+            getProductRows().forEach(
+                row => {
+
+                    attachRowEvents(
+                        row
+                    );
+
+                    updateProductInformation(
+                        row
+                    );
+
+                }
+            );
+
+
+            /* =================================================
+               DEFAULT DATE
+            ================================================= */
+
+            if (
+                purchaseDateInput &&
+                !purchaseDateInput.value
+            ) {
+
+                const today =
+                    new Date();
+
+
+                const year =
+                    today.getFullYear();
+
+
+                const month =
+                    String(
+                        today.getMonth() + 1
+                    ).padStart(
+                        2,
+                        "0"
+                    );
+
+
+                const day =
+                    String(
+                        today.getDate()
+                    ).padStart(
+                        2,
+                        "0"
+                    );
+
+
+                purchaseDateInput.value =
+                    `${year}-${month}-${day}`;
+
+            }
+
+
+            /* =================================================
+               LOAD SUPPLIERS
+            ================================================= */
+
+            loadSuppliers();
+
+
+            /* =================================================
+               INITIAL TOTALS
+            ================================================= */
+
+            calculateTotals();
+
+
+        }
+    );
+
+})();
+
+</script>
+
+</body>
+</html>

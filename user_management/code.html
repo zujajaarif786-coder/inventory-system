@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StockMaster User Management</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<script>
+tailwind.config = {
+    darkMode: "class",
+    theme: {
+        extend: {
+            colors: {
+                primary: "#004ac6",
+                "primary-container": "#2563eb",
+                background: "#faf8ff",
+                surface: "#faf8ff",
+                "surface-container-lowest": "#ffffff",
+                "surface-container-low": "#f3f3fe",
+                "surface-container": "#ededf9",
+                "surface-container-high": "#e7e7f3",
+                "surface-container-highest": "#e1e2ed",
+                "inverse-surface": "#2e3039",
+                on: "#191b23",
+                "on-surface": "#191b23",
+                secondary: "#545f73",
+                outline: "#737686",
+                "outline-variant": "#c3c6d7",
+                error: "#ba1a1a",
+                "error-container": "#ffdad6"
+            },
+            borderRadius: {
+                DEFAULT: "0.25rem",
+                lg: "0.5rem",
+                xl: "0.75rem",
+                full: "9999px"
+            }
+        }
+    }
+}
+</script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+        "FILL" 0,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 24;
+    vertical-align: middle;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.modal-overlay {
+    animation: fadeIn .2s ease-out;
+}
+
+.modal-content {
+    animation: slideUp .25s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.toast {
+    animation: toastIn .25s ease-out;
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sidebar-link {
+    transition: all .2s ease;
+}
+
+.sidebar-link:hover {
+    transform: translateX(2px);
+}
+</style>
+</head>
+
+<body class="bg-background text-on-surface dark:bg-inverse-surface dark:text-white min-h-screen">
+
+<!-- SIDEBAR -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-gray-700 shadow-sm flex flex-col py-6 px-4 z-50">
+
+    <div class="flex items-center gap-3 mb-8 px-2">
+        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+            <span class="material-symbols-outlined">inventory_2</span>
+        </div>
+
+        <div>
+            <h1 class="text-2xl font-bold text-primary dark:text-blue-300">
+                StockMaster
+            </h1>
+            <p class="text-[10px] text-secondary uppercase tracking-widest">
+                Enterprise
+            </p>
+        </div>
+    </div>
+
+    <nav class="flex-1 space-y-1 overflow-y-auto">
+
+        <a href="../dashboard_themed_alerts/code.html"
+           class="sidebar-link flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-300 hover:bg-surface-container-high dark:hover:bg-gray-700 rounded-lg">
+            <span class="material-symbols-outlined">dashboard</span>
+            Dashboard
+        </a>
+
+        <a href="../products_management/code.html"
+           class="sidebar-link flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-300 hover:bg-surface-container-high dark:hover:bg-gray-700 rounded-lg">
+            <span class="material-symbols-outlined">inventory_2</span>
+            Products
+        </a>
+
+        <a href="../categories_management/code.html"
+           class="sidebar-link flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-300 hover:bg-surface-container-high dark:hover:bg-gray-700 rounded-lg">
+            <span class="material-symbols-outlined">category</span>
+            Categories
+        </a>
+
+        <a href="../stock_management/code.html"
+           class="sidebar-link flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-300 hover:bg-surface-container-high dark:hover:bg-gray-700 rounded-lg">
+            <span class="material-symbols-outlined">input</span>
+            Stock In
+        </a>
+
+        <a href="../stock_management/code.html"
+           class="sidebar-link flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-300 hover:bg-surface-container-high dark:hover:bg-gray-700 rounded-lg">
+            <span class="material-symbols-outlined">output</span>
+            Stock Out
+        </a>
+
+        <a href="../reports_dashboard/code.html"
+           class="sidebar-link flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-300 hover:bg-surface-container-high dark:hover:bg-gray-700 rounded-lg">
+            <span class="material-symbols-outlined">assessment</span>
+            Reports
+        </a>
+
+        <a href="code.html"
+           class="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-lg shadow-md">
+            <span class="material-symbols-outlined">group</span>
+            Users
+        </a>
+
+        <a href="../activity_log_timeline_filters/code.html"
+           class="sidebar-link flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-300 hover:bg-surface-container-high dark:hover:bg-gray-700 rounded-lg">
+            <span class="material-symbols-outlined">history</span>
+            Activity Logs
+        </a>
+
+        <a href="../profile_settings/code.html"
+           class="sidebar-link flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-300 hover:bg-surface-container-high dark:hover:bg-gray-700 rounded-lg">
+            <span class="material-symbols-outlined">settings</span>
+            Settings
+        </a>
+
+        <a href="../profile_settings/code.html"
+           class="sidebar-link flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-300 hover:bg-surface-container-high dark:hover:bg-gray-700 rounded-lg">
+            <span class="material-symbols-outlined">account_circle</span>
+            Profile
+        </a>
+
+    </nav>
+
+    <div class="pt-5 mt-5 border-t border-outline-variant dark:border-gray-700 space-y-2">
+
+        <a href="../dashboard_themed_alerts/code.html"
+           class="sidebar-link flex items-center gap-3 px-4 py-3 text-secondary dark:text-gray-300 hover:bg-surface-container-high dark:hover:bg-gray-700 rounded-lg">
+            <span class="material-symbols-outlined">help_outline</span>
+            Help Center
+        </a>
+
+        <button onclick="logoutUser()"
+                class="w-full flex items-center justify-between px-4 py-3 text-error bg-error-container/20 hover:bg-error-container/40 rounded-lg">
+            <span class="font-semibold">Logout</span>
+            <span class="material-symbols-outlined">logout</span>
+        </button>
+
+    </div>
+</aside>
+
+<!-- HEADER -->
+<header class="fixed top-0 right-0 h-16 z-40 bg-surface dark:bg-gray-800 border-b border-outline-variant dark:border-gray-700 shadow-sm flex items-center justify-between px-8 w-[calc(100%-280px)]">
+
+    <div class="flex items-center bg-surface-container-low dark:bg-gray-700 rounded-full px-4 py-2 w-96 border border-outline-variant dark:border-gray-600">
+        <span class="material-symbols-outlined text-secondary mr-2">
+            search
+        </span>
+
+        <input id="searchInput"
+               class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-outline dark:text-white"
+               placeholder="Search for users or roles..."
+               type="text">
+    </div>
+
+    <div class="flex items-center gap-5">
+
+        <button id="themeToggle"
+                class="p-2 hover:bg-surface-container-low dark:hover:bg-gray-700 rounded-full">
+            <span id="themeIcon" class="material-symbols-outlined">
+                dark_mode
+            </span>
+        </button>
+
+        <button class="p-2 hover:bg-surface-container-low dark:hover:bg-gray-700 rounded-full relative">
+            <span class="material-symbols-outlined">
+                notifications
+            </span>
+
+            <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+        </button>
+
+        <div class="h-8 w-px bg-outline-variant dark:bg-gray-600"></div>
+
+        <div class="text-right">
+            <p class="text-xs font-semibold">Alex Rivera</p>
+            <p class="text-[10px] text-secondary">SUPER ADMIN</p>
+        </div>
+
+        <div class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+            AR
+        </div>
+
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="ml-[280px] pt-16 min-h-screen">
+
+<div class="p-8 max-w-[1500px] mx-auto">
+
+    <!-- HEADER -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+
+        <div>
+            <h2 class="text-3xl font-bold">
+                User Management
+            </h2>
+
+            <p class="text-sm text-secondary mt-1">
+                Manage system access, roles, and administrative permissions for your warehouse staff.
+            </p>
+        </div>
+
+        <a href="add_user.html"
+           class="px-6 py-3 bg-primary text-white rounded-lg font-semibold flex items-center gap-2 shadow-md hover:bg-primary-container active:scale-95">
+            <span class="material-symbols-outlined">
+                person_add
+            </span>
+            Add New User
+        </a>
+
+    </div>
+
+    <!-- STATS -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-outline-variant dark:border-gray-700 shadow-sm flex items-center gap-5">
+            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-primary rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-3xl">group</span>
+            </div>
+
+            <div>
+                <p class="text-xs text-secondary uppercase font-semibold">Total Users</p>
+                <p id="totalUsers" class="text-2xl font-bold">0</p>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-outline-variant dark:border-gray-700 shadow-sm flex items-center gap-5">
+            <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 text-green-600 rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-3xl">check_circle</span>
+            </div>
+
+            <div>
+                <p class="text-xs text-secondary uppercase font-semibold">Active Now</p>
+                <p id="activeUsers" class="text-2xl font-bold">0</p>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-outline-variant dark:border-gray-700 shadow-sm flex items-center gap-5">
+            <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-3xl">admin_panel_settings</span>
+            </div>
+
+            <div>
+                <p class="text-xs text-secondary uppercase font-semibold">Admins</p>
+                <p id="adminUsers" class="text-2xl font-bold">0</p>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-outline-variant dark:border-gray-700 shadow-sm flex items-center gap-5">
+            <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 text-error rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-3xl">block</span>
+            </div>
+
+            <div>
+                <p class="text-xs text-secondary uppercase font-semibold">Inactive</p>
+                <p id="inactiveUsers" class="text-2xl font-bold">0</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-outline-variant dark:border-gray-700 shadow-sm overflow-hidden">
+
+        <!-- FILTERS -->
+        <div class="p-5 border-b border-outline-variant dark:border-gray-700 flex flex-wrap items-center justify-between gap-4">
+
+            <div class="flex gap-3">
+
+                <select id="roleFilter"
+                        class="bg-surface-container-low dark:bg-gray-700 border border-outline-variant dark:border-gray-600 rounded-lg px-4 py-2 text-sm dark:text-white">
+                    <option value="">All Roles</option>
+                    <option value="Super Admin">Super Admin</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Staff / Client">Staff / Client</option>
+                </select>
+
+                <select id="statusFilter"
+                        class="bg-surface-container-low dark:bg-gray-700 border border-outline-variant dark:border-gray-600 rounded-lg px-4 py-2 text-sm dark:text-white">
+                    <option value="">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+
+            </div>
+
+            <button onclick="clearFilters()"
+                    class="flex items-center gap-2 px-4 py-2 text-secondary hover:bg-surface-container-low dark:hover:bg-gray-700 rounded-lg">
+                <span class="material-symbols-outlined">
+                    filter_list_off
+                </span>
+                Clear Filters
+            </button>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left">
+
+                <thead class="bg-surface-container-low dark:bg-gray-700 border-b border-outline-variant dark:border-gray-600">
+
+                    <tr>
+                        <th class="px-6 py-4 text-xs uppercase text-secondary font-semibold">
+                            Profile
+                        </th>
+
+                        <th class="px-6 py-4 text-xs uppercase text-secondary font-semibold">
+                            Email
+                        </th>
+
+                        <th class="px-6 py-4 text-xs uppercase text-secondary font-semibold">
+                            Role
+                        </th>
+
+                        <th class="px-6 py-4 text-xs uppercase text-secondary font-semibold">
+                            Status
+                        </th>
+
+                        <th class="px-6 py-4 text-xs uppercase text-secondary font-semibold">
+                            Last Login
+                        </th>
+
+                        <th class="px-6 py-4 text-xs uppercase text-secondary font-semibold text-right">
+                            Actions
+                        </th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="userRows"
+                       class="divide-y divide-outline-variant/30 dark:divide-gray-700">
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div id="emptyState"
+             class="hidden py-16 text-center">
+
+            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-surface-container-low dark:bg-gray-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-4xl text-outline">
+                    person_search
+                </span>
+            </div>
+
+            <h3 class="text-xl font-semibold mb-2">
+                No users found
+            </h3>
+
+            <p class="text-sm text-secondary mb-6">
+                No users match your current search or filters.
+            </p>
+
+            <a href="add_user.html"
+               class="inline-flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-lg font-semibold">
+                <span class="material-symbols-outlined">
+                    person_add
+                </span>
+                Add New User
+            </a>
+
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="p-5 bg-surface-container-low dark:bg-gray-700 border-t border-outline-variant dark:border-gray-600 flex items-center justify-between">
+
+            <p id="showingText" class="text-sm text-secondary">
+                Showing 0 users
+            </p>
+
+            <div class="flex items-center gap-2">
+
+                <button id="previousPage"
+                        onclick="previousPage()"
+                        class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 disabled:opacity-40">
+                    <span class="material-symbols-outlined">
+                        chevron_left
+                    </span>
+                </button>
+
+                <span id="pageNumber"
+                      class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm">
+                    1
+                </span>
+
+                <button id="nextPage"
+                        onclick="nextPage()"
+                        class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 disabled:opacity-40">
+                    <span class="material-symbols-outlined">
+                        chevron_right
+                    </span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</main>
+
+<!-- DELETE MODAL -->
+<div id="deleteModal"
+     class="hidden fixed inset-0 z-[100] items-center justify-center p-4">
+
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+         onclick="closeDeleteModal()"></div>
+
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-md rounded-2xl shadow-2xl p-8">
+
+        <div class="w-16 h-16 bg-red-100 dark:bg-red-900/30 text-error rounded-full flex items-center justify-center mx-auto mb-5">
+            <span class="material-symbols-outlined text-4xl">
+                warning
+            </span>
+        </div>
+
+        <h3 class="text-2xl font-bold text-center mb-3">
+            Delete User?
+        </h3>
+
+        <p class="text-sm text-secondary text-center mb-7">
+            Are you sure you want to delete
+            <strong id="deleteUserName"></strong>?
+            This action cannot be undone.
+        </p>
+
+        <div class="flex gap-3">
+
+            <button onclick="closeDeleteModal()"
+                    class="flex-1 px-5 py-3 border border-outline-variant dark:border-gray-600 rounded-lg font-semibold">
+                Cancel
+            </button>
+
+            <button onclick="confirmDelete()"
+                    class="flex-1 px-5 py-3 bg-error text-white rounded-lg font-semibold">
+                Delete User
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"
+     class="hidden fixed bottom-6 right-6 z-[200] bg-gray-900 text-white px-5 py-3 rounded-lg shadow-xl">
+</div>
+
+<script>
+const STORAGE_KEY = "stockmaster_users";
+
+let users = [];
+let currentPage = 1;
+const usersPerPage = 8;
+let deleteUserId = null;
+
+/* =========================
+   INITIAL USERS
+========================= */
+
+const defaultUsers = [
+    {
+        id: "SM-8821",
+        name: "Jordan Henderson",
+        email: "jordan.h@stockmaster.com",
+        phone: "+1 555 100 2001",
+        username: "jordan.h",
+        role: "Super Admin",
+        permissions: ["All Permissions"],
+        status: "Active",
+        lastLogin: "2 mins ago",
+        avatar: "",
+        createdAt: new Date().toISOString()
+    },
+    {
+        id: "SM-4412",
+        name: "Sarah Jenkins",
+        email: "s.jenkins@stockmaster.com",
+        phone: "+1 555 100 2002",
+        username: "sarah.j",
+        role: "Manager",
+        permissions: ["Products Management", "Inventory Management", "Reports"],
+        status: "Active",
+        lastLogin: "4 hours ago",
+        avatar: "",
+        createdAt: new Date().toISOString()
+    },
+    {
+        id: "SM-0921",
+        name: "Mark Walters",
+        email: "mark.w@stockmaster.com",
+        phone: "+1 555 100 2003",
+        username: "mark.w",
+        role: "Staff / Client",
+        permissions: ["Inventory Management"],
+        status: "Inactive",
+        lastLogin: "2 days ago",
+        avatar: "",
+        createdAt: new Date().toISOString()
+    }
+];
+
+/* =========================
+   LOAD USERS
+========================= */
+
+function loadUsers() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved) {
+        try {
+            users = JSON.parse(saved);
+        } catch {
+            users = [...defaultUsers];
+            saveUsers();
+        }
+    } else {
+        users = [...defaultUsers];
+        saveUsers();
+    }
+}
+
+/* =========================
+   SAVE USERS
+========================= */
+
+function saveUsers() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+}
+
+/* =========================
+   RENDER
+========================= */
+
+function renderUsers() {
+
+    const search = document.getElementById("searchInput").value
+        .trim()
+        .toLowerCase();
+
+    const role = document.getElementById("roleFilter").value;
+    const status = document.getElementById("statusFilter").value;
+
+    let filtered = users.filter(user => {
+
+        const matchesSearch =
+            !search ||
+            user.name.toLowerCase().includes(search) ||
+            user.email.toLowerCase().includes(search) ||
+            user.username.toLowerCase().includes(search) ||
+            user.role.toLowerCase().includes(search) ||
+            user.id.toLowerCase().includes(search);
+
+        const matchesRole =
+            !role || user.role === role;
+
+        const matchesStatus =
+            !status || user.status === status;
+
+        return matchesSearch && matchesRole && matchesStatus;
+    });
+
+    const totalPages = Math.max(
+        1,
+        Math.ceil(filtered.length / usersPerPage)
+    );
+
+    if (currentPage > totalPages) {
+        currentPage = totalPages;
+    }
+
+    const start = (currentPage - 1) * usersPerPage;
+    const pageUsers = filtered.slice(start, start + usersPerPage);
+
+    const rows = document.getElementById("userRows");
+    const emptyState = document.getElementById("emptyState");
+
+    rows.innerHTML = "";
+
+    if (pageUsers.length === 0) {
+        emptyState.classList.remove("hidden");
+    } else {
+        emptyState.classList.add("hidden");
+
+        pageUsers.forEach(user => {
+            rows.appendChild(createUserRow(user));
+        });
+    }
+
+    document.getElementById("pageNumber").textContent = currentPage;
+
+    document.getElementById("previousPage").disabled =
+        currentPage <= 1;
+
+    document.getElementById("nextPage").disabled =
+        currentPage >= totalPages;
+
+    document.getElementById("showingText").textContent =
+        filtered.length === 0
+            ? "Showing 0 users"
+            : `Showing ${start + 1}-${Math.min(start + usersPerPage, filtered.length)} of ${filtered.length} users`;
+
+    updateStats();
+}
+
+/* =========================
+   CREATE ROW
+========================= */
+
+function createUserRow(user) {
+
+    const tr = document.createElement("tr");
+
+    tr.className =
+        "hover:bg-surface-container-low dark:hover:bg-gray-700 transition-colors group";
+
+    const initials = getInitials(user.name);
+
+    const roleClass = getRoleClass(user.role);
+
+    const statusClass =
+        user.status === "Active"
+            ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+            : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300";
+
+    tr.innerHTML = `
+        <td class="px-6 py-4">
+            <div class="flex items-center gap-3">
+
+                ${
+                    user.avatar
+                    ? `<img src="${escapeHtml(user.avatar)}"
+                             class="w-10 h-10 rounded-full object-cover"
+                             alt="${escapeHtml(user.name)}">`
+                    : `<div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
+                            ${initials}
+                       </div>`
+                }
+
+                <div>
+                    <p class="font-semibold text-sm">
+                        ${escapeHtml(user.name)}
+                    </p>
+
+                    <p class="text-[11px] text-secondary">
+                        ID: ${escapeHtml(user.id)}
+                    </p>
+                </div>
+
+            </div>
+        </td>
+
+        <td class="px-6 py-4 text-sm text-secondary">
+            ${escapeHtml(user.email)}
+        </td>
+
+        <td class="px-6 py-4">
+            <div class="flex flex-col items-start">
+
+                <span class="px-2.5 py-1 rounded-full ${roleClass} text-xs font-semibold">
+                    ${escapeHtml(user.role)}
+                </span>
+
+                <span class="text-[10px] text-secondary mt-1">
+                    ${escapeHtml(getPermissionSummary(user))}
+                </span>
+
+            </div>
+        </td>
+
+        <td class="px-6 py-4">
+
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full ${statusClass} text-xs font-semibold">
+
+                <span class="w-1.5 h-1.5 rounded-full ${
+                    user.status === "Active"
+                        ? "bg-green-600"
+                        : "bg-gray-400"
+                }"></span>
+
+                ${escapeHtml(user.status)}
+
+            </span>
+
+        </td>
+
+        <td class="px-6 py-4 text-sm text-secondary">
+            ${escapeHtml(user.lastLogin || "Never")}
+        </td>
+
+        <td class="px-6 py-4">
+
+            <div class="flex justify-end gap-1">
+
+                <button
+                    onclick="editUser('${user.id}')"
+                    title="Edit"
+                    class="p-2 hover:bg-primary/10 text-primary rounded-lg">
+                    <span class="material-symbols-outlined text-[20px]">
+                        edit
+                    </span>
+                </button>
+
+                <button
+                    onclick="openDeleteModal('${user.id}')"
+                    title="Delete"
+                    class="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-error rounded-lg">
+                    <span class="material-symbols-outlined text-[20px]">
+                        delete
+                    </span>
+                </button>
+
+                <button
+                    onclick="toggleUserStatus('${user.id}')"
+                    title="${user.status === "Active" ? "Deactivate" : "Activate"}"
+                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-secondary rounded-lg">
+
+                    <span class="material-symbols-outlined text-[20px]">
+                        ${user.status === "Active" ? "person_off" : "person"}
+                    </span>
+
+                </button>
+
+            </div>
+
+        </td>
+    `;
+
+    return tr;
+}
+
+/* =========================
+   ROLE COLORS
+========================= */
+
+function getRoleClass(role) {
+
+    switch (role) {
+
+        case "Super Admin":
+            return "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300";
+
+        case "Admin":
+            return "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300";
+
+        case "Manager":
+            return "bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300";
+
+        default:
+            return "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300";
+    }
+}
+
+/* =========================
+   PERMISSION SUMMARY
+========================= */
+
+function getPermissionSummary(user) {
+
+    if (!user.permissions || user.permissions.length === 0) {
+        return "No permissions";
+    }
+
+    if (user.role === "Super Admin") {
+        return "Full Access";
+    }
+
+    if (user.permissions.length <= 3) {
+        return user.permissions
+            .map(permission => permission.replace(" Management", ""))
+            .join(", ");
+    }
+
+    return `${user.permissions.length} permissions`;
+}
+
+/* =========================
+   STATS
+========================= */
+
+function updateStats() {
+
+    const total = users.length;
+
+    const active = users.filter(
+        user => user.status === "Active"
+    ).length;
+
+    const admins = users.filter(
+        user =>
+            user.role === "Admin" ||
+            user.role === "Super Admin"
+    ).length;
+
+    const inactive = users.filter(
+        user => user.status === "Inactive"
+    ).length;
+
+    document.getElementById("totalUsers").textContent = total;
+    document.getElementById("activeUsers").textContent = active;
+    document.getElementById("adminUsers").textContent = admins;
+    document.getElementById("inactiveUsers").textContent = inactive;
+}
+
+/* =========================
+   SEARCH / FILTERS
+========================= */
+
+document.getElementById("searchInput")
+    .addEventListener("input", () => {
+        currentPage = 1;
+        renderUsers();
+    });
+
+document.getElementById("roleFilter")
+    .addEventListener("change", () => {
+        currentPage = 1;
+        renderUsers();
+    });
+
+document.getElementById("statusFilter")
+    .addEventListener("change", () => {
+        currentPage = 1;
+        renderUsers();
+    });
+
+function clearFilters() {
+
+    document.getElementById("searchInput").value = "";
+    document.getElementById("roleFilter").value = "";
+    document.getElementById("statusFilter").value = "";
+
+    currentPage = 1;
+
+    renderUsers();
+}
+
+/* =========================
+   PAGINATION
+========================= */
+
+function previousPage() {
+
+    if (currentPage > 1) {
+        currentPage--;
+        renderUsers();
+    }
+}
+
+function nextPage() {
+
+    const search = document.getElementById("searchInput").value
+        .trim()
+        .toLowerCase();
+
+    const role = document.getElementById("roleFilter").value;
+    const status = document.getElementById("statusFilter").value;
+
+    const filtered = users.filter(user => {
+
+        const matchesSearch =
+            !search ||
+            user.name.toLowerCase().includes(search) ||
+            user.email.toLowerCase().includes(search) ||
+            user.username.toLowerCase().includes(search) ||
+            user.role.toLowerCase().includes(search);
+
+        return matchesSearch &&
+               (!role || user.role === role) &&
+               (!status || user.status === status);
+    });
+
+    const totalPages = Math.ceil(filtered.length / usersPerPage);
+
+    if (currentPage < totalPages) {
+        currentPage++;
+        renderUsers();
+    }
+}
+
+/* =========================
+   DELETE
+========================= */
+
+function openDeleteModal(id) {
+
+    const user = users.find(
+        item => item.id === id
+    );
+
+    if (!user) return;
+
+    deleteUserId = id;
+
+    document.getElementById("deleteUserName").textContent =
+        user.name;
+
+    const modal = document.getElementById("deleteModal");
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+}
+
+function closeDeleteModal() {
+
+    const modal = document.getElementById("deleteModal");
+
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+
+    deleteUserId = null;
+}
+
+function confirmDelete() {
+
+    if (!deleteUserId) return;
+
+    const user = users.find(
+        item => item.id === deleteUserId
+    );
+
+    users = users.filter(
+        item => item.id !== deleteUserId
+    );
+
+    saveUsers();
+
+    closeDeleteModal();
+
+    renderUsers();
+
+    showToast(
+        `${user ? user.name : "User"} deleted successfully.`
+    );
+}
+
+/* =========================
+   STATUS
+========================= */
+
+function toggleUserStatus(id) {
+
+    const user = users.find(
+        item => item.id === id
+    );
+
+    if (!user) return;
+
+    user.status =
+        user.status === "Active"
+            ? "Inactive"
+            : "Active";
+
+    saveUsers();
+
+    renderUsers();
+
+    showToast(
+        `${user.name} is now ${user.status.toLowerCase()}.`
+    );
+}
+
+/* =========================
+   EDIT
+========================= */
+
+function editUser(id) {
+
+    const user = users.find(
+        item => item.id === id
+    );
+
+    if (!user) return;
+
+    localStorage.setItem(
+        "stockmaster_edit_user",
+        JSON.stringify(user)
+    );
+
+    window.location.href = "add_user.html?edit=" + encodeURIComponent(id);
+}
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(message) {
+
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.remove("hidden");
+    toast.classList.add("toast");
+
+    setTimeout(() => {
+        toast.classList.add("hidden");
+    }, 3000);
+}
+
+/* =========================
+   HELPERS
+========================= */
+
+function getInitials(name) {
+
+    return name
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(word => word.charAt(0).toUpperCase())
+        .join("");
+}
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logoutUser() {
+
+    showToast("Logout functionality can be connected to your authentication system.");
+}
+
+/* =========================
+   THEME
+========================= */
+
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+function applyTheme() {
+
+    const theme =
+        localStorage.getItem("stockmaster_theme") || "light";
+
+    if (theme === "dark") {
+
+        document.documentElement.classList.add("dark");
+        document.documentElement.classList.remove("light");
+
+        themeIcon.textContent = "light_mode";
+
+    } else {
+
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+
+        themeIcon.textContent = "dark_mode";
+    }
+}
+
+themeToggle.addEventListener("click", () => {
+
+    const isDark =
+        document.documentElement.classList.contains("dark");
+
+    localStorage.setItem(
+        "stockmaster_theme",
+        isDark ? "light" : "dark"
+    );
+
+    applyTheme();
+});
+
+/* =========================
+   START
+========================= */
+
+applyTheme();
+loadUsers();
+renderUsers();
+</script>
+
+</body>
+</html>

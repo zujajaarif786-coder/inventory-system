@@ -1,0 +1,536 @@
+Library
+/
+code.html
+
+
+
+
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StockMaster - Products Management</title>
+<!-- Google Fonts: Inter, Hanken Grotesk, JetBrains Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e1e0ff",
+                        "surface-variant": "#e1e2ed",
+                        "on-secondary-container": "#fffbff",
+                        "surface-container-low": "#f3f3fe",
+                        "on-tertiary-fixed": "#360f00",
+                        "surface-dim": "#d9d9e5",
+                        "on-surface": "#191b23",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "tertiary-container": "#bc4800",
+                        "surface-bright": "#faf8ff",
+                        "primary-container": "#2563eb",
+                        "on-tertiary-container": "#ffede6",
+                        "on-secondary-fixed-variant": "#2f2ebe",
+                        "surface-tint": "#0053db",
+                        "surface-container": "#ededf9",
+                        "tertiary-fixed": "#ffdbcd",
+                        "surface": "#faf8ff",
+                        "on-surface-variant": "#434655",
+                        "background": "#faf8ff",
+                        "inverse-primary": "#b4c5ff",
+                        "outline-variant": "#c3c6d7",
+                        "secondary-container": "#6063ee",
+                        "secondary": "#4648d4",
+                        "inverse-on-surface": "#f0f0fb",
+                        "primary-fixed": "#dbe1ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#eeefff",
+                        "on-primary-fixed": "#00174b",
+                        "primary": "#004ac6",
+                        "on-secondary-fixed": "#07006c",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "on-background": "#191b23",
+                        "secondary-fixed-dim": "#c0c1ff",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e1e2ed",
+                        "outline": "#737686",
+                        "surface-container-high": "#e7e7f3",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "on-error": "#ffffff",
+                        "tertiary": "#943700",
+                        "inverse-surface": "#2e3039",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "0.25rem",
+                        "md": "1rem",
+                        "2xl": "3rem",
+                        "sm": "0.5rem",
+                        "layout-margin": "24px",
+                        "xl": "2rem",
+                        "layout-gutter": "16px",
+                        "base": "4px",
+                        "lg": "1.5rem",
+                        "header-height": "64px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "display-xl": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: #E2E8F0;
+            border-radius: 10px;
+        }
+        .dark .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: #434655;
+        }
+        /* Smooth transitions for theme switching */
+        * {
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-lowest dark:bg-inverse-surface/10 border-r border-outline-variant shadow-sm flex flex-col py-lg px-md z-50">
+<div class="mb-xl px-sm">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed-dim">StockMaster</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant opacity-70"> Enterprise</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto sidebar-scroll space-y-xs">
+<a class="flex items-center px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all duration-200 cursor-pointer active:scale-95" href="../dashboard_themed_alerts/code.html">
+<span class="material-symbols-outlined mr-md">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center px-md py-sm bg-primary text-on-primary rounded-lg shadow-md transition-all duration-200 cursor-pointer active:scale-95" href="../products_management/code.html">
+<span class="material-symbols-outlined mr-md" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-body-md text-body-md font-semibold">Products</span>
+</a>
+<a class="flex items-center px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all duration-200 cursor-pointer active:scale-95" href="../categories_management/code.html">
+<span class="material-symbols-outlined mr-md">category</span>
+<span class="font-body-md text-body-md">Categories</span>
+</a>
+<a class="flex items-center px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all duration-200 cursor-pointer active:scale-95" href="../stock_management/code.html">
+<span class="material-symbols-outlined mr-md">input</span>
+<span class="font-body-md text-body-md">Stock In</span>
+</a>
+<a class="flex items-center px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all duration-200 cursor-pointer active:scale-95" href="../stock_management/code.html">
+<span class="material-symbols-outlined mr-md">output</span>
+<span class="font-body-md text-body-md">Stock Out</span>
+</a>
+<a class="flex items-center px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all duration-200 cursor-pointer active:scale-95" href="../reports_dashboard/code.html">
+<span class="material-symbols-outlined mr-md">assessment</span>
+<span class="font-body-md text-body-md">Reports</span>
+</a>
+<a class="flex items-center px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all duration-200 cursor-pointer active:scale-95" href="../user_management/code.html">
+<span class="material-symbols-outlined mr-md">group</span>
+<span class="font-body-md text-body-md">Users</span>
+</a>
+<a class="flex items-center px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all duration-200 cursor-pointer active:scale-95" href="../activity_log_timeline_filters/code.html">
+<span class="material-symbols-outlined mr-md">history</span>
+<span class="font-body-md text-body-md">Activity Logs</span>
+</a>
+</nav>
+<div class="pt-lg border-t border-outline-variant/30 mt-md">
+<div class="flex items-center px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all duration-200 cursor-pointer active:scale-95">
+<span class="material-symbols-outlined mr-md">help_outline</span>
+<span class="font-body-md text-body-md">Help Center</span>
+</div>
+<div class="flex items-center px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all duration-200 cursor-pointer active:scale-95">
+<span class="material-symbols-outlined mr-md">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</div>
+<div class="mt-md px-md">
+<button class="w-full py-sm bg-error-container text-on-error-container rounded-lg font-label-md transition-colors hover:bg-error/10 flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+                Logout
+            </button>
+</div>
+</div>
+</aside>
+<!-- Main Wrapper -->
+<div class="ml-[280px] min-h-screen flex flex-col bg-background dark:bg-on-surface">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 right-0 h-header-height w-[calc(100%-280px)] bg-surface dark:bg-inverse-surface border-b border-outline-variant shadow-sm z-40 flex items-center justify-between px-xl">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full pl-[48px] pr-md py-xs bg-surface-container-low dark:bg-surface-container dark:text-on-surface-variant border border-outline-variant rounded-full text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" id="global-search" placeholder="Search across inventory..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md ml-xl">
+<!-- Theme Toggle Button -->
+<button class="p-sm hover:bg-surface-container-low dark:hover:bg-on-surface-variant/20 rounded-full transition-colors flex items-center justify-center text-on-surface-variant" id="theme-toggle" title="Toggle theme">
+<span class="material-symbols-outlined dark:hidden">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:block">light_mode</span>
+</button>
+<button class="p-xs hover:bg-surface-container-low dark:hover:bg-on-surface-variant/20 rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-sm"></div>
+<div class="flex items-center gap-sm">
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface dark:text-surface">Alex Rivera</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider font-bold">Admin</p>
+</div>
+<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="Alex Rivera headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtlEyHZAQbeO8GG6M1HGQSdjXfTfIA6rATuLGDaKnLoAim-XTRyxLB6XackMd2REvNiiVc2PYvrceO589zB1MypBg3hrPU2rLPZLp19DYEm8g70qCswa7yJdVVlFHnA953ECHmlEyKfMw0lcDg5wHOZVhyDXl4r7Wlzop-MUCMVqfOXLYe08367OFtLj7Xdh29LFRgdlR5CVeJM2OpgR4M2GNnhuyvXw8_z_HAc-nHmUemqV44-sbz"/>
+</div>
+<button type="button" onclick="window.location.href='../add_edit_product/code.html'" class="ml-sm py-xs px-md bg-primary text-on-primary rounded-lg font-label-md shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Add Product
+            </button>
+</div>
+</header>
+<!-- Page Content Area -->
+<main class="mt-header-height p-xl flex-1 overflow-y-auto">
+<div id="pageStatus" class="sr-only" aria-live="polite"></div>
+<!-- Breadcrumbs & Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-xl">
+<div>
+<div class="flex items-center gap-xs text-on-surface-variant font-label-sm mb-xs">
+<span>Inventory</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary font-semibold">Products</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface dark:text-surface">Products Management</h2>
+<p class="text-body-md text-on-surface-variant">Manage your catalog, stock levels, and pricing strategies in real-time.</p>
+</div>
+<div class="flex items-center gap-sm">
+<button id="exportCsvButton" type="button" class="px-md py-sm bg-surface-container-lowest dark:bg-on-surface-variant/10 border border-outline-variant rounded-lg text-body-md font-semibold text-on-surface dark:text-surface hover:bg-surface-container-low transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">file_download</span>
+                    Export CSV
+                </button>
+<button type="button" onclick="window.location.href='../add_edit_product/code.html'" class="px-md py-sm bg-primary text-on-primary rounded-lg text-body-md font-semibold shadow-lg hover:bg-primary/90 transition-all flex items-center gap-xs active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+                    Add New Product
+                </button>
+</div>
+</div>
+<!-- Stats Bar -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-layout-gutter mb-xl">
+<div class="bg-surface-container-lowest dark:bg-inverse-surface/20 border border-outline-variant p-md rounded-xl shadow-sm flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant font-medium">Total Products</p>
+<p class="text-headline-sm font-bold dark:text-surface">1,248</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest dark:bg-inverse-surface/20 border border-outline-variant p-md rounded-xl shadow-sm flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-error/10 flex items-center justify-center text-error">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant font-medium">Out of Stock</p>
+<p class="text-headline-sm font-bold dark:text-surface">12</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest dark:bg-inverse-surface/20 border border-outline-variant p-md rounded-xl shadow-sm flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-tertiary-container/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">hourglass_empty</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant font-medium">Low Stock</p>
+<p class="text-headline-sm font-bold dark:text-surface">45</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest dark:bg-inverse-surface/20 border border-outline-variant p-md rounded-xl shadow-sm flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-green-500/10 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant font-medium">Inventory Value</p>
+<p class="text-headline-sm font-bold dark:text-surface">$42.8k</p>
+</div>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="bg-surface-container-lowest dark:bg-inverse-surface/20 border border-outline-variant p-md rounded-xl shadow-sm mb-lg flex flex-col lg:flex-row gap-md items-center">
+<div class="relative w-full lg:flex-1 group">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full pl-[48px] pr-md py-sm bg-surface-container-low dark:bg-on-surface-variant/10 dark:text-surface border border-outline-variant rounded-lg text-body-md focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary transition-all" id="table-search" placeholder="Search by name, SKU, or category..." type="text"/>
+</div>
+<div class="flex flex-wrap items-center gap-md w-full lg:w-auto">
+<select id="categoryFilter" aria-label="Filter by category" class="min-w-[160px] py-sm px-md bg-surface-container-low dark:bg-on-surface-variant/10 dark:text-surface border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none">
+<option value="">All Categories</option>
+<option value="electronics">Electronics</option>
+<option value="furniture">Furniture</option>
+<option value="office">Office Supplies</option>
+</select>
+<select id="statusFilter" aria-label="Filter by status" class="min-w-[160px] py-sm px-md bg-surface-container-low dark:bg-on-surface-variant/10 dark:text-surface border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none">
+<option value="">All Statuses</option>
+<option value="in_stock">In Stock</option>
+<option value="low_stock">Low Stock</option>
+<option value="out_of_stock">Out of Stock</option>
+</select>
+<button id="resetFiltersButton" type="button" title="Reset filters" class="p-sm text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-on-surface-variant/20 rounded-lg transition-colors border border-outline-variant">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Products Table Card -->
+<div class="bg-surface-container-lowest dark:bg-inverse-surface/20 border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+<div id="selectionToolbar" class="hidden items-center justify-between gap-md px-lg py-sm bg-primary/5 border-b border-outline-variant">
+<div class="flex items-center gap-sm text-sm text-on-surface-variant">
+<span id="selectedCount" class="font-semibold text-primary">0</span>
+<span>product(s) selected</span>
+</div>
+<div class="flex items-center gap-sm">
+<button id="bulkArchiveButton" type="button" class="px-sm py-xs rounded-lg border border-outline-variant text-sm font-semibold hover:bg-surface-container-low transition-colors">Archive</button>
+<button id="clearSelectionButton" type="button" class="px-sm py-xs rounded-lg text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low transition-colors">Clear</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse" id="products-table">
+<thead class="bg-surface-container-low dark:bg-on-surface-variant/10">
+<tr>
+<th class="py-md px-lg w-10">
+<input id="selectAllProducts" aria-label="Select all products" class="rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" type="checkbox"/>
+</th>
+<th class="py-md px-md text-label-md text-on-surface-variant uppercase tracking-wider">Thumbnail</th>
+<th class="py-md px-md text-label-md text-on-surface-variant uppercase tracking-wider">Product &amp; SKU</th>
+<th class="py-md px-md text-label-md text-on-surface-variant uppercase tracking-wider">Category</th>
+<th class="py-md px-md text-label-md text-on-surface-variant uppercase tracking-wider">Price (P/S)</th>
+<th class="py-md px-md text-label-md text-on-surface-variant uppercase tracking-wider text-center">Quantity</th>
+<th class="py-md px-md text-label-md text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="py-md px-lg text-label-md text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<!-- Product Row 1 -->
+<tr data-product-name="Apex Pro Wireless" data-sku="SS-KB-721" data-category="electronics" data-status="in_stock" class="product-row hover:bg-surface-container-low/50 dark:hover:bg-on-surface-variant/5 transition-colors cursor-pointer group">
+<td class="py-md px-lg">
+<input class="product-select rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" aria-label="Select product" type="checkbox"/>
+</td>
+<td class="py-md px-md">
+<div class="w-12 h-12 bg-surface-container-high dark:bg-on-surface-variant/20 rounded-lg overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_EhGyUQcgC0U1K-IkLuIiwIcuPf3V-Qi2sk107X7aFBTPDSblZY0Wt_pmRHcfFYT5ZtIfgOl7I4TXCxmHyvn9cZSti5PfRF37nmPAZDD2DWEwNRuB4zIDd22cuyxFeuJ95bDiK8vF9t_CsnyWZJCEg1LLbLQrEVOob_hLDgfDRzaH8Egi8es1bg1_CIYoM9dGLhqCkfk9ZHGiG-jTxVmbWeVZeS9KlyumQj4HJEZNdiZxTv-Qt-RC"/>
+</div>
+</td>
+<td class="py-md px-md">
+<p class="font-body-md text-on-surface dark:text-surface font-semibold">Apex Pro Wireless</p>
+<p class="text-label-sm text-on-surface-variant">SKU: SS-KB-721</p>
+</td>
+<td class="py-md px-md">
+<span class="px-sm py-[2px] bg-secondary-container text-on-secondary-container rounded text-label-sm uppercase tracking-wide font-bold">Electronics</span>
+</td>
+<td class="py-md px-md">
+<p class="text-body-sm font-medium dark:text-surface-variant">$120.00 / <span class="text-primary dark:text-primary-fixed-dim font-bold">$199.99</span></p>
+</td>
+<td class="py-md px-md text-center">
+<span class="text-body-md font-semibold dark:text-surface">42</span>
+</td>
+<td class="py-md px-md">
+<span class="px-md py-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-label-sm font-bold flex items-center gap-xs w-fit">
+<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                    In Stock
+                                </span>
+</td>
+<td class="py-md px-lg text-right">
+<div class="flex items-center justify-end gap-sm">
+<!-- New QR/Barcode Trigger -->
+<button type="button" class="view-labels p-xs text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-all" title="View QR/Barcode">
+<span class="material-symbols-outlined">qr_code_2</span>
+</button>
+<button type="button" class="edit-product p-xs text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-all" title="Edit product">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button type="button" class="delete-product p-xs text-on-surface-variant hover:text-error hover:bg-error/5 rounded transition-all" title="Archive product">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Product Row 2 -->
+<tr data-product-name="ErgoWave Office Chair" data-sku="FUR-CH-005" data-category="furniture" data-status="low_stock" class="product-row hover:bg-surface-container-low/50 dark:hover:bg-on-surface-variant/5 transition-colors cursor-pointer group">
+<td class="py-md px-lg">
+<input class="product-select rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" aria-label="Select product" type="checkbox"/>
+</td>
+<td class="py-md px-md">
+<div class="w-12 h-12 bg-surface-container-high dark:bg-on-surface-variant/20 rounded-lg overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBam6VI9rFhNSINzMXdmCSz23reu73nCFWJmc71TSGDhHI4XuhehBpFg1nzaOxrZAz_4hXS-MafSjF7deynmEwhhiD6zkSmn-7HMf9aPLA_uF0ukJjFPv5zWu_0f7TVVst-8SwITisyWDbklP5SF4sZeG9l3T_Vsg9vlBx02p_0aOyEJZ2h-OtJymOsEDSP8-KfxrznYB_GKZBvb-1h__fsffzEO7L77zXIOjwv-g0FyzuYHxMAukDK"/>
+</div>
+</td>
+<td class="py-md px-md">
+<p class="font-body-md text-on-surface dark:text-surface font-semibold">ErgoWave Office Chair</p>
+<p class="text-label-sm text-on-surface-variant">SKU: FUR-CH-005</p>
+</td>
+<td class="py-md px-md">
+<span class="px-sm py-[2px] bg-secondary-container text-on-secondary-container rounded text-label-sm uppercase tracking-wide font-bold">Furniture</span>
+</td>
+<td class="py-md px-md">
+<p class="text-body-sm font-medium dark:text-surface-variant">$185.00 / <span class="text-primary dark:text-primary-fixed-dim font-bold">$349.00</span></p>
+</td>
+<td class="py-md px-md text-center">
+<span class="text-body-md font-semibold dark:text-surface">8</span>
+</td>
+<td class="py-md px-md">
+<span class="px-md py-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 rounded-full text-label-sm font-bold flex items-center gap-xs w-fit">
+<span class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+                                    Low Stock
+                                </span>
+</td>
+<td class="py-md px-lg text-right">
+<div class="flex items-center justify-end gap-sm">
+<button type="button" class="view-labels p-xs text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-all" title="View QR/Barcode">
+<span class="material-symbols-outlined">qr_code_2</span>
+</button>
+<button type="button" class="edit-product p-xs text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-all" title="Edit product">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button type="button" class="delete-product p-xs text-on-surface-variant hover:text-error hover:bg-error/5 rounded transition-all" title="Archive product">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Loading State Container -->
+<div class="hidden flex-col items-center justify-center py-2xl px-xl text-center bg-surface-container-lowest dark:bg-transparent" id="loading-state" aria-live="polite">
+<div class="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin mb-md"></div>
+<p class="text-body-md font-semibold text-on-surface dark:text-surface">Loading products...</p>
+<p class="text-body-sm text-on-surface-variant mt-xs">Please wait while the product list is prepared.</p>
+</div>
+<!-- Empty State Container -->
+<div class="hidden flex-col items-center justify-center py-2xl px-xl text-center bg-surface-container-lowest dark:bg-transparent" id="empty-state">
+<div class="w-48 h-48 mb-lg bg-surface-container-low dark:bg-on-surface-variant/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[80px] text-outline-variant dark:text-on-surface-variant/40">search_off</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface dark:text-surface mb-xs">No results found</h3>
+<p class="text-body-md text-on-surface-variant max-w-sm">We couldn't find any products matching your search criteria. Try refining your keywords or filters.</p>
+<button class="mt-lg px-lg py-sm bg-primary/10 text-primary hover:bg-primary hover:text-on-primary rounded-lg font-semibold transition-all" onclick="clearSearch()">
+                        Clear All Filters
+                    </button>
+</div>
+</div>
+<!-- Pagination Footer -->
+<div class="py-md px-lg border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-md bg-surface-container-low/30 dark:bg-on-surface-variant/5" id="pagination-footer">
+<p class="text-body-sm text-on-surface-variant">Showing <span class="font-bold text-on-surface dark:text-surface">1 to 2</span> of <span class="font-bold text-on-surface dark:text-surface">1,248</span> products</p>
+<nav id="pagination" class="flex items-center gap-xs" aria-label="Product pagination">
+<button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container-low transition-colors disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold text-body-sm shadow-md">1</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container-low dark:text-surface-variant transition-colors text-body-sm">2</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container-low dark:text-surface-variant transition-colors text-body-sm">3</button>
+<span class="px-xs text-on-surface-variant">...</span>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container-low dark:text-surface-variant transition-colors text-body-sm">125</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container-low dark:text-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</nav>
+</div>
+</div>
+<footer class="mt-xl pt-lg border-t border-outline-variant/30 flex justify-between items-center text-label-sm text-on-surface-variant/60">
+<p>© 2024 StockMaster Enterprise. All rights reserved.</p>
+<div class="flex gap-md">
+<a class="hover:text-primary" href="#">Privacy Policy</a>
+<a class="hover:text-primary" href="#">Terms of Service</a>
+</div>
+</footer>
+</main>
+</div>
+<!-- Modal: QR/Barcode Details -->
+<div class="fixed inset-0 z-[100] hidden items-center justify-center bg-on-surface/50 backdrop-blur-sm p-md transition-opacity duration-300 opacity-0" id="details-modal">
+<div class="bg-surface-container-lowest dark:bg-inverse-surface rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="p-lg border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface dark:text-surface">Identification Labels</h3>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors" onclick="closeDetailsModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-xl space-y-xl">
+<div class="flex flex-col items-center">
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-md uppercase tracking-widest">Product QR Code</p>
+<div class="p-md bg-white rounded-xl border border-outline-variant shadow-inner">
+<!-- Placeholder QR SVG -->
+<svg class="w-32 h-32" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<rect height="7" width="7" x="3" y="3"></rect>
+<rect height="7" width="7" x="14" y="3"></rect>
+<rect height="7" width="7" x="3" y="14"></rect>
+<rect height="7" width="7" x="14" y="14"></rect>
+<path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M14 10v4M10 14h4M10 10v.01"></path>
+</svg>
+</div>
+</div>
+<div class="flex flex-col items-center">
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-md uppercase tracking-widest">Product Barcode</p>
+<div class="w-full h-16 bg-white rounded-lg border border-outline-variant p-sm flex items-center justify-center">
+<!-- Barcode Placeholder -->
+<div class="flex items-end gap-[2px] h-full">
+<div class="w-[2px] h-full bg-black"></div><div class="w-[4px] h-full bg-black"></div><div class="w-[1px] h-full bg-black"></div><div class="w-[3px] h-full bg-black"></div><div class="w-[1px] h-full bg-black"></div><div class="w-[4px] h-full bg-black"></div><div class="w-[2px] h-full bg-black"></div><div class="w-[1px] h-full bg-black"></div><div class="w-[3px] h-full bg-black"></div><div class="w-[1px] h-full bg-black"></div><div class="w-[2px] h-full bg-black"></div><div class="w-[4px] h-full bg-black"></div><div class="w-[1px] h-full bg-black"></div><div class="w-[3px] h-full bg-black"></div>
+</div>
+</div>
+<p class="mt-sm font-label-sm text-on-surface dark:text-surface-variant" id="modal-sku">SKU: SS-KB-721</p>
+</div>
+</div>
+<div class="p-lg bg-surface-container-low dark:bg-on-surface-variant/10 flex justify-end gap-md">
+<button class="px-md py-sm rounded-lg border border-outline-variant text-on-surface dark:text-surface font-semibold hover:bg-surface-container-high transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">print</span>
+                Print Labels
+            </button>
+<button class="px-md py-sm bg-primary text-on-primary rounded-lg font-semibold shadow-md hover:bg-primary/90 transition-all" onclick="closeDetailsModal()">
+                Done
+            </button>
+</div>
+</div>
+</div>
+<script src="products.js" defer></script>
+</body></html>
