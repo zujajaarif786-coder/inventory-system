@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StockMaster  Categories Management</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Design System Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#e1e0ff",
+                    "surface-variant": "#e1e2ed",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container-low": "#f3f3fe",
+                    "on-tertiary-fixed": "#360f00",
+                    "surface-dim": "#d9d9e5",
+                    "on-surface": "#191b23",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "tertiary-container": "#bc4800",
+                    "surface-bright": "#faf8ff",
+                    "primary-container": "#2563eb",
+                    "on-tertiary-container": "#ffede6",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "surface-tint": "#0053db",
+                    "surface-container": "#ededf9",
+                    "tertiary-fixed": "#ffdbcd",
+                    "surface": "#faf8ff",
+                    "on-surface-variant": "#434655",
+                    "background": "#faf8ff",
+                    "inverse-primary": "#b4c5ff",
+                    "outline-variant": "#c3c6d7",
+                    "secondary-container": "#6063ee",
+                    "secondary": "#4648d4",
+                    "inverse-on-surface": "#f0f0fb",
+                    "primary-fixed": "#dbe1ff",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-container": "#eeefff",
+                    "on-primary-fixed": "#00174b",
+                    "primary": "#004ac6",
+                    "on-secondary-fixed": "#07006c",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "on-background": "#191b23",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "error": "#ba1a1a",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-highest": "#e1e2ed",
+                    "outline": "#737686",
+                    "surface-container-high": "#e7e7f3",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "on-error": "#ffffff",
+                    "tertiary": "#943700",
+                    "inverse-surface": "#2e3039",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "32px",
+                    "sidebar-width": "280px",
+                    "base": "8px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "gutter": "24px",
+                    "header-height": "64px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "data-table": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "data-table": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { transition: background-color 0.3s ease; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .sidebar-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .category-table tr:hover { background-color: rgba(var(--primary), 0.05); }
+    </style>
+</head>
+<body class="font-body-md text-on-surface bg-background dark:bg-inverse-surface dark:text-inverse-on-surface">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm flex flex-col py-lg px-md z-50">
+<div class="mb-xl px-sm flex items-center gap-md">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed-dim">StockMaster</h1>
+<p class="text-[10px] font-label-md text-outline uppercase tracking-widest"> Enterprise</p>
+</div>
+</div>
+<nav class="flex-1 space-y-xs">
+<a class="flex items-center gap-md px-md py-sm text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-surface/10 rounded-lg transition-all duration-200" href="../dashboard_themed_alerts/code.html">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-surface/10 rounded-lg transition-all duration-200" href="../products_management/code.html">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-body-md">Products</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary text-on-primary rounded-lg shadow-md transition-all duration-200" href="../categories_management/code.html">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-body-md font-semibold">Categories</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-surface/10 rounded-lg transition-all duration-200" href="../stock_management/code.html">
+<span class="material-symbols-outlined" data-icon="input">input</span>
+<span class="font-body-md">Stock In</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-surface/10 rounded-lg transition-all duration-200" href="../stock_management/code.html">
+<span class="material-symbols-outlined" data-icon="output">output</span>
+<span class="font-body-md">Stock Out</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-surface/10 rounded-lg transition-all duration-200" href="../reports_dashboard/code.html">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span class="font-body-md">Reports</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg space-y-xs border-t border-outline-variant dark:border-outline">
+<a class="flex items-center gap-md px-md py-sm text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-surface/10 rounded-lg transition-all duration-200" href="../profile_settings/code.html">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+<button class="w-full flex items-center justify-center gap-sm mt-md py-sm bg-error-container text-on-error-container dark:bg-error dark:text-on-error rounded-lg font-label-md hover:bg-error/10 dark:hover:bg-error/90 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="logout" style="font-size: 18px;">logout</span>
+            Logout
+        </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-[280px] min-h-screen flex flex-col transition-colors duration-300">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 h-header-height z-40 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm flex items-center justify-between px-xl w-[calc(100%-280px)] ml-[280px]">
+<div class="flex items-center gap-lg flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low dark:bg-surface-container-highest/20 border border-outline-variant dark:border-outline rounded-full text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary dark:text-on-surface-variant transition-all" placeholder="Quick search categories..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-md">
+<!-- Theme Toggle -->
+<button class="p-2 text-on-surface-variant dark:text-primary-fixed-dim hover:bg-surface-container-low dark:hover:bg-on-surface/10 rounded-full transition-colors" id="theme-toggle">
+<span class="material-symbols-outlined dark:hidden" data-icon="dark_mode">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:block" data-icon="light_mode">light_mode</span>
+</button>
+<button class="p-2 text-on-surface-variant dark:text-primary-fixed-dim hover:bg-surface-container-low dark:hover:bg-on-surface/10 rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface dark:border-inverse-surface"></span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant dark:bg-outline"></div>
+<div class="flex items-center gap-md group cursor-pointer">
+<div class="text-right hidden xl:block">
+<p class="font-label-md text-on-surface dark:text-inverse-on-surface">Alex Rivera</p>
+<p class="text-[10px] text-on-surface-variant dark:text-outline uppercase tracking-tighter">Inventory Manager</p>
+</div>
+<img alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-surface-container dark:border-outline shadow-sm object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiHwXtDhmyf2Ug4Y8nn1s-5NWPSHGHHmBKl_HtpYqV_8hL-0RDLObhreMhrgWO-rKohLMRtM_rjzHlKDXqrVAY0LH4PUpMh2FLx0DQ_CQABpKfJu8e4RXwV_lVGWm1o-xjh_iCiZtRqb2Nde__VvNKMAo50_HYqOheP1dTQCf3-Sonk85Dr6MvDyFPtKlS-G7zwYzDVx-vL3vJ-zk5stDO9FJg099c37ewpmfKI6mHcJcKR3h17oEJ"/>
+</div>
+</div>
+</header>
+<!-- Page Canvas -->
+<section class="mt-header-height p-xl">
+<!-- Content Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-lg mb-xl">
+<div>
+<nav class="flex items-center gap-xs text-label-sm text-outline mb-xs">
+<span class="hover:text-primary cursor-pointer">Inventory</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface dark:text-inverse-on-surface">Categories</span>
+</nav>
+<h2 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">Category Management</h2>
+<p class="text-body-md text-on-surface-variant dark:text-outline">Organize and classify your product inventory for better tracking.</p>
+</div>
+<div class="flex items-center gap-md">
+<button class="add-category-btn flex items-center gap-sm px-lg py-2.5 bg-primary text-on-primary font-label-md rounded-lg shadow-sm hover:shadow-md active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                    Add Category
+                </button>
+</div>
+</div>
+<!-- Dashboard Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-xl">
+<div class="bg-surface-container-lowest dark:bg-surface-container-highest/5 p-lg rounded-xl border border-outline-variant dark:border-outline shadow-sm">
+<p class="text-label-sm text-outline uppercase tracking-wider mb-sm">Total Categories</p>
+<div class="flex items-center justify-between">
+<span class="text-display-lg font-display-lg text-on-surface dark:text-inverse-on-surface">24</span>
+<div class="p-3 bg-primary-container/10 rounded-lg text-primary dark:text-primary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+</div>
+</div>
+</div>
+<!-- ... other stat cards ... -->
+<div class="bg-surface-container-lowest dark:bg-surface-container-highest/5 p-lg rounded-xl border border-outline-variant dark:border-outline shadow-sm">
+<p class="text-label-sm text-outline uppercase tracking-wider mb-sm">Top Performer</p>
+<div class="flex items-center justify-between">
+<span class="text-headline-sm font-headline-sm text-on-surface dark:text-inverse-on-surface">Electronics</span>
+<div class="p-3 bg-tertiary-container/10 rounded-lg text-tertiary">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest dark:bg-surface-container-highest/5 p-lg rounded-xl border border-outline-variant dark:border-outline shadow-sm">
+<p class="text-label-sm text-outline uppercase tracking-wider mb-sm">Inactive</p>
+<div class="flex items-center justify-between">
+<span class="text-display-lg font-display-lg text-on-surface dark:text-inverse-on-surface">02</span>
+<div class="p-3 bg-secondary-container/20 rounded-lg text-secondary dark:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="block">block</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest dark:bg-surface-container-highest/5 p-lg rounded-xl border border-outline-variant dark:border-outline shadow-sm">
+<p class="text-label-sm text-outline uppercase tracking-wider mb-sm">Uncategorized Items</p>
+<div class="flex items-center justify-between">
+<span class="text-display-lg font-display-lg text-on-surface dark:text-inverse-on-surface">12</span>
+<div class="p-3 bg-error-container/20 rounded-lg text-error">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Categories Container -->
+<div class="bg-surface-container-lowest dark:bg-surface-container-highest/5 rounded-xl border border-outline-variant dark:border-outline shadow-sm overflow-hidden">
+<!-- Table Filters -->
+<div class="px-xl py-lg border-b border-outline-variant dark:border-outline flex flex-col sm:flex-row items-center justify-between gap-md">
+<div class="flex items-center gap-md w-full sm:w-auto">
+<button class="flex items-center gap-sm px-md py-2 border border-outline-variant dark:border-outline rounded-lg text-body-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low dark:hover:bg-on-surface/10 transition-colors">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+                        Filter
+                    </button>
+<button class="flex items-center gap-sm px-md py-2 border border-outline-variant dark:border-outline rounded-lg text-body-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low dark:hover:bg-on-surface/10 transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                        Export
+                    </button>
+</div>
+<div class="relative w-full sm:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 border border-outline-variant dark:border-outline rounded-lg text-body-md bg-transparent dark:text-inverse-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Search categories..." type="text"/>
+</div>
+</div>
+<!-- Empty State (Hidden by default, shown via JS if no rows) -->
+<div class="hidden flex flex-col items-center justify-center py-20 px-xl text-center" id="empty-state">
+<div class="w-24 h-24 bg-surface-container-high dark:bg-on-surface/5 rounded-full flex items-center justify-center text-outline mb-lg">
+<span class="material-symbols-outlined text-[48px]" data-icon="category_off">category_off</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface dark:text-inverse-on-surface mb-xs">No categories yet</h3>
+<p class="text-body-md text-on-surface-variant dark:text-outline max-w-sm mb-xl">Start organizing your inventory by creating your first product category.</p>
+<button class="add-category-btn flex items-center gap-sm px-lg py-2.5 bg-primary text-on-primary font-label-md rounded-lg shadow-sm hover:shadow-md active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                    Add Your First Category
+                </button>
+</div>
+<!-- Table Content -->
+<div class="overflow-x-auto" id="table-container">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low dark:bg-on-surface/5 border-b border-outline-variant dark:border-outline">
+<tr>
+<th class="px-xl py-md font-label-md text-on-surface-variant dark:text-outline uppercase tracking-wider">Category Name</th>
+<th class="px-xl py-md font-label-md text-on-surface-variant dark:text-outline uppercase tracking-wider">Slug</th>
+<th class="px-xl py-md font-label-md text-on-surface-variant dark:text-outline uppercase tracking-wider">Description</th>
+<th class="px-xl py-md font-label-md text-on-surface-variant dark:text-outline uppercase tracking-wider text-center">Products</th>
+<th class="px-xl py-md font-label-md text-on-surface-variant dark:text-outline uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant dark:divide-outline" id="categories-tbody">
+<tr class="hover:bg-surface-container-low/50 dark:hover:bg-on-surface/5 transition-colors group">
+<td class="px-xl py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center text-primary dark:text-primary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="devices">devices</span>
+</div>
+<div>
+<p class="font-body-md font-semibold text-on-surface dark:text-inverse-on-surface">Electronics</p>
+<p class="text-label-sm text-outline">Added on 12 Oct 2023</p>
+</div>
+</div>
+</td>
+<td class="px-xl py-md">
+<code class="px-2 py-1 bg-surface-container-high dark:bg-on-surface/10 rounded text-label-sm text-secondary dark:text-secondary-fixed-dim font-mono">electronics-gadgets</code>
+</td>
+<td class="px-xl py-md">
+<p class="text-body-md text-on-surface-variant dark:text-outline max-w-xs truncate">All electronic components and hardware.</p>
+</td>
+<td class="px-xl py-md text-center">
+<span class="px-3 py-1 bg-primary-container/20 text-primary dark:text-primary-fixed-dim font-label-md rounded-full">142 Items</span>
+</td>
+<td class="px-xl py-md text-right">
+<div class="flex items-center justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-outline hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-primary/5 rounded-lg">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="delete-trigger p-2 text-outline hover:text-error hover:bg-error/5 rounded-lg" data-name="Electronics">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Additional Row for Visual Consistency -->
+<tr class="hover:bg-surface-container-low/50 dark:hover:bg-on-surface/5 transition-colors group">
+<td class="px-xl py-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-tertiary-container/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="chair">chair</span>
+</div>
+<div>
+<p class="font-body-md font-semibold text-on-surface dark:text-inverse-on-surface">Furniture</p>
+<p class="text-label-sm text-outline">Added on 15 Oct 2023</p>
+</div>
+</div>
+</td>
+<td class="px-xl py-md">
+<code class="px-2 py-1 bg-surface-container-high dark:bg-on-surface/10 rounded text-label-sm text-secondary dark:text-secondary-fixed-dim font-mono">office-furniture</code>
+</td>
+<td class="px-xl py-md">
+<p class="text-body-md text-on-surface-variant dark:text-outline max-w-xs truncate">Office and home workspace furniture.</p>
+</td>
+<td class="px-xl py-md text-center">
+<span class="px-3 py-1 bg-primary-container/20 text-primary dark:text-primary-fixed-dim font-label-md rounded-full">85 Items</span>
+</td>
+<td class="px-xl py-md text-right">
+<div class="flex items-center justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-outline hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-primary/5 rounded-lg">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="delete-trigger p-2 text-outline hover:text-error hover:bg-error/5 rounded-lg" data-name="Furniture">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination -->
+<div class="px-xl py-md bg-surface-container-low dark:bg-on-surface/5 border-t border-outline-variant dark:border-outline flex flex-col sm:flex-row items-center justify-between gap-md" id="pagination">
+<p class="text-label-md text-on-surface-variant dark:text-outline">Showing <span class="font-bold text-on-surface dark:text-inverse-on-surface">1 to 2</span> of 24 categories</p>
+<div class="flex items-center gap-xs">
+<button class="p-2 border border-outline-variant dark:border-outline rounded-lg text-outline hover:bg-surface-container-high dark:hover:bg-on-surface/10 disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 bg-primary text-on-primary rounded-lg font-label-md">1</button>
+<button class="w-10 h-10 hover:bg-surface-container-high dark:hover:bg-on-surface/10 rounded-lg font-label-md text-on-surface dark:text-inverse-on-surface">2</button>
+<button class="p-2 border border-outline-variant dark:border-outline rounded-lg text-outline hover:bg-surface-container-high dark:hover:bg-on-surface/10">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="mt-auto px-xl py-lg text-center text-label-sm text-outline">
+        © 2024 StockMaster Enterprise. All rights reserved. Precise Inventory Systems.
+    </footer>
+</main>
+<!-- Add Category Modal -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-md bg-inverse-surface/40 backdrop-blur-sm hidden" id="add-modal">
+<div class="bg-surface-container-lowest dark:bg-inverse-surface w-full max-w-lg rounded-xl shadow-high border border-outline-variant dark:border-outline overflow-hidden">
+<div class="px-xl py-lg border-b border-outline-variant dark:border-outline flex items-center justify-between bg-surface-container-low dark:bg-on-surface/5">
+<h3 class="font-headline-sm text-headline-sm text-on-surface dark:text-inverse-on-surface">Create New Category</h3>
+<button class="close-modal p-2 hover:bg-surface-container-high dark:hover:bg-on-surface/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface dark:text-inverse-on-surface">close</span>
+</button>
+</div>
+<form class="p-xl space-y-lg">
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant dark:text-outline">Category Name</label>
+<input class="w-full px-md py-3 border border-outline-variant dark:border-outline bg-transparent rounded-lg text-body-md text-on-surface dark:text-inverse-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="e.g., Warehouse Equipment" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant dark:text-outline">URL Slug</label>
+<input class="w-full px-md py-3 border border-outline-variant dark:border-outline bg-surface-container-low dark:bg-on-surface/5 rounded-lg text-body-md text-on-surface dark:text-inverse-on-surface font-mono focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="warehouse-equipment" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-md text-on-surface-variant dark:text-outline">Description</label>
+<textarea class="w-full px-md py-3 border border-outline-variant dark:border-outline bg-transparent rounded-lg text-body-md text-on-surface dark:text-inverse-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none" placeholder="Describe what this category encompasses..." rows="3"></textarea>
+</div>
+<div class="pt-md flex items-center justify-end gap-md">
+<button class="close-modal px-lg py-2.5 font-label-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low dark:hover:bg-on-surface/10 rounded-lg transition-colors" type="button">Cancel</button>
+<button class="px-lg py-2.5 font-label-md bg-primary text-on-primary rounded-lg shadow-sm hover:shadow-md transition-all" type="submit">Save Category</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Delete Confirmation Modal -->
+<div class="fixed inset-0 z-[110] flex items-center justify-center p-md bg-inverse-surface/60 backdrop-blur-sm hidden" id="delete-modal">
+<div class="bg-surface-container-lowest dark:bg-inverse-surface w-full max-w-md rounded-xl shadow-high border border-outline-variant dark:border-outline overflow-hidden">
+<div class="p-xl text-center">
+<div class="w-16 h-16 bg-error-container text-error rounded-full flex items-center justify-center mx-auto mb-lg">
+<span class="material-symbols-outlined text-[32px]">warning</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface dark:text-inverse-on-surface mb-xs">Delete Category?</h3>
+<p class="text-body-md text-on-surface-variant dark:text-outline">
+                You are about to delete "<span class="font-bold" id="delete-category-name"></span>". This action cannot be undone and may affect associated products.
+            </p>
+</div>
+<div class="px-xl py-lg bg-surface-container-low dark:bg-on-surface/5 flex items-center justify-center gap-md">
+<button class="close-delete-modal px-lg py-2.5 font-label-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high dark:hover:bg-on-surface/10 rounded-lg transition-colors">Keep Category</button>
+<button class="px-lg py-2.5 font-label-md bg-error text-on-error rounded-lg shadow-sm hover:bg-error/90 transition-all">Yes, Delete</button>
+</div>
+</div>
+</div>
+<script>
+    // Theme Toggle Logic
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    
+    themeToggle.addEventListener('click', () => {
+        html.classList.toggle('dark');
+        const isDark = html.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Check saved theme
+    if (localStorage.getItem('theme') === 'dark') {
+        html.classList.add('dark');
+    }
+
+    // Modal Control Logic
+    const addModals = document.querySelectorAll('.add-category-btn');
+    const addModal = document.getElementById('add-modal');
+    const closeButtons = document.querySelectorAll('.close-modal');
+
+    addModals.forEach(btn => {
+        btn.addEventListener('click', () => {
+            addModal.classList.remove('hidden');
+            addModal.querySelector('input').focus();
+        });
+    });
+
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            addModal.classList.add('hidden');
+        });
+    });
+
+    // Delete Modal Logic
+    const deleteModal = document.getElementById('delete-modal');
+    const deleteTriggers = document.querySelectorAll('.delete-trigger');
+    const deleteNameSpan = document.getElementById('delete-category-name');
+    const closeDeleteBtn = document.querySelector('.close-delete-modal');
+
+    deleteTriggers.forEach(btn => {
+        btn.addEventListener('click', () => {
+            deleteNameSpan.textContent = btn.getAttribute('data-name');
+            deleteModal.classList.remove('hidden');
+        });
+    });
+
+    closeDeleteBtn.addEventListener('click', () => {
+        deleteModal.classList.add('hidden');
+    });
+
+    // Empty State Toggle (Example Helper)
+    function toggleEmptyState(isEmpty) {
+        const table = document.getElementById('table-container');
+        const pagination = document.getElementById('pagination');
+        const empty = document.getElementById('empty-state');
+        if (isEmpty) {
+            table.classList.add('hidden');
+            pagination.classList.add('hidden');
+            empty.classList.remove('hidden');
+        } else {
+            table.classList.remove('hidden');
+            pagination.classList.remove('hidden');
+            empty.classList.add('hidden');
+        }
+    }
+
+    // Global close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            addModal.classList.add('hidden');
+            deleteModal.classList.add('hidden');
+        }
+    });
+</script>
+</body></html>
