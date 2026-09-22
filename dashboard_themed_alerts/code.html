@@ -188,10 +188,14 @@
 <span class="material-symbols-outlined">help_outline</span>
 <span class="font-body-md text-body-md">Help Center</span>
 </a>
-<button class="mt-md w-full flex items-center justify-center gap-2 py-2 px-4 bg-error-container text-on-error-container font-label-md rounded-lg hover:opacity-90 transition-all active:scale-95">
-<span class="material-symbols-outlined text-sm">logout</span>
-            Logout
-        </button>
+<button
+    id="logoutButton"
+    type="button"
+    class="mt-md w-full flex items-center justify-center gap-2 py-2 px-4 bg-error-container text-on-error-container font-label-md rounded-lg hover:opacity-90"
+>
+    <span class="material-symbols-outlined text-sm">logout</span>
+    Logout
+</button>
 </div>
 </aside>
 <!-- TopNavBar Anchor -->
@@ -266,12 +270,21 @@
                 Add Product
             </button>
 <div class="flex items-center gap-3 ml-md cursor-pointer group">
-<div class="text-right">
-<p class="font-label-md text-on-surface dark:text-inverse-on-surface leading-tight">Alex Rivera</p>
-<p class="text-[10px] text-secondary dark:text-outline-variant leading-tight">Admin Manager</p>
-</div>
-<img class="w-10 h-10 rounded-full border-2 border-primary/20 object-cover group-hover:border-primary transition-all" data-alt="A professional headshot of Alex Rivera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKOvqdgZBaAqjeC9zyWiGHkbAO7KUqt9xuaDYjIH7l62aqHDcNnMlXv2EzG3RZ25tfxz0ijp0HoCkQfwuS4DzyezJo2FSd-01_M06vwoOxSHBp_fHCpvbspR8cteqVDqzKg__ZKIJJMD9YeU-ylMr995VGVDBMhtmwq_0UJdXxJ387VcI6gNqfpEjnJqQQrxJO5qOjfrM8PNINeiOzopt42CMkPMPBGMKdnTKMSePIyaX1iJn8Xl3x"/>
-</div>
+    <div class="text-right">
+        <p id="dashboardUserName" class="font-label-md text-on-surface dark:text-inverse-on-surface leading-tight">
+             User </p>
+
+        <p id="dashboardUserRole"class="text-[10px] text-secondary dark:text-outline-variant leading-tight"
+        >
+            Staff </p>
+    </div>
+
+    <div id="dashboardUserAvatar" class="w-10 h-10 rounded-full border-2 border-primary/20
+               bg-primary text-on-primary flex items-center justify-center
+               font-bold group-hover:border-primary transition-all"
+    >
+        U
+    </div>
 </div>
 </header>
 <!-- Main Content Canvas -->
@@ -596,60 +609,238 @@
 <span class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform duration-300">add</span>
 </button>
 <script>
-    // Theme Management
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const html = document.documentElement;
+document.addEventListener("DOMContentLoaded", async function () {
 
-    function updateTheme(isDark) {
-        if (isDark) {
-            html.classList.add('dark');
-            themeIcon.innerText = 'dark_mode';
-            localStorage.setItem('theme', 'dark');
-        } else {
-            html.classList.remove('dark');
-            themeIcon.innerText = 'light_mode';
-            localStorage.setItem('theme', 'light');
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:8000/api/accounts/me/",
+            {
+                credentials: "include"
+            }
+        );
+
+        const data = await response.json();
+
+        if (!data.authenticated) {
+
+            localStorage.removeItem("stockmaster_user");
+            localStorage.removeItem("isLoggedIn");
+
+            window.location.href =
+                "../login_page/code.html";
+
+            return;
         }
+
+        const userNameElement = document.getElementById("dashboardUserName");
+        const userRoleElement = document.getElementById("dashboardUserRole");
+        const avatarElement = document.getElementById("dashboardUserAvatar");
+        const user = data.user || {};
+        const displayName = [user.first_name, user.last_name]
+            .filter(Boolean)
+            .join(" ") || user.username || user.email || "User";
+        const roleNames = {
+            SUPER_ADMIN: "Super Admin",
+            CLIENT_ADMIN: "Client Admin",
+            MANAGER: "Manager",
+            STAFF: "Staff"
+        };
+
+        if (userNameElement) {
+            userNameElement.textContent = displayName;
+        }
+        if (userRoleElement) {
+            userRoleElement.textContent = roleNames[user.role] || user.role || "Staff";
+        }
+        if (avatarElement) {
+            avatarElement.textContent = displayName
+                .split(/\s+/)
+                .filter(Boolean)
+                .slice(0, 2)
+                .map((part) => part.charAt(0))
+                .join("")
+                .toUpperCase();
+        }
+
+        console.log(
+            "Authenticated user:",
+            data.user
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Authentication check failed:",
+            error
+        );
+
+        window.location.href =
+            "../login_page/code.html";
     }
 
-    // Check saved preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        updateTheme(true);
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const logoutButton =
+        document.getElementById("logoutButton");
+
+    if (!logoutButton) {
+        console.warn("Logout button not found.");
+        return;
     }
 
-    themeToggle.addEventListener('click', () => {
-        updateTheme(!html.classList.contains('dark'));
+    logoutButton.addEventListener("click", async function () {
+
+        const confirmed =
+            confirm("Are you sure you want to logout?");
+
+        if (!confirmed) {
+            return;
+        }
+
+        logoutButton.disabled = true;
+        logoutButton.textContent = "Logging out...";
+
+        try {
+
+            const response = await fetch(
+                "http://127.0.0.1:8000/api/accounts/logout/",
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Django logout request failed."
+                );
+            }
+
+            // Remove frontend login information
+            localStorage.removeItem("stockmaster_user");
+            localStorage.removeItem("isLoggedIn");
+
+            // Return to login page
+            window.location.href =
+                "../login_page/code.html";
+
+        } catch (error) {
+
+            console.error("Logout error:", error);
+
+            alert(
+                "Logout failed. Please try again."
+            );
+
+            logoutButton.disabled = false;
+
+            logoutButton.innerHTML = `
+                <span class="material-symbols-outlined text-sm">
+                    logout
+                </span>
+                Logout
+            `;
+        }
+
     });
 
-    // Notification Dropdown Toggle
-    const notifBtn = document.getElementById('notifBtn');
-    const notifDropdown = document.getElementById('notifDropdown');
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
-    notifBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        notifDropdown.classList.toggle('hidden');
+    const userNameElement = document.getElementById("dashboardUserName");
+    const userRoleElement = document.getElementById("dashboardUserRole");
+    const avatarElement = document.getElementById("dashboardUserAvatar");
+
+    if (!userNameElement || !userRoleElement || !avatarElement) {
+        console.error("Dashboard profile elements not found.");
+        return;
+    }
+
+    let user = null;
+
+    try {
+        const savedUser = localStorage.getItem("stockmaster_user");
+
+        if (savedUser) {
+            user = JSON.parse(savedUser);
+        }
+    } catch (error) {
+        console.error("Could not read logged-in user:", error);
+    }
+
+    if (!user) {
+        console.warn("No logged-in user found.");
+        return;
+    }
+
+    // -----------------------------------
+    // Display name
+    // -----------------------------------
+
+    let displayName = "";
+
+    if (user.first_name || user.last_name) {
+        displayName = `${user.first_name || ""} ${user.last_name || ""}`.trim();
+    }
+
+    if (!displayName) {
+        displayName = user.username || user.email || "User";
+    }
+
+    userNameElement.textContent = displayName;
+
+    // -----------------------------------
+    // Display role
+    // -----------------------------------
+
+    const roleNames = {
+        SUPER_ADMIN: "Super Admin",
+        CLIENT_ADMIN: "Client Admin",
+        MANAGER: "Manager",
+        STAFF: "Staff"
+    };
+
+    userRoleElement.textContent =
+        roleNames[user.role] || user.role || "Staff";
+
+    // -----------------------------------
+    // Create avatar initials
+    // -----------------------------------
+
+    const nameParts = displayName
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+
+    let initials = "";
+
+    if (nameParts.length >= 2) {
+        initials =
+            nameParts[0].charAt(0) +
+            nameParts[nameParts.length - 1].charAt(0);
+    } else {
+        initials = displayName.substring(0, 2);
+    }
+
+    avatarElement.textContent = initials.toUpperCase();
+
+    // -----------------------------------
+    // Click profile -> profile settings
+    // -----------------------------------
+
+    avatarElement.parentElement.addEventListener("click", function () {
+        window.location.href = "../profile_settings/code.html";
     });
 
-    document.addEventListener('click', () => {
-        notifDropdown.classList.add('hidden');
-    });
-
-    // Simple Micro-interactions
-    document.querySelectorAll('.active\\:scale-95').forEach(el => {
-        el.addEventListener('mousedown', () => el.style.transform = 'scale(0.95)');
-        el.addEventListener('mouseup', () => el.style.transform = 'scale(1)');
-        el.addEventListener('mouseleave', () => el.style.transform = 'scale(1)');
-    });
-
-    // Search Bar Focus Effect
-    const searchInput = document.querySelector('input[type="text"]');
-    searchInput.addEventListener('focus', () => {
-        searchInput.parentElement.classList.add('ring-2', 'ring-primary/20');
-    });
-    searchInput.addEventListener('blur', () => {
-        searchInput.parentElement.classList.remove('ring-2', 'ring-primary/20');
-    });
+});
 </script>
 </body></html>

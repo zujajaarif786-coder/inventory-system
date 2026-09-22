@@ -265,11 +265,11 @@
 </div>
 <div class="flex flex-col items-center gap-xs">
 <div class="flex items-center gap-sm">
-<h3 class="font-headline-sm text-headline-sm text-on-surface dark:text-on-surface">Alex Thompson</h3>
-<span class="bg-tertiary/10 text-tertiary dark:bg-tertiary-container/20 dark:text-tertiary-fixed-dim px-xs py-[2px] rounded text-[10px] font-bold uppercase tracking-wider border border-tertiary/20">Administrator</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface dark:text-on-surface" id="profileName">Alex Thompson</h3>
+<span class="bg-tertiary/10 text-tertiary dark:bg-tertiary-container/20 dark:text-tertiary-fixed-dim px-xs py-[2px] rounded text-[10px] font-bold uppercase tracking-wider border border-tertiary/20"id="profileRole">Administrator</span>
 </div>
 <p class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-semibold">Senior Inventory Manager</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mb-lg">alex.thompson@stockmaster.io</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mb-lg"id="profileEmail">alex.thompson@stockmaster.io</p>
 </div>
 <a class="text-primary dark:text-primary-fixed-dim font-label-md text-label-md hover:underline" href="#">Change Profile Photo</a>
 </div>
@@ -317,19 +317,19 @@
 </div>
 <div class="p-xl grid grid-cols-1 md:grid-cols-2 gap-lg">
 <div class="flex flex-col gap-xs">
-<label class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant">First Name</label>
+<label class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant"id="profileFirstName">First Name</label>
 <input class="w-full px-md py-sm bg-background dark:bg-surface-container-highest/10 border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md dark:text-on-surface input-standard" type="text" value="Alex"/>
 </div>
 <div class="flex flex-col gap-xs">
-<label class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant">Last Name</label>
+<label class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant"id="profileLastName">Last Name</label>
 <input class="w-full px-md py-sm bg-background dark:bg-surface-container-highest/10 border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md dark:text-on-surface input-standard" type="text" value="Thompson"/>
 </div>
 <div class="flex flex-col gap-xs">
-<label class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant">Email Address</label>
+<label class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant"id="profileEmail">Email Address</label>
 <input class="w-full px-md py-sm bg-background dark:bg-surface-container-highest/10 border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md dark:text-on-surface input-standard" type="email" value="alex.thompson@stockmaster.io"/>
 </div>
 <div class="flex flex-col gap-xs">
-<label class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant">Phone Number</label>
+<label class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant"id="profilePhone">Phone Number</label>
 <input class="w-full px-md py-sm bg-background dark:bg-surface-container-highest/10 border border-outline-variant dark:border-outline rounded-lg font-body-md text-body-md dark:text-on-surface input-standard" type="tel" value="+1 (555) 012-3456"/>
 </div>
 <div class="col-span-1 md:col-span-2">
@@ -520,4 +520,139 @@
             }
         });
     </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const nameElement = document.getElementById("profileName");
+    const roleElement = document.getElementById("profileRole");
+    const emailElement = document.getElementById("profileEmail");
+
+    const usernameElement =
+        document.getElementById("profileUsername");
+
+    const phoneElement =
+        document.getElementById("profilePhone");
+
+    const firstNameElement =
+        document.getElementById("profileFirstName");
+
+    const lastNameElement =
+        document.getElementById("profileLastName");
+
+    let user = null;
+
+    try {
+        const savedUser =
+            localStorage.getItem("stockmaster_user");
+
+        if (savedUser) {
+            user = JSON.parse(savedUser);
+        }
+    } catch (error) {
+        console.error(
+            "Could not read logged-in user:",
+            error
+        );
+    }
+
+    if (!user) {
+        console.warn("No logged-in user found.");
+
+        // Send user back to login
+        window.location.href =
+            "../login_page/code.html";
+
+        return;
+    }
+
+    // -----------------------------
+    // Name
+    // -----------------------------
+
+    let displayName = "";
+
+    if (user.first_name || user.last_name) {
+        displayName =
+            `${user.first_name || ""} ${user.last_name || ""}`
+                .trim();
+    }
+
+    if (!displayName) {
+        displayName =
+            user.username ||
+            user.email ||
+            "User";
+    }
+
+    if (nameElement) {
+        nameElement.textContent = displayName;
+    }
+
+    // -----------------------------
+    // Role
+    // -----------------------------
+
+    const roleNames = {
+        SUPER_ADMIN: "Super Admin",
+        CLIENT_ADMIN: "Client Admin",
+        MANAGER: "Manager",
+        STAFF: "Staff"
+    };
+
+    const displayRole =
+        roleNames[user.role] ||
+        user.role ||
+        "Staff";
+
+    if (roleElement) {
+        roleElement.textContent = displayRole;
+    }
+
+    // -----------------------------
+    // Email
+    // -----------------------------
+
+    if (emailElement) {
+        emailElement.textContent =
+            user.email || "Not provided";
+    }
+
+    // -----------------------------
+    // Username
+    // -----------------------------
+
+    if (usernameElement) {
+        usernameElement.textContent =
+            user.username || "Not provided";
+    }
+
+    // -----------------------------
+    // Phone
+    // -----------------------------
+
+    if (phoneElement) {
+        phoneElement.textContent =
+            user.phone || "Not provided";
+    }
+
+    // -----------------------------
+    // First Name
+    // -----------------------------
+
+    if (firstNameElement) {
+        firstNameElement.textContent =
+            user.first_name || "";
+    }
+
+    // -----------------------------
+    // Last Name
+    // -----------------------------
+
+    if (lastNameElement) {
+        lastNameElement.textContent =
+            user.last_name || "";
+    }
+
+});
+</script>
 </body></html>
