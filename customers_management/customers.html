@@ -1,0 +1,3142 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customers StockMaster</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet"
+    >
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+
+            theme: {
+                extend: {
+
+                    colors: {
+                        primary: "#004ac6",
+                        "primary-container": "#2563eb",
+
+                        background: "#faf8ff",
+                        surface: "#faf8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3fe",
+                        "surface-container": "#ededf9",
+                        "surface-container-high": "#e7e7f3",
+                        "surface-variant": "#e1e2ed",
+
+                        "on-surface": "#191b23",
+                        "on-background": "#191b23",
+                        "on-primary": "#ffffff",
+
+                        secondary: "#545f73",
+                        outline: "#737686",
+                        "outline-variant": "#c3c6d7",
+
+                        error: "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a"
+                    },
+
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+
+                    spacing: {
+                        lg: "24px",
+                        xl: "32px",
+                        md: "16px",
+                        sm: "8px",
+                        gutter: "24px",
+                        "header-height": "64px"
+                    },
+
+                    fontFamily: {
+                        headline: ["Inter"],
+                        body: ["Inter"]
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings:
+                "FILL" 0,
+                "wght" 400,
+                "GRAD" 0,
+                "opsz" 24;
+
+            vertical-align: middle;
+        }
+
+        .modal-backdrop {
+            animation: fadeIn 0.15s ease-out;
+        }
+
+        .modal-card {
+            animation: slideUp 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+
+<body
+    class="bg-background dark:bg-slate-950 text-on-background dark:text-slate-100 min-h-screen overflow-x-hidden"
+>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm flex flex-col py-lg px-md z-50">
+    <div class="flex items-center gap-3 px-sm mb-xl">
+        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+            <span class="material-symbols-outlined">inventory_2</span>
+        </div>
+        <div>
+            <h1 class="font-headline-md text-headline-md font-bold text-primary">StockMaster</h1>
+            <p class="text-[10px] text-secondary-fixed-dim uppercase tracking-widest font-bold">Enterprise</p>
+        </div>
+    </div>
+
+
+    <!-- Navigation -->
+
+    <nav class="flex-1 space-y-1 overflow-y-auto custom-scrollbar">
+
+        <a
+            href="../dashboard_themed_alerts/code.html"
+            class="flex items-center gap-3 px-4 py-3
+                   text-slate-600 dark:text-slate-300
+                   hover:bg-slate-100 dark:hover:bg-slate-800
+                   rounded-lg transition"
+        >
+            <span class="material-symbols-outlined">
+                dashboard
+            </span>
+
+            <span>Dashboard</span>
+        </a>
+
+
+        <a
+            href="../user_management/users_list.html"
+            class="flex items-center gap-3 px-4 py-3
+                   text-slate-600 dark:text-slate-300
+                   hover:bg-slate-100 dark:hover:bg-slate-800
+                   rounded-lg transition"
+        >
+            <span class="material-symbols-outlined">
+                group
+            </span>
+
+            <span>Users</span>
+        </a>
+
+
+        <a
+            href="../products_management/code.html"
+            class="flex items-center gap-3 px-4 py-3
+                   text-slate-600 dark:text-slate-300
+                   hover:bg-slate-100 dark:hover:bg-slate-800
+                   rounded-lg transition"
+        >
+            <span class="material-symbols-outlined">
+                inventory_2
+            </span>
+
+            <span>Products</span>
+        </a>
+
+
+        <a
+            href="#"
+            class="flex items-center gap-3 px-4 py-3
+                   text-slate-600 dark:text-slate-300
+                   hover:bg-slate-100 dark:hover:bg-slate-800
+                   rounded-lg transition"
+        >
+            <span class="material-symbols-outlined">
+                category
+            </span>
+
+            <span>Categories</span>
+        </a>
+
+
+        <a
+            href="../suppliers_management/suppliers_list.html"
+            class="flex items-center gap-3 px-4 py-3
+                   text-slate-600 dark:text-slate-300
+                   hover:bg-slate-100 dark:hover:bg-slate-800
+                   rounded-lg transition"
+        >
+            <span class="material-symbols-outlined">
+                domain
+            </span>
+
+            <span>Suppliers</span>
+        </a>
+
+
+        <!-- ACTIVE -->
+
+        <a
+            href="#"
+            class="flex items-center gap-3 px-4 py-3
+                   bg-primary text-white rounded-lg"
+        >
+            <span class="material-symbols-outlined">
+                person
+            </span>
+
+            <span>Customers</span>
+        </a>
+
+
+        <a
+            href="#"
+            class="flex items-center gap-3 px-4 py-3
+                   text-slate-600 dark:text-slate-300
+                   hover:bg-slate-100 dark:hover:bg-slate-800
+                   rounded-lg transition"
+        >
+            <span class="material-symbols-outlined">
+                inventory
+            </span>
+
+            <span>Inventory</span>
+        </a>
+        
+    </nav>
+
+
+    <!-- Logout -->
+
+    <div class="mt-auto pt-lg border-t border-outline-variant dark:border-outline">
+
+        <button
+            type="button"
+            class="w-full flex items-center justify-center
+                   gap-2 py-2 px-4
+                   bg-red-100 dark:bg-red-950/40
+                   text-red-700 dark:text-red-400
+                   rounded-lg hover:opacity-80"
+            onclick="handleLogout()"
+        >
+            <span class="material-symbols-outlined text-sm">
+                logout
+            </span>
+
+            Logout
+        </button>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header
+    class="fixed top-0 right-0 h-16 z-40
+           bg-white dark:bg-slate-900
+           border-b border-slate-200 dark:border-slate-700
+           shadow-sm flex items-center justify-between
+           px-8 w-[calc(100%-280px)]"
+>
+
+    <!-- Search -->
+
+    <div class="flex items-center gap-4 flex-1">
+
+        <div class="relative w-full max-w-md">
+
+            <span
+                class="material-symbols-outlined
+                       absolute left-3 top-1/2
+                       -translate-y-1/2
+                       text-slate-400"
+            >
+                search
+            </span>
+
+            <input
+                id="customerSearch"
+                type="search"
+                placeholder="Search customers..."
+                autocomplete="off"
+                class="w-full
+                       bg-slate-100 dark:bg-slate-800
+                       border-none rounded-full
+                       pl-10 pr-4 py-2
+                       text-sm
+                       focus:ring-2
+                       focus:ring-primary/30"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- Header Actions -->
+
+    <div class="flex items-center gap-4">
+
+        <button
+            type="button"
+            id="themeToggle"
+            class="p-2 text-slate-600
+                   dark:text-slate-300
+                   hover:bg-slate-100
+                   dark:hover:bg-slate-800
+                   rounded-full"
+            title="Toggle dark mode"
+        >
+            <span
+                class="material-symbols-outlined"
+                id="themeIcon"
+            >
+                light_mode
+            </span>
+        </button>
+
+
+        <div
+            class="h-8 w-px
+                   bg-slate-200
+                   dark:bg-slate-700"
+        ></div>
+
+
+        <button
+            type="button"
+            id="addCustomerButton"
+            class="flex items-center gap-2
+                   px-4 py-2
+                   bg-primary text-white
+                   rounded-lg
+                   font-semibold
+                   hover:bg-primary-container
+                   transition"
+        >
+            <span class="material-symbols-outlined text-[20px]">
+                add
+            </span>
+
+            Add Customer
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main
+    class="pt-16 ml-[280px]
+           min-h-screen p-8"
+>
+
+    <!-- Page Heading -->
+
+    <div
+        class="flex flex-col sm:flex-row
+               justify-between sm:items-center
+               gap-4 mb-8"
+    >
+
+        <div>
+
+            <h2
+                class="text-2xl font-semibold
+                       text-slate-900
+                       dark:text-white"
+            >
+                Customers
+            </h2>
+
+            <p
+                class="text-sm
+                       text-slate-500
+                       dark:text-slate-400
+                       mt-1"
+            >
+                Manage customer accounts and relationships.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    <div
+        class="grid grid-cols-1
+               sm:grid-cols-2
+               lg:grid-cols-4
+               gap-6 mb-8"
+    >
+
+        <!-- Total Customers -->
+
+        <div
+            class="bg-white dark:bg-slate-900
+                   p-6 rounded-xl
+                   shadow-sm
+                   border border-slate-200
+                   dark:border-slate-700"
+        >
+
+            <p
+                class="text-xs
+                       text-slate-500
+                       dark:text-slate-400
+                       uppercase
+                       tracking-wider
+                       font-semibold"
+            >
+                Total Customers
+            </p>
+
+            <h3
+                id="totalCustomersStat"
+                class="text-3xl
+                       font-bold
+                       text-slate-900
+                       dark:text-white
+                       mt-2"
+            >
+                0
+            </h3>
+
+            <p
+                id="customerGrowthStat"
+                class="text-xs
+                       text-primary
+                       font-semibold
+                       mt-2"
+            >
+                —
+            </p>
+
+        </div>
+
+
+        <!-- Active -->
+
+        <div
+            class="bg-white dark:bg-slate-900
+                   p-6 rounded-xl
+                   shadow-sm
+                   border border-slate-200
+                   dark:border-slate-700"
+        >
+
+            <p
+                class="text-xs
+                       text-slate-500
+                       dark:text-slate-400
+                       uppercase
+                       tracking-wider
+                       font-semibold"
+            >
+                Active Customers
+            </p>
+
+            <h3
+                id="activeCustomersStat"
+                class="text-3xl
+                       font-bold
+                       text-slate-900
+                       dark:text-white
+                       mt-2"
+            >
+                0
+            </h3>
+
+            <p
+                id="activePercentageStat"
+                class="text-xs
+                       text-green-600
+                       dark:text-green-400
+                       font-semibold
+                       mt-2"
+            >
+                0% active
+            </p>
+
+        </div>
+
+
+        <!-- Revenue -->
+
+        <div
+            class="bg-white dark:bg-slate-900
+                   p-6 rounded-xl
+                   shadow-sm
+                   border border-slate-200
+                   dark:border-slate-700"
+        >
+
+            <p
+                class="text-xs
+                       text-slate-500
+                       dark:text-slate-400
+                       uppercase
+                       tracking-wider
+                       font-semibold"
+            >
+                Total Purchases
+            </p>
+
+            <h3
+                id="totalPurchasesStat"
+                class="text-3xl
+                       font-bold
+                       text-slate-900
+                       dark:text-white
+                       mt-2"
+            >
+                $0
+            </h3>
+
+            <p
+                class="text-xs
+                       text-slate-500
+                       font-semibold
+                       mt-2"
+            >
+                Customer purchase value
+            </p>
+
+        </div>
+
+
+        <!-- Archived -->
+
+        <div
+            class="bg-white dark:bg-slate-900
+                   p-6 rounded-xl
+                   shadow-sm
+                   border border-slate-200
+                   dark:border-slate-700"
+        >
+
+            <p
+                class="text-xs
+                       text-slate-500
+                       dark:text-slate-400
+                       uppercase
+                       tracking-wider
+                       font-semibold"
+            >
+                Archived Customers
+            </p>
+
+            <h3
+                id="archivedCustomersStat"
+                class="text-3xl
+                       font-bold
+                       text-slate-900
+                       dark:text-white
+                       mt-2"
+            >
+                0
+            </h3>
+
+            <p
+                class="text-xs
+                       text-orange-600
+                       dark:text-orange-400
+                       font-semibold
+                       mt-2"
+            >
+                Inactive accounts
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CUSTOMER TABLE
+    ====================================================== -->
+
+    <div
+        class="bg-white dark:bg-slate-900
+               rounded-xl shadow-sm
+               border border-slate-200
+               dark:border-slate-700
+               overflow-hidden"
+    >
+
+        <!-- Table Header -->
+
+        <div
+            class="p-6
+                   border-b
+                   border-slate-200
+                   dark:border-slate-700
+                   flex flex-col
+                   sm:flex-row
+                   sm:items-center
+                   sm:justify-between
+                   gap-3"
+        >
+
+            <div>
+
+                <h4
+                    class="text-lg
+                           font-semibold
+                           text-slate-900
+                           dark:text-white"
+                >
+                    All Customers
+                </h4>
+
+                <p
+                    id="customerCountText"
+                    class="text-sm
+                           text-slate-500
+                           dark:text-slate-400
+                           mt-1"
+                >
+                    0 customers
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Table -->
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left">
+
+                <thead
+                    class="bg-slate-50
+                           dark:bg-slate-800"
+                >
+
+                    <tr>
+
+                        <th
+                            class="px-6 py-4
+                                   text-xs
+                                   font-semibold
+                                   uppercase
+                                   tracking-wider
+                                   text-slate-500
+                                   dark:text-slate-400"
+                        >
+                            Customer
+                        </th>
+
+                        <th
+                            class="px-6 py-4
+                                   text-xs
+                                   font-semibold
+                                   uppercase
+                                   tracking-wider
+                                   text-slate-500
+                                   dark:text-slate-400"
+                        >
+                            Contact
+                        </th>
+
+                        <th
+                            class="px-6 py-4
+                                   text-xs
+                                   font-semibold
+                                   uppercase
+                                   tracking-wider
+                                   text-slate-500
+                                   dark:text-slate-400"
+                        >
+                            Email
+                        </th>
+
+                        <th
+                            class="px-6 py-4
+                                   text-xs
+                                   font-semibold
+                                   uppercase
+                                   tracking-wider
+                                   text-slate-500
+                                   dark:text-slate-400"
+                        >
+                            Total Purchases
+                        </th>
+
+                        <th
+                            class="px-6 py-4
+                                   text-xs
+                                   font-semibold
+                                   uppercase
+                                   tracking-wider
+                                   text-slate-500
+                                   dark:text-slate-400"
+                        >
+                            Status
+                        </th>
+
+                        <th
+                            class="px-6 py-4
+                                   text-xs
+                                   font-semibold
+                                   uppercase
+                                   tracking-wider
+                                   text-slate-500
+                                   dark:text-slate-400
+                                   text-right"
+                        >
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="customersTableBody"
+                    class="divide-y
+                           divide-slate-200
+                           dark:divide-slate-700"
+                >
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+"use strict";
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ========================================================
+       CONFIGURATION
+    ======================================================== */
+
+    const STORAGE_KEY = "stockmaster_customers";
+
+
+    /* ========================================================
+       DOM ELEMENTS
+    ======================================================== */
+
+    const addButton =
+        document.getElementById("addCustomerButton");
+
+    const searchInput =
+        document.getElementById("customerSearch");
+
+    const tableBody =
+        document.getElementById("customersTableBody");
+
+    const totalCustomersStat =
+        document.getElementById("totalCustomersStat");
+
+    const activeCustomersStat =
+        document.getElementById("activeCustomersStat");
+
+    const totalPurchasesStat =
+        document.getElementById("totalPurchasesStat");
+
+    const archivedCustomersStat =
+        document.getElementById("archivedCustomersStat");
+
+    const activePercentageStat =
+        document.getElementById("activePercentageStat");
+
+    const customerGrowthStat =
+        document.getElementById("customerGrowthStat");
+
+    const customerCountText =
+        document.getElementById("customerCountText");
+
+
+    /* ========================================================
+       DEFAULT CUSTOMERS
+    ======================================================== */
+
+    const defaultCustomers = [
+
+        {
+            id: "CUS-001",
+            name: "Acme Corporation",
+            contact: "+1 (555) 123-4567",
+            email: "contact@acme.com",
+            city: "New York",
+            country: "USA",
+            purchases: 124500,
+            status: "Active",
+            createdAt: "2026-01-05T10:00:00.000Z"
+        },
+
+        {
+            id: "CUS-002",
+            name: "Global Tech Ltd",
+            contact: "+44 20 7946 0958",
+            email: "sales@globaltech.co.uk",
+            city: "London",
+            country: "UK",
+            purchases: 89200,
+            status: "Active",
+            createdAt: "2026-02-10T10:00:00.000Z"
+        }
+
+    ];
+
+
+    /* ========================================================
+       STORAGE
+    ======================================================== */
+
+    function getCustomers() {
+
+        try {
+
+            const saved =
+                localStorage.getItem(STORAGE_KEY);
+
+            if (!saved) {
+
+                localStorage.setItem(
+                    STORAGE_KEY,
+                    JSON.stringify(defaultCustomers)
+                );
+
+                return [...defaultCustomers];
+            }
+
+            const parsed =
+                JSON.parse(saved);
+
+            if (!Array.isArray(parsed)) {
+
+                localStorage.setItem(
+                    STORAGE_KEY,
+                    JSON.stringify(defaultCustomers)
+                );
+
+                return [...defaultCustomers];
+            }
+
+            return parsed;
+
+        } catch (error) {
+
+            console.error(
+                "Customer storage error:",
+                error
+            );
+
+            return [];
+        }
+    }
+
+
+    function saveCustomers(customers) {
+
+        try {
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(customers)
+            );
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "Unable to save customers:",
+                error
+            );
+
+            showToast(
+                "Unable to save customer data.",
+                "error"
+            );
+
+            return false;
+        }
+    }
+
+
+    /* ========================================================
+       HELPERS
+    ======================================================== */
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    function formatCurrency(value) {
+
+        return new Intl.NumberFormat(
+            "en-US",
+            {
+                style: "currency",
+                currency: "USD",
+                maximumFractionDigits: 0
+            }
+        ).format(
+            Number(value) || 0
+        );
+    }
+
+
+    function generateCustomerId() {
+
+        const customers =
+            getCustomers();
+
+        let maxNumber = 0;
+
+        customers.forEach(function (customer) {
+
+            const match =
+                String(customer.id || "")
+                    .match(/^CUS-(\d+)$/);
+
+            if (match) {
+
+                const number =
+                    Number(match[1]);
+
+                if (number > maxNumber) {
+                    maxNumber = number;
+                }
+            }
+        });
+
+        return (
+            "CUS-" +
+            String(maxNumber + 1)
+                .padStart(3, "0")
+        );
+    }
+
+
+    function normalizeCustomer(customer) {
+
+        return {
+
+            id:
+                customer.id ||
+                generateCustomerId(),
+
+            name:
+                String(customer.name || "").trim(),
+
+            contact:
+                String(customer.contact || "").trim(),
+
+            email:
+                String(customer.email || "").trim(),
+
+            city:
+                String(customer.city || "").trim(),
+
+            country:
+                String(customer.country || "").trim(),
+
+            purchases:
+                Number(customer.purchases) || 0,
+
+            status:
+                customer.status === "Archived"
+                    ? "Archived"
+                    : "Active",
+
+            createdAt:
+                customer.createdAt ||
+                new Date().toISOString()
+        };
+    }
+
+
+    /* ========================================================
+       TOAST
+    ======================================================== */
+
+    function showToast(
+        message,
+        type = "success"
+    ) {
+
+        const toast =
+            document.createElement("div");
+
+        const background =
+            type === "error"
+                ? "bg-red-600"
+                : "bg-slate-900";
+
+        toast.className =
+            "fixed top-5 right-5 z-[500] " +
+            "rounded-lg px-5 py-3 text-white " +
+            "shadow-xl text-sm font-medium " +
+            background;
+
+        toast.textContent =
+            message;
+
+        document.body.appendChild(
+            toast
+        );
+
+        setTimeout(function () {
+
+            toast.remove();
+
+        }, 3000);
+    }
+
+
+    /* ========================================================
+       MODAL CLOSE
+    ======================================================== */
+
+    function closeModal() {
+
+        const modal =
+            document.getElementById(
+                "customerModal"
+            );
+
+        if (modal) {
+            modal.remove();
+        }
+    }
+
+
+    /* ========================================================
+       CUSTOMER FORM
+    ======================================================== */
+
+    function openCustomerForm(
+        existingCustomer = null
+    ) {
+
+        closeModal();
+
+        const editing =
+            Boolean(existingCustomer);
+
+        const modal =
+            document.createElement("div");
+
+        modal.id =
+            "customerModal";
+
+        modal.className =
+            "modal-backdrop fixed inset-0 z-[400] " +
+            "flex items-center justify-center " +
+            "bg-black/50 p-4";
+
+
+        modal.innerHTML = `
+
+            <div
+                class="
+                    modal-card
+                    w-full max-w-xl
+                    rounded-2xl
+                    bg-white dark:bg-slate-900
+                    shadow-2xl
+                    max-h-[90vh]
+                    overflow-y-auto
+                "
+            >
+
+                <!-- Modal Header -->
+
+                <div
+                    class="
+                        flex items-center
+                        justify-between
+                        px-6 py-5
+                        border-b
+                        border-slate-200
+                        dark:border-slate-700
+                    "
+                >
+
+                    <div>
+
+                        <h2
+                            class="
+                                text-xl
+                                font-semibold
+                                text-slate-900
+                                dark:text-white
+                            "
+                        >
+                            ${
+                                editing
+                                    ? "Edit Customer"
+                                    : "Add Customer"
+                            }
+                        </h2>
+
+                        <p
+                            class="
+                                text-sm
+                                text-slate-500
+                                dark:text-slate-400
+                                mt-1
+                            "
+                        >
+                            ${
+                                editing
+                                    ? "Update customer information."
+                                    : "Enter the customer information below."
+                            }
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="closeCustomerModal"
+                        class="
+                            p-2 rounded-lg
+                            text-slate-500
+                            hover:bg-slate-100
+                            dark:hover:bg-slate-800
+                        "
+                    >
+
+                        <span
+                            class="material-symbols-outlined"
+                        >
+                            close
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- Form -->
+
+                <form
+                    id="customerForm"
+                    class="p-6 space-y-5"
+                >
+
+                    <!-- Name -->
+
+                    <div>
+
+                        <label
+                            for="customerName"
+                            class="
+                                block text-sm
+                                font-medium
+                                text-slate-700
+                                dark:text-slate-300
+                                mb-1.5
+                            "
+                        >
+                            Customer Name *
+                        </label>
+
+                        <input
+                            id="customerName"
+                            name="customerName"
+                            type="text"
+                            required
+                            maxlength="100"
+                            autocomplete="organization"
+                            value="${escapeHTML(existingCustomer?.name || "")}"
+                            placeholder="Enter customer name"
+                            class="
+                                w-full
+                                rounded-lg
+                                border
+                                border-slate-300
+                                dark:border-slate-600
+                                bg-white
+                                dark:bg-slate-800
+                                text-slate-900
+                                dark:text-white
+                                px-3 py-2.5
+                                focus:ring-2
+                                focus:ring-primary/30
+                                focus:border-primary
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- Contact -->
+
+                    <div>
+
+                        <label
+                            for="customerContact"
+                            class="
+                                block text-sm
+                                font-medium
+                                text-slate-700
+                                dark:text-slate-300
+                                mb-1.5
+                            "
+                        >
+                            Contact Number
+                        </label>
+
+                        <input
+                            id="customerContact"
+                            name="customerContact"
+                            type="tel"
+                            maxlength="30"
+                            autocomplete="tel"
+                            value="${escapeHTML(existingCustomer?.contact || "")}"
+                            placeholder="Enter contact number"
+                            class="
+                                w-full
+                                rounded-lg
+                                border
+                                border-slate-300
+                                dark:border-slate-600
+                                bg-white
+                                dark:bg-slate-800
+                                text-slate-900
+                                dark:text-white
+                                px-3 py-2.5
+                                focus:ring-2
+                                focus:ring-primary/30
+                                focus:border-primary
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div>
+
+                        <label
+                            for="customerEmail"
+                            class="
+                                block text-sm
+                                font-medium
+                                text-slate-700
+                                dark:text-slate-300
+                                mb-1.5
+                            "
+                        >
+                            Email
+                        </label>
+
+                        <input
+                            id="customerEmail"
+                            name="customerEmail"
+                            type="email"
+                            maxlength="150"
+                            autocomplete="email"
+                            value="${escapeHTML(existingCustomer?.email || "")}"
+                            placeholder="customer@example.com"
+                            class="
+                                w-full
+                                rounded-lg
+                                border
+                                border-slate-300
+                                dark:border-slate-600
+                                bg-white
+                                dark:bg-slate-800
+                                text-slate-900
+                                dark:text-white
+                                px-3 py-2.5
+                                focus:ring-2
+                                focus:ring-primary/30
+                                focus:border-primary
+                            "
+                        >
+
+                    </div>
+
+
+                    <!-- City / Country -->
+
+                    <div
+                        class="
+                            grid
+                            grid-cols-1
+                            sm:grid-cols-2
+                            gap-4
+                        "
+                    >
+
+                        <div>
+
+                            <label
+                                for="customerCity"
+                                class="
+                                    block text-sm
+                                    font-medium
+                                    text-slate-700
+                                    dark:text-slate-300
+                                    mb-1.5
+                                "
+                            >
+                                City
+                            </label>
+
+                            <input
+                                id="customerCity"
+                                name="customerCity"
+                                type="text"
+                                maxlength="80"
+                                autocomplete="address-level2"
+                                value="${escapeHTML(existingCustomer?.city || "")}"
+                                placeholder="City"
+                                class="
+                                    w-full
+                                    rounded-lg
+                                    border
+                                    border-slate-300
+                                    dark:border-slate-600
+                                    bg-white
+                                    dark:bg-slate-800
+                                    text-slate-900
+                                    dark:text-white
+                                    px-3 py-2.5
+                                    focus:ring-2
+                                    focus:ring-primary/30
+                                "
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <label
+                                for="customerCountry"
+                                class="
+                                    block text-sm
+                                    font-medium
+                                    text-slate-700
+                                    dark:text-slate-300
+                                    mb-1.5
+                                "
+                            >
+                                Country
+                            </label>
+
+                            <input
+                                id="customerCountry"
+                                name="customerCountry"
+                                type="text"
+                                maxlength="80"
+                                autocomplete="country-name"
+                                value="${escapeHTML(existingCustomer?.country || "")}"
+                                placeholder="Country"
+                                class="
+                                    w-full
+                                    rounded-lg
+                                    border
+                                    border-slate-300
+                                    dark:border-slate-600
+                                    bg-white
+                                    dark:bg-slate-800
+                                    text-slate-900
+                                    dark:text-white
+                                    px-3 py-2.5
+                                    focus:ring-2
+                                    focus:ring-primary/30
+                                "
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Error -->
+
+                    <div
+                        id="customerFormError"
+                        class="
+                            hidden
+                            rounded-lg
+                            bg-red-50
+                            dark:bg-red-950/30
+                            text-red-700
+                            dark:text-red-400
+                            px-4 py-3
+                            text-sm
+                        "
+                    ></div>
+
+
+                    <!-- Buttons -->
+
+                    <div
+                        class="
+                            flex
+                            justify-end
+                            gap-3
+                            pt-5
+                            border-t
+                            border-slate-200
+                            dark:border-slate-700
+                        "
+                    >
+
+                        <button
+                            type="button"
+                            id="cancelCustomerForm"
+                            class="
+                                px-4 py-2.5
+                                rounded-lg
+                                border
+                                border-slate-300
+                                dark:border-slate-600
+                                text-slate-700
+                                dark:text-slate-300
+                                hover:bg-slate-50
+                                dark:hover:bg-slate-800
+                            "
+                        >
+                            Cancel
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="
+                                px-5 py-2.5
+                                rounded-lg
+                                bg-primary
+                                text-white
+                                font-semibold
+                                hover:bg-primary-container
+                            "
+                        >
+                            ${
+                                editing
+                                    ? "Save Changes"
+                                    : "Create Customer"
+                            }
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+        `;
+
+
+        document.body.appendChild(
+            modal
+        );
+
+
+        /* -----------------------------------------------------
+           Form Elements
+        ----------------------------------------------------- */
+
+        const form =
+            document.getElementById(
+                "customerForm"
+            );
+
+        const closeButton =
+            document.getElementById(
+                "closeCustomerModal"
+            );
+
+        const cancelButton =
+            document.getElementById(
+                "cancelCustomerForm"
+            );
+
+        const errorBox =
+            document.getElementById(
+                "customerFormError"
+            );
+
+
+        /* -----------------------------------------------------
+           Close Events
+        ----------------------------------------------------- */
+
+        closeButton.addEventListener(
+            "click",
+            closeModal
+        );
+
+        cancelButton.addEventListener(
+            "click",
+            closeModal
+        );
+
+
+        modal.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === modal
+                ) {
+                    closeModal();
+                }
+
+            }
+        );
+
+
+        /* -----------------------------------------------------
+           Escape Key
+        ----------------------------------------------------- */
+
+        document.addEventListener(
+            "keydown",
+            function escapeHandler(event) {
+
+                if (
+                    event.key === "Escape" &&
+                    document.getElementById(
+                        "customerModal"
+                    )
+                ) {
+
+                    closeModal();
+
+                    document.removeEventListener(
+                        "keydown",
+                        escapeHandler
+                    );
+                }
+
+            }
+        );
+
+
+        /* -----------------------------------------------------
+           Submit
+        ----------------------------------------------------- */
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                errorBox.classList.add(
+                    "hidden"
+                );
+
+                errorBox.textContent =
+                    "";
+
+
+                const name =
+                    document
+                        .getElementById(
+                            "customerName"
+                        )
+                        .value
+                        .trim();
+
+
+                const contact =
+                    document
+                        .getElementById(
+                            "customerContact"
+                        )
+                        .value
+                        .trim();
+
+
+                const email =
+                    document
+                        .getElementById(
+                            "customerEmail"
+                        )
+                        .value
+                        .trim();
+
+
+                const city =
+                    document
+                        .getElementById(
+                            "customerCity"
+                        )
+                        .value
+                        .trim();
+
+
+                const country =
+                    document
+                        .getElementById(
+                            "customerCountry"
+                        )
+                        .value
+                        .trim();
+
+
+                /* ------------------------------------------------
+                   Validation
+                ------------------------------------------------ */
+
+                if (!name) {
+
+                    showFormError(
+                        "Customer name is required."
+                    );
+
+                    return;
+                }
+
+
+                if (name.length < 2) {
+
+                    showFormError(
+                        "Customer name must contain at least 2 characters."
+                    );
+
+                    return;
+                }
+
+
+                if (email) {
+
+                    const emailPattern =
+                        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                    if (
+                        !emailPattern.test(
+                            email
+                        )
+                    ) {
+
+                        showFormError(
+                            "Please enter a valid email address."
+                        );
+
+                        return;
+                    }
+                }
+
+
+                const customers =
+                    getCustomers();
+
+
+                /* ------------------------------------------------
+                   Duplicate Customer Check
+                ------------------------------------------------ */
+
+                const duplicate =
+                    customers.find(
+                        function (item) {
+
+                            if (
+                                editing &&
+                                item.id ===
+                                existingCustomer.id
+                            ) {
+                                return false;
+                            }
+
+                            return (
+                                String(item.name)
+                                    .trim()
+                                    .toLowerCase() ===
+                                name.toLowerCase()
+                            );
+                        }
+                    );
+
+
+                if (duplicate) {
+
+                    showFormError(
+                        "A customer with this name already exists."
+                    );
+
+                    return;
+                }
+
+
+                /* ------------------------------------------------
+                   EDIT
+                ------------------------------------------------ */
+
+                if (editing) {
+
+                    const index =
+                        customers.findIndex(
+                            function (item) {
+
+                                return (
+                                    item.id ===
+                                    existingCustomer.id
+                                );
+                            }
+                        );
+
+
+                    if (index === -1) {
+
+                        showFormError(
+                            "Customer no longer exists."
+                        );
+
+                        return;
+                    }
+
+
+                    customers[index] = {
+
+                        ...customers[index],
+
+                        name,
+                        contact,
+                        email,
+                        city,
+                        country
+                    };
+
+
+                    if (
+                        !saveCustomers(
+                            customers
+                        )
+                    ) {
+                        return;
+                    }
+
+
+                    closeModal();
+
+                    renderCustomers();
+
+                    updateStatistics();
+
+                    showToast(
+                        "Customer updated successfully."
+                    );
+
+                    return;
+                }
+
+
+                /* ------------------------------------------------
+                   CREATE
+                ------------------------------------------------ */
+
+                const newCustomer = {
+
+                    id:
+                        generateCustomerId(),
+
+                    name,
+
+                    contact,
+
+                    email,
+
+                    city,
+
+                    country,
+
+                    purchases: 0,
+
+                    status: "Active",
+
+                    createdAt:
+                        new Date().toISOString()
+                };
+
+
+                customers.push(
+                    newCustomer
+                );
+
+
+                if (
+                    !saveCustomers(
+                        customers
+                    )
+                ) {
+                    return;
+                }
+
+
+                closeModal();
+
+                renderCustomers();
+
+                updateStatistics();
+
+                showToast(
+                    "Customer created successfully."
+                );
+
+            }
+        );
+
+
+        function showFormError(
+            message
+        ) {
+
+            errorBox.textContent =
+                message;
+
+            errorBox.classList.remove(
+                "hidden"
+            );
+        }
+
+
+        /* -----------------------------------------------------
+           Auto Focus
+        ----------------------------------------------------- */
+
+        setTimeout(
+            function () {
+
+                document
+                    .getElementById(
+                        "customerName"
+                    )
+                    ?.focus();
+
+            },
+            50
+        );
+
+    }
+
+
+    /* ========================================================
+       VIEW CUSTOMER
+    ======================================================== */
+
+    function viewCustomer(
+        customer
+    ) {
+
+        const modal =
+            document.createElement("div");
+
+        modal.id =
+            "customerViewModal";
+
+        modal.className =
+            "fixed inset-0 z-[400] " +
+            "flex items-center justify-center " +
+            "bg-black/50 p-4";
+
+
+        modal.innerHTML = `
+
+            <div
+                class="
+                    w-full max-w-lg
+                    rounded-2xl
+                    bg-white
+                    dark:bg-slate-900
+                    shadow-2xl
+                "
+            >
+
+                <div
+                    class="
+                        flex items-center
+                        justify-between
+                        px-6 py-5
+                        border-b
+                        border-slate-200
+                        dark:border-slate-700
+                    "
+                >
+
+                    <div>
+
+                        <h2
+                            class="
+                                text-xl
+                                font-semibold
+                                text-slate-900
+                                dark:text-white
+                            "
+                        >
+                            Customer Details
+                        </h2>
+
+                        <p
+                            class="
+                                text-sm
+                                text-slate-500
+                                dark:text-slate-400
+                                mt-1
+                            "
+                        >
+                            ${escapeHTML(customer.id)}
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="closeCustomerView"
+                        class="
+                            p-2 rounded-lg
+                            hover:bg-slate-100
+                            dark:hover:bg-slate-800
+                        "
+                    >
+
+                        <span
+                            class="material-symbols-outlined"
+                        >
+                            close
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <div class="p-6 space-y-5">
+
+                    <div>
+
+                        <p
+                            class="
+                                text-xs
+                                uppercase
+                                tracking-wider
+                                text-slate-400
+                                font-semibold
+                            "
+                        >
+                            Customer Name
+                        </p>
+
+                        <p
+                            class="
+                                text-lg
+                                font-semibold
+                                text-slate-900
+                                dark:text-white
+                                mt-1
+                            "
+                        >
+                            ${escapeHTML(customer.name)}
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="
+                            grid
+                            grid-cols-1
+                            sm:grid-cols-2
+                            gap-5
+                        "
+                    >
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-400
+                                    font-semibold
+                                    uppercase
+                                "
+                            >
+                                Contact
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    text-sm
+                                    text-slate-700
+                                    dark:text-slate-300
+                                "
+                            >
+                                ${escapeHTML(customer.contact || "Not provided")}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-400
+                                    font-semibold
+                                    uppercase
+                                "
+                            >
+                                Email
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    text-sm
+                                    text-slate-700
+                                    dark:text-slate-300
+                                    break-all
+                                "
+                            >
+                                ${escapeHTML(customer.email || "Not provided")}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-400
+                                    font-semibold
+                                    uppercase
+                                "
+                            >
+                                City
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    text-sm
+                                    text-slate-700
+                                    dark:text-slate-300
+                                "
+                            >
+                                ${escapeHTML(customer.city || "Not provided")}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-400
+                                    font-semibold
+                                    uppercase
+                                "
+                            >
+                                Country
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    text-sm
+                                    text-slate-700
+                                    dark:text-slate-300
+                                "
+                            >
+                                ${escapeHTML(customer.country || "Not provided")}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-400
+                                    font-semibold
+                                    uppercase
+                                "
+                            >
+                                Total Purchases
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    text-sm
+                                    font-semibold
+                                    text-slate-900
+                                    dark:text-white
+                                "
+                            >
+                                ${formatCurrency(customer.purchases)}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-400
+                                    font-semibold
+                                    uppercase
+                                "
+                            >
+                                Status
+                            </p>
+
+                            <p class="mt-1">
+
+                                <span
+                                    class="
+                                        inline-flex
+                                        px-3 py-1
+                                        rounded-full
+                                        text-xs
+                                        font-semibold
+                                        ${
+                                            customer.status === "Active"
+                                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                                : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                                        }
+                                    "
+                                >
+                                    ${escapeHTML(customer.status)}
+                                </span>
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="
+                            pt-4
+                            border-t
+                            border-slate-200
+                            dark:border-slate-700
+                            flex justify-end
+                        "
+                    >
+
+                        <button
+                            type="button"
+                            id="closeCustomerViewButton"
+                            class="
+                                px-4 py-2.5
+                                rounded-lg
+                                bg-primary
+                                text-white
+                                font-semibold
+                            "
+                        >
+                            Close
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+
+        document.body.appendChild(
+            modal
+        );
+
+
+        function closeView() {
+
+            modal.remove();
+        }
+
+
+        document
+            .getElementById(
+                "closeCustomerView"
+            )
+            .addEventListener(
+                "click",
+                closeView
+            );
+
+
+        document
+            .getElementById(
+                "closeCustomerViewButton"
+            )
+            .addEventListener(
+                "click",
+                closeView
+            );
+
+
+        modal.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === modal
+                ) {
+                    closeView();
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ========================================================
+       ARCHIVE / RESTORE
+    ======================================================== */
+
+    function toggleArchiveCustomer(
+        customerId
+    ) {
+
+        const customers =
+            getCustomers();
+
+        const customer =
+            customers.find(
+                function (item) {
+
+                    return (
+                        item.id ===
+                        customerId
+                    );
+                }
+            );
+
+
+        if (!customer) {
+
+            showToast(
+                "Customer not found.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const archived =
+            customer.status ===
+            "Archived";
+
+
+        const action =
+            archived
+                ? "restore"
+                : "archive";
+
+
+        const confirmed =
+            window.confirm(
+                `Are you sure you want to ${action} "${customer.name}"?`
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        customer.status =
+            archived
+                ? "Active"
+                : "Archived";
+
+
+        if (
+            !saveCustomers(
+                customers
+            )
+        ) {
+            return;
+        }
+
+
+        renderCustomers();
+
+        updateStatistics();
+
+
+        showToast(
+            archived
+                ? "Customer restored successfully."
+                : "Customer archived successfully."
+        );
+    }
+
+
+    /* ========================================================
+       ACTION EVENTS
+    ======================================================== */
+
+    function attachActionEvents() {
+
+        document
+            .querySelectorAll(
+                ".view-customer"
+            )
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            const customer =
+                                getCustomers()
+                                    .find(
+                                        function (item) {
+
+                                            return (
+                                                item.id ===
+                                                button.dataset.id
+                                            );
+                                        }
+                                    );
+
+
+                            if (!customer) {
+
+                                showToast(
+                                    "Customer not found.",
+                                    "error"
+                                );
+
+                                return;
+                            }
+
+
+                            viewCustomer(
+                                customer
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+        document
+            .querySelectorAll(
+                ".edit-customer"
+            )
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            const customer =
+                                getCustomers()
+                                    .find(
+                                        function (item) {
+
+                                            return (
+                                                item.id ===
+                                                button.dataset.id
+                                            );
+                                        }
+                                    );
+
+
+                            if (!customer) {
+
+                                showToast(
+                                    "Customer not found.",
+                                    "error"
+                                );
+
+                                return;
+                            }
+
+
+                            openCustomerForm(
+                                customer
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+        document
+            .querySelectorAll(
+                ".archive-customer"
+            )
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            toggleArchiveCustomer(
+                                button.dataset.id
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* ========================================================
+       RENDER CUSTOMERS
+    ======================================================== */
+
+    function renderCustomers(
+        customers = getCustomers()
+    ) {
+
+        tableBody.innerHTML =
+            "";
+
+
+        customerCountText.textContent =
+            customers.length === 1
+                ? "1 customer"
+                : `${customers.length} customers`;
+
+
+        if (
+            customers.length === 0
+        ) {
+
+            tableBody.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="px-6 py-16 text-center"
+                    >
+
+                        <span
+                            class="
+                                material-symbols-outlined
+                                text-5xl
+                                text-slate-300
+                                dark:text-slate-600
+                            "
+                        >
+                            person_search
+                        </span>
+
+                        <p
+                            class="
+                                mt-4
+                                font-semibold
+                                text-slate-700
+                                dark:text-slate-300
+                            "
+                        >
+                            No customers found
+                        </p>
+
+                        <p
+                            class="
+                                text-sm
+                                text-slate-500
+                                dark:text-slate-400
+                                mt-1
+                            "
+                        >
+                            Add a customer or change your search.
+                        </p>
+
+                    </td>
+
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        customers.forEach(
+            function (customer) {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.className =
+                    "hover:bg-slate-50 dark:hover:bg-slate-800/60 transition";
+
+
+                const statusClass =
+                    customer.status === "Active"
+
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+
+                        : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300";
+
+
+                row.innerHTML = `
+
+                    <!-- Customer -->
+
+                    <td class="px-6 py-4">
+
+                        <div>
+
+                            <p
+                                class="
+                                    font-semibold
+                                    text-slate-900
+                                    dark:text-white
+                                "
+                            >
+                                ${escapeHTML(customer.name)}
+                            </p>
+
+                            <p
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                    dark:text-slate-400
+                                    mt-1
+                                "
+                            >
+                                ${escapeHTML(customer.id)}
+                                ·
+                                ${escapeHTML(customer.city || "—")}${
+                                    customer.country
+                                        ? ", " + escapeHTML(customer.country)
+                                        : ""
+                                }
+                            </p>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- Contact -->
+
+                    <td
+                        class="
+                            px-6 py-4
+                            text-sm
+                            text-slate-700
+                            dark:text-slate-300
+                            whitespace-nowrap
+                        "
+                    >
+                        ${escapeHTML(customer.contact || "—")}
+                    </td>
+
+
+                    <!-- Email -->
+
+                    <td
+                        class="
+                            px-6 py-4
+                            text-sm
+                            text-slate-600
+                            dark:text-slate-400
+                        "
+                    >
+                        ${escapeHTML(customer.email || "—")}
+                    </td>
+
+
+                    <!-- Purchases -->
+
+                    <td
+                        class="
+                            px-6 py-4
+                            text-sm
+                            font-semibold
+                            text-slate-900
+                            dark:text-white
+                            whitespace-nowrap
+                        "
+                    >
+                        ${formatCurrency(customer.purchases)}
+                    </td>
+
+
+                    <!-- Status -->
+
+                    <td class="px-6 py-4">
+
+                        <span
+                            class="
+                                inline-flex
+                                px-3 py-1
+                                rounded-full
+                                text-xs
+                                font-semibold
+                                ${statusClass}
+                            "
+                        >
+                            ${escapeHTML(customer.status)}
+                        </span>
+
+                    </td>
+
+
+                    <!-- Actions -->
+
+                    <td
+                        class="
+                            px-6 py-4
+                            text-right
+                            whitespace-nowrap
+                        "
+                    >
+
+                        <button
+                            type="button"
+                            class="
+                                view-customer
+                                p-2
+                                text-primary
+                                hover:bg-primary/10
+                                rounded-lg
+                            "
+                            data-id="${escapeHTML(customer.id)}"
+                            title="View customer"
+                        >
+
+                            <span
+                                class="material-symbols-outlined"
+                            >
+                                visibility
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="
+                                edit-customer
+                                p-2
+                                text-primary
+                                hover:bg-primary/10
+                                rounded-lg
+                            "
+                            data-id="${escapeHTML(customer.id)}"
+                            title="Edit customer"
+                        >
+
+                            <span
+                                class="material-symbols-outlined"
+                            >
+                                edit
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="
+                                archive-customer
+                                p-2
+                                ${
+                                    customer.status === "Archived"
+                                        ? "text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
+                                        : "text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                                }
+                                rounded-lg
+                            "
+                            data-id="${escapeHTML(customer.id)}"
+                            title="${
+                                customer.status === "Archived"
+                                    ? "Restore customer"
+                                    : "Archive customer"
+                            }"
+                        >
+
+                            <span
+                                class="material-symbols-outlined"
+                            >
+                                ${
+                                    customer.status === "Archived"
+                                        ? "unarchive"
+                                        : "archive"
+                                }
+                            </span>
+
+                        </button>
+
+                    </td>
+                `;
+
+
+                tableBody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+
+        attachActionEvents();
+    }
+
+
+    /* ========================================================
+       SEARCH
+    ======================================================== */
+
+    searchInput.addEventListener(
+        "input",
+        function () {
+
+            const query =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+
+            const customers =
+                getCustomers();
+
+
+            if (!query) {
+
+                renderCustomers(
+                    customers
+                );
+
+                return;
+            }
+
+
+            const filtered =
+                customers.filter(
+                    function (customer) {
+
+                        const searchable =
+                            [
+
+                                customer.id,
+
+                                customer.name,
+
+                                customer.contact,
+
+                                customer.email,
+
+                                customer.city,
+
+                                customer.country,
+
+                                customer.status
+
+                            ]
+                                .join(" ")
+                                .toLowerCase();
+
+
+                        return searchable.includes(
+                            query
+                        );
+                    }
+                );
+
+
+            renderCustomers(
+                filtered
+            );
+
+        }
+    );
+
+
+    /* ========================================================
+       STATISTICS
+    ======================================================== */
+
+    function updateStatistics() {
+
+        const customers =
+            getCustomers();
+
+
+        const total =
+            customers.length;
+
+
+        const active =
+            customers.filter(
+                function (customer) {
+
+                    return (
+                        customer.status ===
+                        "Active"
+                    );
+                }
+            ).length;
+
+
+        const archived =
+            customers.filter(
+                function (customer) {
+
+                    return (
+                        customer.status ===
+                        "Archived"
+                    );
+                }
+            ).length;
+
+
+        const purchases =
+            customers.reduce(
+                function (
+                    sum,
+                    customer
+                ) {
+
+                    return (
+                        sum +
+                        (
+                            Number(
+                                customer.purchases
+                            ) || 0
+                        )
+                    );
+
+                },
+                0
+            );
+
+
+        const percentage =
+            total > 0
+                ? Math.round(
+                    (active / total) * 100
+                )
+                : 0;
+
+
+        totalCustomersStat.textContent =
+            total;
+
+
+        activeCustomersStat.textContent =
+            active;
+
+
+        archivedCustomersStat.textContent =
+            archived;
+
+
+        totalPurchasesStat.textContent =
+            formatCurrency(
+                purchases
+            );
+
+
+        activePercentageStat.textContent =
+            `${percentage}% active`;
+
+
+        /* -----------------------------------------------------
+           New Customers
+        ----------------------------------------------------- */
+
+        const now =
+            new Date();
+
+        const month =
+            now.getMonth();
+
+        const year =
+            now.getFullYear();
+
+
+        const newThisMonth =
+            customers.filter(
+                function (customer) {
+
+                    if (!customer.createdAt) {
+                        return false;
+                    }
+
+
+                    const date =
+                        new Date(
+                            customer.createdAt
+                        );
+
+
+                    return (
+                        date.getMonth() === month &&
+                        date.getFullYear() === year
+                    );
+                }
+            ).length;
+
+
+        customerGrowthStat.textContent =
+            newThisMonth > 0
+                ? `+${newThisMonth} this month`
+                : "No new customers this month";
+    }
+
+
+    /* ========================================================
+       ADD CUSTOMER
+    ======================================================== */
+
+    addButton.addEventListener(
+        "click",
+        function () {
+
+            openCustomerForm();
+
+        }
+    );
+
+
+    /* ========================================================
+       DARK MODE
+    ======================================================== */
+
+    const themeToggle =
+        document.getElementById(
+            "themeToggle"
+        );
+
+    const themeIcon =
+        document.getElementById(
+            "themeIcon"
+        );
+
+    const html =
+        document.documentElement;
+
+
+    const savedTheme =
+        localStorage.getItem(
+            "theme"
+        ) || "light";
+
+
+    if (
+        savedTheme === "dark"
+    ) {
+
+        html.classList.add(
+            "dark"
+        );
+
+        themeIcon.textContent =
+            "dark_mode";
+
+    } else {
+
+        themeIcon.textContent =
+            "light_mode";
+    }
+
+
+    themeToggle.addEventListener(
+        "click",
+        function () {
+
+            html.classList.toggle(
+                "dark"
+            );
+
+
+            const isDark =
+                html.classList.contains(
+                    "dark"
+                );
+
+
+            themeIcon.textContent =
+                isDark
+                    ? "dark_mode"
+                    : "light_mode";
+
+
+            localStorage.setItem(
+                "theme",
+                isDark
+                    ? "dark"
+                    : "light"
+            );
+
+        }
+    );
+
+
+    /* ========================================================
+       LOGOUT
+    ======================================================== */
+
+    window.handleLogout =
+        function () {
+
+            const confirmed =
+                window.confirm(
+                    "Are you sure you want to logout?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            /*
+             * Keep this as a frontend placeholder.
+             * Connect it to your authentication module
+             * when backend authentication is implemented.
+             */
+
+            showToast(
+                "Logout functionality is ready for authentication integration."
+            );
+        };
+
+
+    /* ========================================================
+       INITIALIZE
+    ======================================================== */
+
+    renderCustomers();
+
+    updateStatistics();
+
+
+    console.log(
+        "StockMaster Customers module loaded successfully."
+    );
+
+});
+
+</script>
+
+</body>
+</html>

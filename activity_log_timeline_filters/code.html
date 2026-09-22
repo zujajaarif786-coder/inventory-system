@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StockMaster - Activity Log</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#e1e0ff",
+                    "surface-variant": "#e1e2ed",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container-low": "#f3f3fe",
+                    "on-tertiary-fixed": "#360f00",
+                    "surface-dim": "#d9d9e5",
+                    "on-surface": "#191b23",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "tertiary-container": "#bc4800",
+                    "surface-bright": "#faf8ff",
+                    "primary-container": "#2563eb",
+                    "on-tertiary-container": "#ffede6",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "surface-tint": "#0053db",
+                    "surface": "#faf8ff",
+                    "on-surface-variant": "#434655",
+                    "background": "#faf8ff",
+                    "inverse-primary": "#b4c5ff",
+                    "outline-variant": "#c3c6d7",
+                    "secondary-container": "#6063ee",
+                    "secondary": "#4648d4",
+                    "inverse-on-surface": "#f0f0fb",
+                    "primary-fixed": "#dbe1ff",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-container": "#eeefff",
+                    "on-primary-fixed": "#00174b",
+                    "primary": "#004ac6",
+                    "on-secondary-fixed": "#07006c",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "on-background": "#191b23",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "error": "#ba1a1a",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-highest": "#e1e2ed",
+                    "outline": "#737686",
+                    "surface-container-high": "#e7e7f3",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "on-error": "#ffffff",
+                    "tertiary": "#943700",
+                    "inverse-surface": "#2e3039",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "0.25rem",
+                    "md": "1rem",
+                    "2xl": "3rem",
+                    "sm": "0.5rem",
+                    "layout-margin": "24px",
+                    "xl": "2rem",
+                    "layout-gutter": "16px",
+                    "base": "4px",
+                    "lg": "1.5rem",
+                    "header-height": "64px"
+            },
+            "fontFamily": {
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-lg-mobile": ["Hanken Grotesk"],
+                    "body-md": ["Inter"],
+                    "display-xl": ["Hanken Grotesk"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        
+        /* Dark Mode Transitions */
+        * { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-x-hidden dark:bg-inverse-surface dark:text-inverse-on-surface">
+<script src="script.js"></script>
+    <!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-lowest border-r border-outline-variant shadow-sm flex flex-col py-lg px-md z-50 dark:bg-surface-container-dark dark:border-outline">
+<div class="flex items-center gap-3 px-sm mb-xl">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">StockMaster</h1>
+<p class="text-[10px] text-secondary font-bold uppercase tracking-widest opacity-60">Enterprise</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto custom-scrollbar">
+<a class="flex items-center gap-3 px-md py-3 text-secondary hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out cursor-pointer active:scale-95" href="../dashboard_themed_alerts/code.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-md py-3 text-secondary hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out cursor-pointer active:scale-95" href="../products_management/code.html">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Products</span>
+</a>
+<a class="flex items-center gap-3 px-md py-3 text-secondary hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out cursor-pointer active:scale-95" href="../categories_management/code.html">
+<span class="material-symbols-outlined">category</span>
+<span class="font-body-md text-body-md">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-md py-3 text-secondary hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out cursor-pointer active:scale-95" href="../stock_management/code.html">
+<span class="material-symbols-outlined">input</span>
+<span class="font-body-md text-body-md">Stock In</span>
+</a>
+<a class="flex items-center gap-3 px-md py-3 text-secondary hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out cursor-pointer active:scale-95" href="../stock_management/code.html">
+<span class="material-symbols-outlined">output</span>
+<span class="font-body-md text-body-md">Stock Out</span>
+</a>
+<a class="flex items-center gap-3 px-md py-3 text-secondary hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out cursor-pointer active:scale-95" href="../reports_dashboard/code.html">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-body-md text-body-md">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-md py-3 text-secondary hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out cursor-pointer active:scale-95" href="../user_management/code.html">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md text-body-md">Users</span>
+</a>
+<a class="flex items-center gap-3 px-md py-3 bg-primary text-on-primary rounded-lg transition-all duration-200 ease-in-out cursor-pointer active:scale-95" href="../activity_log_timeline_filters/code.html">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body-md text-body-md">Activity Log</span>
+</a>
+<a class="flex items-center gap-3 px-md py-3 text-secondary hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out cursor-pointer active:scale-95" href="../profile_settings/code.html">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-outline-variant dark:border-outline">
+<button class="w-full flex items-center gap-3 px-md py-3 text-secondary hover:bg-surface-container-high rounded-lg mb-2" id="themeToggle">
+<span class="material-symbols-outlined" id="themeIcon">dark_mode</span>
+<span class="font-body-md text-body-md">Switch Theme</span>
+</button>
+<button class="w-full flex items-center justify-center gap-2 py-2 px-4 bg-error-container text-on-error-container font-semibold rounded-lg hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm">logout</span>
+            Logout
+        </button>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 h-header-height z-40 bg-surface border-b border-outline-variant shadow-sm flex items-center justify-between px-xl w-[calc(100%-280px)] ml-[280px] dark:bg-inverse-surface dark:border-outline">
+<div class="flex items-center gap-4 flex-1">
+<h2 class="text-headline-sm font-semibold text-on-surface dark:text-inverse-on-surface">Activity Log</h2>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-body-md focus:ring-2 focus:ring-primary/20 w-64 dark:bg-surface-container-high" placeholder="Filter logs..." type="text"/>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-sm"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right">
+<p class="text-sm font-semibold text-on-surface dark:text-inverse-on-surface">Alex Rivera</p>
+<p class="text-[10px] text-secondary uppercase font-bold">Admin Manager</p>
+</div>
+<img class="w-10 h-10 rounded-full border-2 border-primary/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKOvqdgZBaAqjeC9zyWiGHkbAO7KUqt9xuaDYjIH7l62aqHDcNnMlXv2EzG3RZ25tfxz0ijp0HoCkQfwuS4DzyezJo2FSd-01_M06vwoOxSHBp_fHCpvbspR8cteqVDqzKg__ZKIJJMD9YeU-ylMr995VGVDBMhtmwq_0UJdXxJ387VcI6gNqfpEjnJqQQrxJO5qOjfrM8PNINeiOzopt42CMkPMPBGMKdnTKMSePIyaX1iJn8Xl3x"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-[64px] ml-[280px] min-h-screen p-xl flex gap-lg">
+<!-- Left Column: Filters -->
+<div class="w-72 shrink-0">
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm sticky top-[88px] dark:bg-surface-container-dark dark:border-outline">
+<h3 class="font-semibold text-on-surface mb-lg flex items-center gap-2 dark:text-inverse-on-surface">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                Filters
+            </h3>
+<div class="space-y-6">
+<!-- Time Filter -->
+<div>
+<label class="text-xs font-bold text-secondary uppercase tracking-wider block mb-3">Time Range</label>
+<div class="space-y-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="text-primary focus:ring-primary" name="time" type="radio"/>
+<span class="text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Today</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="text-primary focus:ring-primary" name="time" type="radio"/>
+<span class="text-body-md text-on-surface-variant group-hover:text-primary transition-colors">This Week</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="text-primary focus:ring-primary" name="time" type="radio"/>
+<span class="text-body-md text-on-surface-variant group-hover:text-primary transition-colors">This Month</span>
+</label>
+</div>
+</div>
+<!-- Action Type -->
+<div>
+<label class="text-xs font-bold text-secondary uppercase tracking-wider block mb-3">Action Type</label>
+<select class="w-full bg-surface-container-low border-outline-variant rounded-lg py-2 px-3 text-body-md focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:border-outline">
+<option>All Actions</option>
+<option>Added Product</option>
+<option>Stock Adjustment</option>
+<option>User Permissions</option>
+<option>Category Update</option>
+</select>
+</div>
+<!-- User Filter -->
+<div>
+<label class="text-xs font-bold text-secondary uppercase tracking-wider block mb-3">User</label>
+<select class="w-full bg-surface-container-low border-outline-variant rounded-lg py-2 px-3 text-body-md focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:border-outline">
+<option>All Users</option>
+<option>Alex Rivera</option>
+<option>Sarah Miller</option>
+<option>James Wilson</option>
+</select>
+</div>
+<button class="w-full py-2 bg-primary text-on-primary rounded-lg font-semibold text-sm hover:opacity-90 active:scale-95 transition-all">
+                    Apply Filters
+                </button>
+<button class="w-full py-2 text-secondary text-sm hover:underline">
+                    Reset All
+                </button>
+</div>
+</div>
+</div>
+<!-- Right Column: Timeline -->
+<div class="flex-1">
+<!-- Empty State Container (Hidden by default, toggle via JS for demo) -->
+<div class="hidden flex flex-col items-center justify-center py-24 bg-surface-container-lowest border border-dashed border-outline-variant rounded-xl dark:bg-surface-container-dark dark:border-outline" id="emptyState">
+<div class="w-20 h-20 bg-surface-container-high rounded-full flex items-center justify-center text-outline mb-4">
+<span class="material-symbols-outlined text-4xl">history_toggle_off</span>
+</div>
+<h3 class="text-xl font-semibold text-on-surface mb-2 dark:text-inverse-on-surface">No activity found</h3>
+<p class="text-secondary text-center max-w-xs">We couldn't find any logs matching your current filter criteria. Try adjusting the dates or action types.</p>
+</div>
+<!-- Activity Timeline -->
+<div class="space-y-4" id="activityTimeline">
+<!-- Day Divider -->
+<div class="flex items-center gap-4 mb-6">
+<span class="text-xs font-bold text-secondary uppercase tracking-widest bg-surface-container-high px-3 py-1 rounded-full">Today, Oct 31</span>
+<div class="h-[1px] flex-1 bg-outline-variant"></div>
+</div>
+<!-- Timeline Entry 1 -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow dark:bg-surface-container-dark dark:border-outline">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover ring-2 ring-primary/10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKOvqdgZBaAqjeC9zyWiGHkbAO7KUqt9xuaDYjIH7l62aqHDcNnMlXv2EzG3RZ25tfxz0ijp0HoCkQfwuS4DzyezJo2FSd-01_M06vwoOxSHBp_fHCpvbspR8cteqVDqzKg__ZKIJJMD9YeU-ylMr995VGVDBMhtmwq_0UJdXxJ387VcI6gNqfpEjnJqQQrxJO5qOjfrM8PNINeiOzopt42CMkPMPBGMKdnTKMSePIyaX1iJn8Xl3x"/>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center border-2 border-surface-container-lowest dark:border-surface-container-dark">
+<span class="material-symbols-outlined text-xs">add</span>
+</div>
+</div>
+<div>
+<p class="text-on-surface font-semibold dark:text-inverse-on-surface">Alex Rivera</p>
+<p class="text-body-md text-on-surface-variant">Added 200 units to <span class="font-medium text-primary dark:text-primary-fixed-dim">Vortex Pro Keyboard</span></p>
+</div>
+</div>
+<div class="text-right">
+<div class="flex items-center justify-end gap-2 text-label-sm text-secondary uppercase tracking-tighter mb-1">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+                            Inventory
+                        </div>
+<p class="text-xs text-secondary">14 minutes ago</p>
+</div>
+</div>
+</div>
+<!-- Timeline Entry 2 -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow dark:bg-surface-container-dark dark:border-outline">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-lg">
+                                SM
+                            </div>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center border-2 border-surface-container-lowest dark:border-surface-container-dark">
+<span class="material-symbols-outlined text-xs">edit</span>
+</div>
+</div>
+<div>
+<p class="text-on-surface font-semibold dark:text-inverse-on-surface">Sarah Miller</p>
+<p class="text-body-md text-on-surface-variant">Updated price for <span class="font-medium text-primary dark:text-primary-fixed-dim">Swift Cursor M2</span> to $89.00</p>
+</div>
+</div>
+<div class="text-right">
+<div class="flex items-center justify-end gap-2 text-label-sm text-secondary uppercase tracking-tighter mb-1">
+<span class="material-symbols-outlined text-sm">payments</span>
+                            Pricing
+                        </div>
+<p class="text-xs text-secondary">2 hours ago</p>
+</div>
+</div>
+</div>
+<!-- Day Divider -->
+<div class="flex items-center gap-4 mt-12 mb-6">
+<span class="text-xs font-bold text-secondary uppercase tracking-widest bg-surface-container-high px-3 py-1 rounded-full">Yesterday, Oct 30</span>
+<div class="h-[1px] flex-1 bg-outline-variant"></div>
+</div>
+<!-- Timeline Entry 3 -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow dark:bg-surface-container-dark dark:border-outline">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed font-bold text-lg">
+                                JW
+                            </div>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 bg-error text-white rounded-full flex items-center justify-center border-2 border-surface-container-lowest dark:border-surface-container-dark">
+<span class="material-symbols-outlined text-xs">person_remove</span>
+</div>
+</div>
+<div>
+<p class="text-on-surface font-semibold dark:text-inverse-on-surface">James Wilson</p>
+<p class="text-body-md text-on-surface-variant">Removed <span class="font-medium text-primary dark:text-primary-fixed-dim">Mark Chen</span> from Warehouse Team</p>
+</div>
+</div>
+<div class="text-right">
+<div class="flex items-center justify-end gap-2 text-label-sm text-secondary uppercase tracking-tighter mb-1">
+<span class="material-symbols-outlined text-sm">group</span>
+                            User Mgmt
+                        </div>
+<p class="text-xs text-secondary">Oct 30, 04:20 PM</p>
+</div>
+</div>
+</div>
+<!-- Timeline Entry 4 -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow dark:bg-surface-container-dark dark:border-outline">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKOvqdgZBaAqjeC9zyWiGHkbAO7KUqt9xuaDYjIH7l62aqHDcNnMlXv2EzG3RZ25tfxz0ijp0HoCkQfwuS4DzyezJo2FSd-01_M06vwoOxSHBp_fHCpvbspR8cteqVDqzKg__ZKIJJMD9YeU-ylMr995VGVDBMhtmwq_0UJdXxJ387VcI6gNqfpEjnJqQQrxJO5qOjfrM8PNINeiOzopt42CMkPMPBGMKdnTKMSePIyaX1iJn8Xl3x"/>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 bg-secondary text-white rounded-full flex items-center justify-center border-2 border-surface-container-lowest dark:border-surface-container-dark">
+<span class="material-symbols-outlined text-xs">settings</span>
+</div>
+</div>
+<div>
+<p class="text-on-surface font-semibold dark:text-inverse-on-surface">Alex Rivera</p>
+<p class="text-body-md text-on-surface-variant">Changed global stock threshold to <span class="font-medium text-primary dark:text-primary-fixed-dim">15%</span></p>
+</div>
+</div>
+<div class="text-right">
+<div class="flex items-center justify-end gap-2 text-label-sm text-secondary uppercase tracking-tighter mb-1">
+<span class="material-symbols-outlined text-sm">settings</span>
+                            System
+                        </div>
+<p class="text-xs text-secondary">Oct 30, 10:15 AM</p>
+</div>
+</div>
+</div>
+<div class="pt-8 flex justify-center">
+<button class="px-6 py-2 border border-outline-variant rounded-full text-sm font-semibold text-secondary hover:bg-surface-container-low transition-all active:scale-95">
+                    Load Older Activity
+                </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>
